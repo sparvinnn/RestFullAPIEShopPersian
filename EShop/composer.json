@@ -16,6 +16,7 @@
         "laravel/tinker": "^2.0",
         "tymon/jwt-auth": "dev-develop",
         "ext-pdo": "*"
+
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",
