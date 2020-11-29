@@ -14,7 +14,8 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.0",
-        "tymon/jwt-auth": "^1.0"
+        "tymon/jwt-auth": "dev-develop",
+        "ext-pdo": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",

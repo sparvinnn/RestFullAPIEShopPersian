@@ -20,19 +20,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1d9e96a6-1c6b-4f1f-b931-1c4f3ea6308c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/EShop.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/EShop.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Category.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Category.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/app.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/database.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/database.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_10_31_192340_create_categories_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_10_31_192340_create_categories_table.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
-    <execution />
+    <execution>
+      <executable path="composer" />
+    </execution>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -151,6 +157,9 @@
       <path value="$PROJECT_DIR$/vendor/monolog/monolog" />
       <path value="$PROJECT_DIR$/vendor/phpspec/prophecy" />
       <path value="$PROJECT_DIR$/vendor/nunomaduro/collision" />
+      <path value="$PROJECT_DIR$/vendor/namshi/jose" />
+      <path value="$PROJECT_DIR$/vendor/lcobucci/jwt" />
+      <path value="$PROJECT_DIR$/vendor/tymon/jwt-auth" />
     </include_path>
   </component>
   <component name="ProjectId" id="1jehOcMu6isoIg24RINUf4CUueL" />
@@ -160,8 +169,16 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="mysql" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -180,6 +197,8 @@
       <option name="presentableId" value="Default" />
       <updated>1604170461553</updated>
       <workItem from="1604170481747" duration="3726000" />
+      <workItem from="1606584678264" duration="5561000" />
+      <workItem from="1606627222368" duration="1782000" />
     </task>
     <servers />
   </component>
@@ -196,5 +215,20 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="97" y="13" width="800" height="671" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1606590277972">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="97" y="13" width="800" height="671" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1606590277972" />
+    <state x="443" y="278" width="469" height="251" key="ComposerInitDialogKey" timestamp="1606587547693">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="443" y="278" width="469" height="251" key="ComposerInitDialogKey/0.0.1366.728@0.0.1366.728" timestamp="1606587547693" />
+    <state x="347" y="160" width="672" height="677" key="run.anything.popup" timestamp="1606589082905">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="347" y="160" width="672" height="677" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1606589082905" />
   </component>
 </project>
