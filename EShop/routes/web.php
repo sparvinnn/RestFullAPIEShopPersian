@@ -19,4 +19,4 @@ Route::get('/', function () {
 
 
 
-Route::get('/c', 'Api\v1\ontroller@index');
+

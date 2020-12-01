@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\v1\CategoryController;
+use App\Http\Controllers\Api\v1\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,5 +21,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::prefix('v1')->namespace('Api\v1')->group(function (){
-    Route::get('/categories', 'CategoryController@index');
+    Route::get('/categories', [CategoryController::class, 'index']);
+    Route::get('categories/{category}', [CategoryController::class, 'single']);
+    Route::post('/categories/create', [CategoryController::class, 'store']);
+    Route::post('/products/create/{id}', [ProductController::class, 'store']);
 });
