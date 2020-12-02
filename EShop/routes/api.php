@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\v1\CategoryController;
 use App\Http\Controllers\Api\v1\ProductController;
+use App\Http\Controllers\Api\v1\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,4 +26,9 @@ Route::prefix('v1')->namespace('Api\v1')->group(function (){
     Route::get('categories/{category}', [CategoryController::class, 'single']);
     Route::post('/categories/create', [CategoryController::class, 'store']);
     Route::post('/products/create/{id}', [ProductController::class, 'store']);
+
+    Route::post('login', [UserController::class, 'login']);
+    Route::post('register', [UserController::class, 'register']);
 });
+
+

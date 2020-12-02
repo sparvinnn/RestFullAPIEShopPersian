@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->string('card_number');
             $table->string('address');
             $table->string('postalcode');
+            $table->string('api_token')->unique();
             $table->rememberToken();
             $table->timestamps();
         });
