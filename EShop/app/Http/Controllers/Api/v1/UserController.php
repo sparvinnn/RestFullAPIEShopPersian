@@ -5,28 +5,32 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\v1\User as UserResource;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+
+
 
 class UserController extends Controller
 {
     public function login(Request $request){
-        //Validation Data
-//        $validData = $this->validate($request, [
-//            'email' => 'required',
-//            'password' => 'required',
-//        ]);
+        $user= User::where('email', $request->email)->first();
+        // print_r($data);
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response([
+                'message' => ['These credentials do not match our records.']
+            ], 404);
+        }
 
-//        //Check Login User
-//        if(! auth()->attempt($validData)){
-//
-//            return response([
-//                'data' => "اطلاعات صحیح نیست",
-//                'status' => 'error'
-//            ], 403);
-//        }
+        $token = $user->createToken('my-app-token')->plainTextToken;
 
-        return new UserResource(auth()->user());
+        $response = [
+            'user' => $user,
+            'token' => $token
+        ];
+
+        return response($response, 201);
     }
 
     public function register(Request $request){
@@ -40,11 +44,15 @@ class UserController extends Controller
         $user = User::create([
             'name' => $validData['name'],
             'email' => $validData['email'],
-            'password' => $validData['password'],
+            'password' => Hash::make($validData['password']),
             'api_token' => Str::random(100),
         ]);
 
         return new UserResource($user);
 
+    }
+
+    public function users(){
+        return User::all();
     }
 }
