@@ -34,7 +34,7 @@ class UserFactory extends Factory
             'card_number' => $this->faker->creditCardNumber,
             'address' => $this->faker->address,
             'postalcode' => $this->faker->postcode,
-            'api_token' => Str::random(60),
+            'api_token' => Str::random(100),
             'remember_token' => Str::random(10),
         ];
     }

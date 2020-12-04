@@ -4,7 +4,9 @@ use App\Http\Controllers\Api\v1\CategoryController;
 use App\Http\Controllers\Api\v1\ProductController;
 use App\Http\Controllers\Api\v1\UserController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,9 +19,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+
+
 
 Route::prefix('v1')->namespace('Api\v1')->group(function (){
     Route::get('/categories', [CategoryController::class, 'index']);
@@ -29,6 +33,12 @@ Route::prefix('v1')->namespace('Api\v1')->group(function (){
 
     Route::post('login', [UserController::class, 'login']);
     Route::post('register', [UserController::class, 'register']);
+
+    Route::middleware('auth:api')->group(function (){
+        Route::get('user/', function (){
+            return auth()->user();
+        });
+    });
 });
 
 
