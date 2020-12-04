@@ -34,10 +34,9 @@ Route::prefix('v1')->namespace('Api\v1')->group(function (){
     Route::post('login', [UserController::class, 'login']);
     Route::post('register', [UserController::class, 'register']);
 
-    Route::middleware('auth:api')->group(function (){
-        Route::get('user/', function (){
-            return auth()->user();
-        });
+    Route::group(['middleware' => 'auth:sanctum'], function(){
+        Route::post('users', [UserController::class, 'users']);
+
     });
 });
 
