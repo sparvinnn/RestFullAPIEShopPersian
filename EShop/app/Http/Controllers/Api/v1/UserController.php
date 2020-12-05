@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\v1\User as UserResource;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+
+
 
 class UserController extends Controller
 {
@@ -21,14 +24,14 @@ class UserController extends Controller
             ], 404);
         }
 
-        $token = $user->createToken('my-app-token')->plainTextToken;
+//        $token = $user->createToken('my-app-token')->plainTextToken;
+//
+//        $response = [
+//            'user' => $user,
+//            'token' => $token
+//        ];
 
-        $response = [
-            'user' => $user,
-            'token' => $token
-        ];
-
-        return response($response, 201);
+        return new UserResource($user);
     }
 
     public function register(Request $request){
@@ -42,11 +45,15 @@ class UserController extends Controller
         $user = User::create([
             'name' => $validData['name'],
             'email' => $validData['email'],
-            'password' => $validData['password'],
+            'password' => Hash::make($validData['password']),
             'api_token' => Str::random(100),
         ]);
 
         return new UserResource($user);
 
+    }
+
+    public function users(){
+        return User::all();
     }
 }

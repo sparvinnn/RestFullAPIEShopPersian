@@ -34,10 +34,11 @@ Route::prefix('v1')->namespace('Api\v1')->group(function (){
     Route::post('login', [UserController::class, 'login']);
     Route::post('register', [UserController::class, 'register']);
 
-    Route::group(['middleware' => 'auth:sanctum'], function(){
+    Route::group(['middleware' => 'auth:api'], function(){
         Route::post('users', [UserController::class, 'users']);
 
     });
+
 });
 
 
