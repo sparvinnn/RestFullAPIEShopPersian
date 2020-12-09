@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +15,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    if(\Illuminate\Support\Facades\Gate::allows('edit-user')){
+        return view('welcome');
+    }
+    return 'no';
+
 });
 
 
@@ -23,3 +28,5 @@ Route::get('/', function () {
 //Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 //    return Inertia\Inertia::render('Dashboard');
 //})->name('dashboard');
+
+

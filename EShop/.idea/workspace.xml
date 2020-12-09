@@ -22,7 +22,11 @@
     <list default="true" id="1d9e96a6-1c6b-4f1f-b931-1c4f3ea6308c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/6e3ce175-4093-4ce8-a3b3-8acfdaf928f4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/6e3ce175-4093-4ce8-a3b3-8acfdaf928f4.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_12_05_074322_create_roles_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_12_05_074322_create_roles_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Permission.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Permission.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Role.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Role.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -231,7 +235,9 @@
       <workItem from="1607067260304" duration="22773000" />
       <workItem from="1607145275730" duration="6562000" />
       <workItem from="1607363708843" duration="1819000" />
-      <workItem from="1607404024151" duration="4467000" />
+      <workItem from="1607404024151" duration="6004000" />
+      <workItem from="1607455490307" duration="3475000" />
+      <workItem from="1607505617068" duration="5490000" />
     </task>
     <servers />
   </component>
@@ -271,10 +277,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="393" y="92" width="569" height="536" key="NewPhpClassDialog/0.0.1366.728@0.0.1366.728" timestamp="1607012520269" />
-    <state x="540" y="190" width="322" height="339" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1" timestamp="1607409446267">
+    <state x="540" y="190" width="322" height="339" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1" timestamp="1607409982321">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="540" y="190" width="322" height="339" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1/0.0.1366.728@0.0.1366.728" timestamp="1607409446267" />
+    <state x="540" y="190" width="322" height="339" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1/0.0.1366.728@0.0.1366.728" timestamp="1607409982321" />
     <state x="347" y="160" width="672" height="677" key="run.anything.popup" timestamp="1607408512934">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
