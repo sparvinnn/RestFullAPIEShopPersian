@@ -126,4 +126,67 @@ class UserController extends Controller
             return response()->json(["status" => "failed", "message" => "Whoops! no user found"]);
         }
     }
+
+    public function search(Request $request){
+        $status = $request->status;
+        $mobile = $request->mobile;
+        $email = $request->email;
+        $id = $request->id;
+        $role = $request->role;
+        $branch = $request->branch;
+        $username = $request->username;
+        $national_code = $request->national_code;
+        $county = $request->county;
+        $city = $request->city;
+        $l_name = $request->l_name;
+
+        try{
+            $list = User::
+                when($status, function ($q, $status) {
+                    return $q->where('status', $status);
+                })
+                ->when($mobile, function ($q, $mobile) {
+                    return $q->where('mobile', $mobile);
+                })
+                ->when($email, function ($q, $email) {
+                    return $q->whereDate('email', $email);
+                })
+                ->when($id, function ($q, $id) {
+                    return $q->whereDate('id', $id);
+                })
+                ->when($role, function ($q, $role) {
+                    return $q->whereDate('role_id', $role);
+                })
+                ->when($branch, function ($q, $branch) {
+                    return $q->whereDate('branch_id', $branch);
+                })
+                ->when($username, function ($q, $username) {
+                    return $q->whereDate('username', $username);
+                })
+                ->when($national_code, function ($q, $national_code) {
+                    return $q->whereDate('national_code', $national_code);
+                })
+                ->when($county, function ($q, $county) {
+                    return $q->whereDate('county', $county);
+                })
+                ->when($city, function ($q, $city) {
+                    return $q->whereDate('city', $city);
+                })
+                ->when($l_name, function ($q, $l_name) {
+                    return $q->whereDate('l_name', $l_name);
+                })
+                ->orderBy('created_at')
+                ->get();
+
+            $response = [
+                'status' => true,
+                'msg' => 'list successfully get.',
+                'data' => $list
+            ];
+            return response()->json($response);
+
+        }catch(Exception $e){
+            return response($e, 202);
+        }
+    }
 }
