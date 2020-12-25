@@ -46,6 +46,6 @@ class GlobalController extends Controller
             'data' => $list
         ];
 
-        return response()->json($response);
+        return response()->json($list);
     }
 }
