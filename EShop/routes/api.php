@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GlobalController;
-
+use App\Http\Controllers\BranchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,5 +39,8 @@ Route::middleware('auth:api')->prefix('user/')->group(function() {
     Route::post("usersList", [UserController::class, "users"]);
     Route::post("userModify", [UserController::class, "modify"]);
     Route::post("userSearch", [UserController::class, "search"]);
-
 });
+
+Route::middleware('auth:api')->get('branch/search', [BranchController::class, "search"]);
+Route::middleware('auth:api')->resource('branch', BranchController::class);
+

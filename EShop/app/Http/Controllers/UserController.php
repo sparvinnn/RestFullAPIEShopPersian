@@ -21,14 +21,13 @@ class UserController extends Controller
 
         $validator  =   Validator::make($request->all(), [
             'username' => 'min:6|max:12',
-            'f_name' => 'min:6|max:12',
-            'l_name' => 'min:6|max:12',
-            'mobile' => 'required|min:9',
+            'f_name' => 'max:12',
+            'l_name' => 'max:12',
+            'mobile' => 'required|min:10',
             'national_code' => 'min:10|max:10',
             'email' => 'email',
             'password' => 'required|min:6',
             'role_id' => 'required',
-            'branch_id' => 'required'
         ]);
 
         if($validator->fails()) {
@@ -121,7 +120,6 @@ class UserController extends Controller
 
             return response()->json(["status" => "success", "data" => $user]);
         }
-
         else {
             DB::rollBack();
             return response()->json(["status" => "failed", "message" => "Whoops! no user found"]);

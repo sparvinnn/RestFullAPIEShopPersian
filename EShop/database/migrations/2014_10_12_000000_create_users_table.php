@@ -37,6 +37,7 @@ class CreateUsersTable extends Migration
             $table->string('address')->nullable();
             $table->string('postal_code')->nullable();
             $table->string('fax')->nullable();
+            $table->string('status')->default('active'); // active or inactive
             $table->softDeletes();
             $table->timestamps();
         });
@@ -64,10 +65,10 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->unsignedBigInteger('role_id')->default('1');
+            $table->unsignedBigInteger('role_id')->default('4');
             $table->foreign('role_id')->references('id')->on('roles')
                 ->onDelete('cascade')->onUpdate('cascade');
-            $table->unsignedBigInteger('branch_id');
+            $table->unsignedBigInteger('branch_id')->nullable();
             $table->foreign('branch_id')->references('id')->on('branches')
                 ->onDelete('cascade')->onUpdate('cascade');
             $table->string('status')->default('active'); // active or inactive
