@@ -31,5 +31,6 @@ Route::middleware('auth:api')->prefix('user/')->group(function() {
     Route::post("authUserInfo", [UserController::class, "user"]);
     Route::post("usersList", [UserController::class, "users"]);
     Route::post("userModify", [UserController::class, "modify"]);
+    Route::post("userSearch", [UserController::class, "search"]);
 
 });

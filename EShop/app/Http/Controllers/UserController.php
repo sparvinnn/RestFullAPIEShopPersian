@@ -112,6 +112,7 @@ class UserController extends Controller
             $user->postal_code = $request->postal_code;
             $user->avatar = $request->avatar;
             $user->email = $request->email;
+            $user->status = $request->status;
             if($request->password) $user->password = $request->password;
             $user->role_id = $request->role_id;
             $user->branch_id = $request->branch_id;
@@ -127,6 +128,7 @@ class UserController extends Controller
         }
     }
 
+    //search user
     public function search(Request $request){
         $status = $request->status;
         $mobile = $request->mobile;
