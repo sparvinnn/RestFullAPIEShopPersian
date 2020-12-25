@@ -12,7 +12,7 @@ class GlobalController extends Controller
 {
     //get counties list
     public function counties(){
-        $list = County::all(['id', 'name']);
+        $list = County::orderBy('id')->get(['id', 'name']);
 
         $response = [
             'status' => true,
@@ -25,7 +25,7 @@ class GlobalController extends Controller
 
     //get cities list
     public function cities(Request $request){
-        $list = City::where('county_id', $request->county_id)->get(['id', 'name']);
+        $list = City::where('county_id', $request->county_id)->orderBy('id')->get(['id', 'name']);
 
         $response = [
             'status' => true,
@@ -38,7 +38,7 @@ class GlobalController extends Controller
 
     //get roles list
     public function roles(){
-        $list = Role::all(['id', 'name']);
+        $list = Role::orderBy('id')->get(['id', 'name']);
 
         $response = [
             'status' => true,
