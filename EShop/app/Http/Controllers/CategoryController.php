@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Branch;
 use App\Models\Category;
+use App\Models\CategoryMeta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -12,6 +12,7 @@ use Mockery\Exception;
 class CategoryController extends Controller
 {
     public function store(Request $request){
+
         $validator = Validator::make($request->all(), [
             "name" =>  "required",
         ]);
@@ -20,7 +21,8 @@ class CategoryController extends Controller
             return response()->json(["validation_errors" => $validator->errors()]);
         }
         try{
-            $category = Category::create($request);
+            $input = $request->all();
+            $category = Category::create($input);
             return response()->json(["status" => "success", "message" => "Success! create category completed", "data" => $category]);
         }catch (\Exception $exception){
             return response()->json(["status" => "failed", "message" => $exception]);
@@ -53,20 +55,19 @@ class CategoryController extends Controller
         $id = $request->id;
         $name = $request->name;
         $parent_id = $request->parent_id;
-
         try{
             $list = Category::
                 when($id, function ($q, $id) {
                     return $q->where('id', $id);
                 })
                 ->when($name, function ($q, $name) {
-                    return $q->whereDate('name', $name);
+                    return $q->where('name', $name);
                 })
                 ->when($parent_id, function ($q, $parent_id) {
-                    return $q->whereDate('parent_id', $parent_id);
+                    return $q->where('parent_id', $parent_id);
                 })
                 ->orderBy('created_at')
-                ->with('subCategories')
+                ->with(['children', 'parent', 'meta'])
                 ->get([
                     'id',
                     'name',
@@ -81,7 +82,24 @@ class CategoryController extends Controller
             return response()->json($response);
 
         }catch(Exception $e){
+
             return response($e, 202);
         }
+    }
+
+    public function addProperties(Request $request){
+        $list = $request->properties;
+        for($i=0; $i<count($list); $i++){
+            try{
+                $category_meta= CategoryMeta::create([
+                    'category_id' => $request->id,
+                    'key' => 'property',
+                    'value' => $list[$i]
+                ]);
+            }catch (\Exception $exception){
+                return response()->json(["status" => "failed", "message" => $exception]);
+            }
+        }
+        return response()->json(["status" => "success", "message" => "Success! add category_meta completed"]);
     }
 }

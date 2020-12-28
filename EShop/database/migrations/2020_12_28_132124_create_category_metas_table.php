@@ -15,6 +15,12 @@ class CreateCategoryMetasTable extends Migration
     {
         Schema::create('category_metas', function (Blueprint $table) {
             $table->id();
+            $table->string('key');
+            $table->string('value');
+            $table->unsignedBigInteger('category_id')->nullable();
+            $table->foreign('category_id')->references('id')->on('categories')
+                ->onDelete('cascade')->onUpdate('cascade');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

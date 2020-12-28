@@ -49,7 +49,8 @@ Route::middleware('auth:api')->resource('branch', BranchController::class);
 //category route
 Route::middleware('auth:api')->prefix('category/')->group(function() {
     Route::post("", [CategoryController::class, "store"]);
-    Route::put("/{id}", [CategoryController::class, "update"]);
+    Route::put("{id}", [CategoryController::class, "update"]);
     Route::post("search", [CategoryController::class, "search"]);
+    Route::post("addProperties", [CategoryController::class, "addProperties"]);
 });
 

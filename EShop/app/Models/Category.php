@@ -13,12 +13,19 @@ class Category extends Model
 
     protected $fillable = ['name', 'parent_id'];
 
-    public function subCategories(){
-        return $this->hasMany('App\Category', 'parent_id');
+    public function parent()
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
     }
 
-//    public function parrentCategory(){
-//        return $this->belongsTo(Category::class);
-//    }
+    public function children()
+    {
+        return $this->hasMany(Category::class,  'parent_id');
+    }
+
+    public function meta()
+    {
+        return $this->hasMany(CategoryMeta::class);
+    }
 
 }
