@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\BranchController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,15 @@ Route::middleware('auth:api')->prefix('user/')->group(function() {
     Route::post("userSearch", [UserController::class, "search"]);
 });
 
+//branch route
 Route::middleware('auth:api')->get('branch/search', [BranchController::class, "search"]);
 Route::middleware('auth:api')->resource('branch', BranchController::class);
+
+//category route
+Route::middleware('auth:api')->prefix('category/')->group(function() {
+    Route::post("", [CategoryController::class, "store"]);
+    Route::put("{id}", [CategoryController::class, "update"]);
+    Route::post("search", [CategoryController::class, "search"]);
+    Route::post("addProperties", [CategoryController::class, "addProperties"]);
+});
 
