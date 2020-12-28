@@ -41,6 +41,14 @@ Route::middleware('auth:api')->prefix('user/')->group(function() {
     Route::post("userSearch", [UserController::class, "search"]);
 });
 
+//branch route
 Route::middleware('auth:api')->get('branch/search', [BranchController::class, "search"]);
 Route::middleware('auth:api')->resource('branch', BranchController::class);
+
+//category route
+Route::middleware('auth:api')->prefix('category/')->group(function() {
+    Route::post("", [UserController::class, "store"]);
+    Route::put("/{id}", [UserController::class, "update"]);
+    Route::post("search", [UserController::class, "search"]);
+});
 
