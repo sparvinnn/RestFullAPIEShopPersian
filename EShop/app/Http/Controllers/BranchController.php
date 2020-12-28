@@ -138,25 +138,25 @@ class BranchController extends Controller
                     return $q->where('id', $id);
                 })
                 ->when($name, function ($q, $name) {
-                    return $q->whereDate('name', $name);
+                    return $q->where('name', $name);
                 })
                 ->when($phones, function ($q, $phones) {
-                    return $q->whereDate('phones', $phones);
+                    return $q->where('phones', $phones);
                 })
                 ->when($address, function ($q, $address) {
-                    return $q->whereDate('address', $address);
+                    return $q->where('address', $address);
                 })
                 ->when($postal_code, function ($q, $postal_code) {
-                    return $q->whereDate('postal_code', $postal_code);
+                    return $q->where('postal_code', $postal_code);
                 })
                 ->when($fax, function ($q, $fax) {
-                    return $q->whereDate('fax', $fax);
+                    return $q->where('fax', $fax);
                 })
                 ->when($county, function ($q, $county) {
-                    return $q->whereDate('county', $county);
+                    return $q->where('county', $county);
                 })
                 ->when($city, function ($q, $city) {
-                    return $q->whereDate('city', $city);
+                    return $q->where('city', $city);
                 })
                 ->orderBy('created_at')
                 ->get([
