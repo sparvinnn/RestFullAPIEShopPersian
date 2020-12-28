@@ -149,31 +149,31 @@ class UserController extends Controller
                     return $q->where('mobile', $mobile);
                 })
                 ->when($email, function ($q, $email) {
-                    return $q->whereDate('email', $email);
+                    return $q->where('email', $email);
                 })
                 ->when($id, function ($q, $id) {
-                    return $q->whereDate('id', $id);
+                    return $q->where('id', $id);
                 })
                 ->when($role, function ($q, $role) {
-                    return $q->whereDate('role_id', $role);
+                    return $q->where('role_id', $role);
                 })
                 ->when($branch, function ($q, $branch) {
-                    return $q->whereDate('branch_id', $branch);
+                    return $q->where('branch_id', $branch);
                 })
                 ->when($username, function ($q, $username) {
-                    return $q->whereDate('username', $username);
+                    return $q->where('username', $username);
                 })
                 ->when($national_code, function ($q, $national_code) {
-                    return $q->whereDate('national_code', $national_code);
+                    return $q->where('national_code', $national_code);
                 })
                 ->when($county, function ($q, $county) {
-                    return $q->whereDate('county', $county);
+                    return $q->where('county', $county);
                 })
                 ->when($city, function ($q, $city) {
-                    return $q->whereDate('city', $city);
+                    return $q->where('city', $city);
                 })
                 ->when($l_name, function ($q, $l_name) {
-                    return $q->whereDate('l_name', $l_name);
+                    return $q->where('l_name', $l_name);
                 })
                 ->orderBy('created_at')
                 ->get();
