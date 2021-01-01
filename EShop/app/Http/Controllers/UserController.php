@@ -101,20 +101,20 @@ class UserController extends Controller
         $user = User::find($request->id);
         if(!is_null($user)) {
             DB::beginTransaction();
-            $user->f_name = $request->f_name;
-            $user->l_name = $request->l_name;
-            $user->national_code = $request->national_code;
-            $user->mobile_verified_at = $request->mobile_verified_at;
-            $user->county = $request->county;
-            $user->city = $request->city;
-            $user->address = $request->address;
-            $user->postal_code = $request->postal_code;
-            $user->avatar = $request->avatar;
-            $user->email = $request->email;
-            $user->status = $request->status;
+            if($request->f_name) $user->f_name = $request->f_name;
+            if($request->l_name) $user->l_name = $request->l_name;
+            if($request->national_code) $user->national_code = $request->national_code;
+            if($request->mobile_verified_at) $user->mobile_verified_at = $request->mobile_verified_at;
+            if($request->county) $user->county = $request->county;
+            if($request->city) $user->city = $request->city;
+            if($request->address) $user->address = $request->address;
+            if($request->postal_code) $user->postal_code = $request->postal_code;
+            if($request->avatar) $user->avatar = $request->avatar;
+            if($request->email) $user->email = $request->email;
+            if($request->status) $user->status = $request->status;
             if($request->password) $user->password = $request->password;
-            $user->role_id = $request->role_id;
-            $user->branch_id = $request->branch_id;
+            if($request->role_id) $user->role_id = $request->role_id;
+            if($request->branch_id) $user->branch_id = $request->branch_id;
             $user->save();
             DB::commit();
 

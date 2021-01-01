@@ -85,13 +85,13 @@ class BranchController extends Controller
         if(!is_null($branch)) {
             DB::beginTransaction();
             try{
-                $branch->name = $request->name;
-                $branch->phones = $request->phones;
-                $branch->county = $request->county;
-                $branch->city = $request->city;
-                $branch->address = $request->address;
-                $branch->postal_code = $request->postal_code;
-                $branch->fax = $request->fax;
+                if($request->name) $branch->name = $request->name;
+                if($request->phones) $branch->phones = $request->phones;
+                if($request->county) $branch->county = $request->county;
+                if($request->city) $branch->city = $request->city;
+                if($request->address) $branch->address = $request->address;
+                if($request->postal_code) $branch->postal_code = $request->postal_code;
+                if($request->fax) $branch->fax = $request->fax;
                 if($request->status) $branch->status = $request->status;
                 $branch->save();
                 DB::commit();
