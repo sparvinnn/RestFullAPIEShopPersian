@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,5 +53,13 @@ Route::middleware('auth:api')->prefix('category/')->group(function() {
     Route::put("{id}", [CategoryController::class, "update"]);
     Route::post("search", [CategoryController::class, "search"]);
     Route::post("addProperties", [CategoryController::class, "addProperties"]);
+    Route::get("{id}/getProperties", [CategoryController::class, "getProperties"]);
 });
 
+//product route
+Route::middleware('auth:api')->prefix('product/')->group(function() {
+    Route::post("", [ProductController::class, "store"]);
+    Route::put("{id}", [ProductController::class, "update"]);
+    Route::post("search", [ProductController::class, "search"]);
+//    Route::post("addProperties", [ProductController::class, "addProperties"]);
+});

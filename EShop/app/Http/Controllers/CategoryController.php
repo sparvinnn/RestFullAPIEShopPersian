@@ -102,4 +102,14 @@ class CategoryController extends Controller
         }
         return response()->json(["status" => "success", "message" => "Success! add category_meta completed"]);
     }
+
+    //get properties for specific category
+    public function getProperties($id){
+        try{
+            $properties = CategoryMeta::where('category_id', $id)->where('key', 'property')->select('id', 'value')->get();
+            return response()->json(["status" => "success", "data" => $properties]);
+        }catch (\Exception $exception){
+            return response()->json(["status" => "failed", "message" => $exception]);
+        }
+    }
 }

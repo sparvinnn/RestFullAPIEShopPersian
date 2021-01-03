@@ -20,9 +20,7 @@ class UserController extends Controller
     public function register(Request $request) {
 
         $validator  =   Validator::make($request->all(), [
-            'username' => 'min:6|max:12',
-            'f_name' => 'max:12',
-            'l_name' => 'max:12',
+            'username' => 'min:6',
             'mobile' => 'required|min:10',
             'national_code' => 'min:10|max:10',
             'email' => 'email',
@@ -62,7 +60,7 @@ class UserController extends Controller
         $user           =       User::where("mobile", $request->mobile)->first();
 
         if(is_null($user)) {
-            return response()->json(["status" => "failed", "message" => "Failed! email not found"]);
+            return response()->json(["status" => "failed", "message" => "Failed! user not found"]);
         }
 
         if(Auth::attempt(['mobile' => $request->mobile, 'password' => $request->password])){
