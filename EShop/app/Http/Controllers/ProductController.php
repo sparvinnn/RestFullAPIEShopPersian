@@ -19,18 +19,6 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-
-//        $validator  =   Validator::make($request->all(), [
-//            'product.title' => 'required',
-//            'product.category_id' => 'required',
-//            'product.price' => 'required',
-//            'product.branch_id' => 'required',
-//        ]);
-//
-//        if($validator->fails()) {
-//            return response()->json(["status" => "failed", "validation_errors" => $validator->errors()]);
-//        }
-
         try{
             DB::beginTransaction();
 
@@ -56,4 +44,6 @@ class ProductController extends Controller
 
 
     }
+
+
 }
