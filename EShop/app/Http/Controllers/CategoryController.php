@@ -55,6 +55,7 @@ class CategoryController extends Controller
         $id = $request->id;
         $name = $request->name;
         $parent_id = $request->parent_id;
+        $with_childeren = $request->with_childeren;
         try{
             $list = Category::
                 when($id, function ($q, $id) {

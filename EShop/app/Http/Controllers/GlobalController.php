@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\City;
 use App\Models\County;
 use App\Models\Role;
 use Illuminate\Http\Request;
 
+use Mockery\Exception;
 use PHPUnit\Framework\Constraint\Count;
 
 class GlobalController extends Controller
@@ -48,5 +50,28 @@ class GlobalController extends Controller
         ];
 
         return response()->json($list);
+    }
+
+    //get parent categories
+    public function getParents(){
+        try{
+            $list = Category::whereNull('parent_id')
+                ->orderBy('created_at')
+                ->get([
+                    'id',
+                    'name',
+                    'parent_id'
+                ]);
+
+            $response = [
+                'status' => true,
+                'msg' => 'list successfully get.',
+                'data' => $list
+            ];
+            return response()->json($response);
+
+        }catch(Exception $e){
+            return response($e, 202);
+        }
     }
 }

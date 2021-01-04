@@ -32,6 +32,7 @@ Route::post("register", [UserController::class, "register"]);
 Route::get("counties", [GlobalController::class, "counties"]);
 Route::get("cities", [GlobalController::class, "cities"]);
 Route::get("roles", [GlobalController::class, "roles"]);
+Route::get("category/getParents", [GlobalController::class, "getParents"]);
 
 
 
