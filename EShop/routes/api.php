@@ -63,7 +63,7 @@ Route::middleware('auth:api')->prefix('product/')->group(function() {
     Route::post("", [ProductController::class, "store"]);
     Route::put("{id}", [ProductController::class, "update"]);
     Route::post("search", [ProductController::class, "search"]);
-    Route::post('upload', [ImageController::class], "upload")->name('upload');
-    Route::delete('upload/{id}', [ImageController::class], "destroy")->name('upload.delete');
+    Route::post('upload', [ImageController::class, "upload"])->name('upload');
+    Route::delete('upload/{id}', [ImageController::class, "destroy"])->name('upload.delete');
 //    Route::post("addProperties", [ProductController::class, "addProperties"]);
 });
