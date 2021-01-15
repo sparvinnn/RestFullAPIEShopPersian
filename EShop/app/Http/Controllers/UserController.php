@@ -25,7 +25,7 @@ class UserController extends Controller
             'national_code' => 'min:10|max:10',
             'email' => 'email',
             'password' => 'required|min:6',
-            'role_id' => 'required',
+            'role_id' => 'required'
         ]);
 
         if($validator->fails()) {

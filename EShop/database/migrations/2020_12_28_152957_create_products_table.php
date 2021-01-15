@@ -21,9 +21,9 @@ class CreateProductsTable extends Migration
             $table->string('images')->nullable();
             $table->string('video')->nullable();
             $table->string('description')->nullable();
-            $table->unsignedBigInteger('category_id');
-            $table->foreign('category_id')->references('id')->on('categories')
-                ->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('categories');
+//            $table->foreign('category_id')->references('id')->on('categories')
+//                ->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('branch_id');
             $table->foreign('branch_id')->references('id')->on('branches')
                 ->onDelete('cascade')->onUpdate('cascade');

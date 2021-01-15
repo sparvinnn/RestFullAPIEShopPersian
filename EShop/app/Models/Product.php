@@ -16,13 +16,13 @@ class Product extends Model
         'images',
         'video',
         'description',
-        'category_id',
+        'categories',
         'branch_id'
     ];
 
-    public function category(){
-        return $this->belongsTo(Category::class);
-    }
+//    public function category(){
+//        return $this->belongsTo(Category::class);
+//    }
 
     public function branch(){
         return $this->belongsTo(Branch::class);
