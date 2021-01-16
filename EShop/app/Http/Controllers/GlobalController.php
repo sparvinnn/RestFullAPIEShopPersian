@@ -74,4 +74,6 @@ class GlobalController extends Controller
             return response($e, 202);
         }
     }
+
+
 }

@@ -59,6 +59,7 @@ Route::middleware('auth:api')->prefix('category/')->group(function() {
 });
 
 //product route
+Route::post("products/search", [ProductController::class, "search"]);
 Route::middleware('auth:api')->prefix('product/')->group(function() {
     Route::post("", [ProductController::class, "store"]);
     Route::put("{id}", [ProductController::class, "update"]);

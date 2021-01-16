@@ -19,9 +19,10 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        try{
+//        try{
             DB::beginTransaction();
             $inputs = $request->product[0];
+//            return $inputs['category_id'];
             $product   =   Product::create($inputs);
 
             $inputs = $request->properties[0];
@@ -37,10 +38,10 @@ class ProductController extends Controller
             DB::commit();
             return response()->json(["status" => "success", "message" => "Success! registration completed", "product" => $product, "properties" => $properties]);
 
-        }catch (\Exception $e){
-            DB::rollBack();
-            return response()->json(["status" => "failed", "message" => $e]);
-        }
+//        }catch (\Exception $e){
+//            DB::rollBack();
+//            return response()->json(["status" => "failed", "message" => $e]);
+//        }
 
 
     }
@@ -77,4 +78,5 @@ class ProductController extends Controller
             return response()->json(["status" => "failed", "message" => $e]);
         }
     }
+
 }

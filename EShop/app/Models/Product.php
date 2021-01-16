@@ -16,7 +16,7 @@ class Product extends Model
         'images',
         'video',
         'description',
-        'categories',
+        'category_id',
         'branch_id'
     ];
 
