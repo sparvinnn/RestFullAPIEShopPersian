@@ -15,18 +15,19 @@ class ImageController extends Controller
      */
     public function upload(Request $request)
     {
+//        return $request;
         try{
             $uploadId = array();
             $old_files = Storage::disk('local')->files('public/product_images');
             if ($files = $request->file('file')) {
                 foreach ($request->file('file') as $key => $file) {
                     $name = $file->getClientOriginalName();
-                    if(in_array('public/product_images/'.$request['product_id'].'/'.$name, $old_files))
+                    if(in_array('/storage/upload/product_images/'.$request['product_id'].'/'.$name, $old_files))
                         return 'repeat';
                     else{
                         $img = Media::create([
-                            'package_id' => $request['product_id'],
-                            'url' => 'public/product_images/'.$request['product_id'].'/'.$name,
+                            'product_id' => $request['product_id'],
+                            'url' => '/storage/upload/product_images/'.$request['product_id'].'/'.$name,
                         ]);
                         $filename = $file->move('storage/upload/product_images/' . $request['product_id'] . '/', $name);
                         $uploadId[] = [ $img['id'] ];

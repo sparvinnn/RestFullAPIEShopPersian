@@ -60,11 +60,12 @@ Route::middleware('auth:api')->prefix('category/')->group(function() {
 
 //product route
 Route::post("products/search", [ProductController::class, "search"]);
+Route::post('product/image/upload', [ImageController::class, "upload"])->name('image.upload');
 Route::middleware('auth:api')->prefix('product/')->group(function() {
     Route::post("", [ProductController::class, "store"]);
     Route::put("{id}", [ProductController::class, "update"]);
     Route::post("search", [ProductController::class, "search"]);
-    Route::post('upload', [ImageController::class, "upload"])->name('upload');
-    Route::delete('upload/{id}', [ImageController::class, "destroy"])->name('upload.delete');
+//    Route::post('image/upload', [ImageController::class, "upload"])->name('image.upload');
+    Route::delete('image/{id}', [ImageController::class, "destroy"])->name('image.delete');
 //    Route::post("addProperties", [ProductController::class, "addProperties"]);
 });
