@@ -18,8 +18,6 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('price');
-            $table->string('images')->nullable();
-            $table->string('video')->nullable();
             $table->string('description')->nullable();
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories')
@@ -27,6 +25,7 @@ class CreateProductsTable extends Migration
             $table->unsignedBigInteger('branch_id');
             $table->foreign('branch_id')->references('id')->on('branches')
                 ->onDelete('cascade')->onUpdate('cascade');
+            $table->integer('count')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

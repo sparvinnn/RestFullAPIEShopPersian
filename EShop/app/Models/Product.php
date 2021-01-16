@@ -17,7 +17,8 @@ class Product extends Model
         'video',
         'description',
         'category_id',
-        'branch_id'
+        'branch_id',
+        'count'
     ];
 
 //    public function category(){

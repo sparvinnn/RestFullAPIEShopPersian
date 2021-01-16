@@ -59,7 +59,7 @@ Route::middleware('auth:api')->prefix('category/')->group(function() {
 });
 
 //product route
-Route::post("products/search", [ProductController::class, "search"]);
+Route::get("product/search", [GlobalController::class, "getProducts"]);
 Route::post('product/image/upload', [ImageController::class, "upload"])->name('image.upload');
 Route::middleware('auth:api')->prefix('product/')->group(function() {
     Route::post("", [ProductController::class, "store"]);

@@ -19,10 +19,9 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-//        try{
+        try{
             DB::beginTransaction();
             $inputs = $request->product[0];
-//            return $inputs['category_id'];
             $product   =   Product::create($inputs);
 
             $inputs = $request->properties[0];
@@ -38,10 +37,10 @@ class ProductController extends Controller
             DB::commit();
             return response()->json(["status" => "success", "message" => "Success! registration completed", "product" => $product, "properties" => $properties]);
 
-//        }catch (\Exception $e){
-//            DB::rollBack();
-//            return response()->json(["status" => "failed", "message" => $e]);
-//        }
+        }catch (\Exception $e){
+            DB::rollBack();
+            return response()->json(["status" => "failed", "message" => $e]);
+        }
 
 
     }
@@ -51,11 +50,12 @@ class ProductController extends Controller
             DB::beginTransaction();
             $inputs = $request->product[0];
             $product   =   Product::find($id);
-            $product->title = $inputs['title'];
-            $product->price = $inputs['price'];
-            $product->description = $inputs['description'];
-            $product->categories = $inputs['categories'];
-            $product->branch_id = $inputs['branch_id'];
+            if($inputs['title']) $product->title = $inputs['title'];
+            if($inputs['price']) $product->price = $inputs['price'];
+            if($inputs['description']) $product->description = $inputs['description'];
+            if($inputs['category_id']) $product->category_id = $inputs['category_id'];
+            if($inputs['branch_id']) $product->branch_id = $inputs['branch_id'];
+            if($inputs['count']) $product->count = $inputs['count'];
             $product->save();
 
             $inputs = $request->properties[0];
@@ -78,5 +78,4 @@ class ProductController extends Controller
             return response()->json(["status" => "failed", "message" => $e]);
         }
     }
-
 }
