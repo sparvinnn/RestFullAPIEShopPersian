@@ -33,6 +33,9 @@ Route::get("counties", [GlobalController::class, "counties"]);
 Route::get("cities", [GlobalController::class, "cities"]);
 Route::get("roles", [GlobalController::class, "roles"]);
 Route::get("category/getParents", [GlobalController::class, "getParents"]);
+Route::post("category/search", [CategoryController::class, "search"]);
+Route::get("category/{id}/getProperties", [CategoryController::class, "getProperties"]);
+Route::get("product/search", [GlobalController::class, "getProducts"]);
 
 
 
@@ -53,13 +56,12 @@ Route::middleware('auth:api')->resource('branch', BranchController::class);
 Route::middleware('auth:api')->prefix('category/')->group(function() {
     Route::post("", [CategoryController::class, "store"]);
     Route::put("{id}", [CategoryController::class, "update"]);
-    Route::post("search", [CategoryController::class, "search"]);
+
     Route::post("addProperties", [CategoryController::class, "addProperties"]);
-    Route::get("{id}/getProperties", [CategoryController::class, "getProperties"]);
+
 });
 
 //product route
-Route::get("product/search", [GlobalController::class, "getProducts"]);
 Route::post('product/image/upload', [ImageController::class, "upload"])->name('image.upload');
 Route::middleware('auth:api')->prefix('product/')->group(function() {
     Route::post("", [ProductController::class, "store"]);
