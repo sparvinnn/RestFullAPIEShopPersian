@@ -12,9 +12,10 @@ use Mockery\Exception;
 class CategoryController extends Controller
 {
     public function store(Request $request){
-
         $validator = Validator::make($request->all(), [
-            "name" =>  "required",
+            "name_fa" =>  "required",
+            "name_en" =>  "required",
+            "slug" =>  "required",
         ]);
 
         if($validator->fails()) {
@@ -35,7 +36,9 @@ class CategoryController extends Controller
         if(!is_null($category)) {
             DB::beginTransaction();
             try{
-                $category->name = $request->name;
+                $category->name_fa = $request->name_fa;
+                $category->name_en = $request->name_en;
+                $category->slug = $request->slug;
                 $category->parent_id = $request->parent_id;
                 $category->save();
                 DB::commit();
@@ -62,7 +65,7 @@ class CategoryController extends Controller
                     return $q->where('id', $id);
                 })
                 ->when($name, function ($q, $name) {
-                    return $q->where('name', $name);
+                    return $q->where('name_fa', $name);
                 })
                 ->when($parent_id, function ($q, $parent_id) {
                     return $q->where('parent_id', $parent_id);
@@ -71,7 +74,9 @@ class CategoryController extends Controller
                 ->with(['children', 'parent', 'meta'])
                 ->get([
                     'id',
-                    'name',
+                    'name_fa',
+                    'name_en',
+                    'slug',
                     'parent_id'
                 ]);
 
