@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -26,7 +27,11 @@ use App\Http\Controllers\ImageController;
 
 // user controller routes
 
-Route::post("login", [UserController::class, "login"]);
+//Route::post("login",
+//    LoginController::class);
+
+//Route::post("login", [UserController::class, "login"]);
+Route::get("user", [UserController::class, "me"])->middleware('auth:sanctum');
 Route::post("register", [UserController::class, "register"]);
 
 Route::get("counties", [GlobalController::class, "counties"]);
@@ -41,8 +46,8 @@ Route::get("product/search", [GlobalController::class, "getProducts"]);
 
 // sanctum auth middleware routes
 
-Route::middleware('auth:api')->prefix('user/')->group(function() {
-    Route::post("authUserInfo", [UserController::class, "user"]);
+Route::middleware('auth:sanctum')->prefix('user/')->group(function() {
+    Route::get("me", [UserController::class, "me"]);
     Route::post("usersList", [UserController::class, "users"]);
     Route::post("userModify", [UserController::class, "modify"]);
     Route::post("userSearch", [UserController::class, "search"]);

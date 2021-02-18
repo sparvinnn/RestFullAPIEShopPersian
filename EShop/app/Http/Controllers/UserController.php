@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-
 class UserController extends Controller
 {
     public function username()
@@ -77,7 +76,7 @@ class UserController extends Controller
 
 
     // User Detail
-    public function user() {
+    public function me() {
         $user       =       Auth::user();
         if(!is_null($user)) {
             return response()->json(["status" => "success", "data" => $user]);
