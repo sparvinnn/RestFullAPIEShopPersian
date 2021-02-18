@@ -9,6 +9,7 @@ use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,13 +27,21 @@ use App\Http\Controllers\ImageController;
 //});
 
 // user controller routes
-
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+], function () {
+    Route::post('login', [AuthController::class, "login"])->name('login');
+    Route::post('logout', [AuthController::class, "logout"]);
+    Route::post('refresh', [AuthController::class, "refresh"]);
+    Route::post('me', [AuthController::class, "me"]);
+});
 //Route::post("login",
 //    LoginController::class);
 
 //Route::post("login", [UserController::class, "login"]);
-Route::get("user", [UserController::class, "me"])->middleware('auth:sanctum');
-Route::post("register", [UserController::class, "register"]);
+//Route::get("user", [UserController::class, "me"])->middleware('auth:sanctum');
+//Route::post("register", [UserController::class, "register"]);
 
 Route::get("counties", [GlobalController::class, "counties"]);
 Route::get("cities", [GlobalController::class, "cities"]);
@@ -46,19 +55,19 @@ Route::get("product/search", [GlobalController::class, "getProducts"]);
 
 // sanctum auth middleware routes
 
-Route::middleware('auth:sanctum')->prefix('user/')->group(function() {
-    Route::get("me", [UserController::class, "me"]);
+Route::middleware('jwt.verify')->prefix('user/')->group(function() {
+//    Route::get("me", [UserController::class, "me"]);
     Route::post("usersList", [UserController::class, "users"]);
     Route::post("userModify", [UserController::class, "modify"]);
     Route::post("userSearch", [UserController::class, "search"]);
 });
 
 //branch route
-Route::middleware('auth:api')->get('branch/search', [BranchController::class, "search"]);
-Route::middleware('auth:api')->resource('branch', BranchController::class);
+Route::middleware('jwt.verify')->get('branch/search', [BranchController::class, "search"]);
+Route::middleware('jwt.verify')->resource('branch', BranchController::class);
 
 //category route
-Route::middleware('auth:api')->prefix('category/')->group(function() {
+Route::middleware('jwt.verify')->prefix('category/')->group(function() {
     Route::post("", [CategoryController::class, "store"]);
     Route::put("{id}", [CategoryController::class, "update"]);
 
@@ -68,7 +77,7 @@ Route::middleware('auth:api')->prefix('category/')->group(function() {
 
 //product route
 Route::post('product/image/upload', [ImageController::class, "upload"])->name('image.upload');
-Route::middleware('auth:api')->prefix('product/')->group(function() {
+Route::middleware('jwt.verify')->prefix('product/')->group(function() {
     Route::post("", [ProductController::class, "store"]);
     Route::put("{id}", [ProductController::class, "update"]);
     Route::post("search", [ProductController::class, "search"]);
