@@ -41,7 +41,7 @@ Route::group([
 
 //Route::post("login", [UserController::class, "login"]);
 //Route::get("user", [UserController::class, "me"])->middleware('auth:sanctum');
-//Route::post("register", [UserController::class, "register"]);
+Route::post("register", [UserController::class, "register"]);
 
 Route::get("counties", [GlobalController::class, "counties"]);
 Route::get("cities", [GlobalController::class, "cities"]);
