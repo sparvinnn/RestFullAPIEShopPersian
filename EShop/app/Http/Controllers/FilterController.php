@@ -53,7 +53,8 @@ class FilterController extends Controller
         $max_price = $request->max_price;
         $cat_id = $request->cat_id;
         $available = $request->available;
-        $properties = $request->properties[0];
+        if(isset($request->properties[0]))
+            $properties = $request->properties[0];
         return Product::where('category_id', $cat_id)
             ->when($min_price, function($query) use ($min_price){
                 return $query->where('price', '>=', $min_price);
