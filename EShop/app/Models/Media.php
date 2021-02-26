@@ -13,4 +13,8 @@ class Media extends Model
         'product_id',
         'url'
     ];
+
+    public function product(){
+        return $this->belongsTo(Product::class);
+    }
 }

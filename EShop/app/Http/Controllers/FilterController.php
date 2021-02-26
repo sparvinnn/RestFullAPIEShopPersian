@@ -79,6 +79,7 @@ class FilterController extends Controller
 //            ->with(['properties'=>function($query) use ($request){
 //                $query->whereIn('key', $request->)
 //            }])
+            ->with('media')
             ->get();
     }
 }

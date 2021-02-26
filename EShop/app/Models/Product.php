@@ -32,4 +32,7 @@ class Product extends Model
     public function properties(){
         return $this->hasMany(ProductProperty::class);
     }
+    public function media(){
+        return $this->hasMany(Media::class);
+    }
 }
