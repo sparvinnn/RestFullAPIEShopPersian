@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\FilterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -52,6 +53,9 @@ Route::get("category/{id}/getProperties", [CategoryController::class, "getProper
 Route::get("product/search", [GlobalController::class, "getProducts"]);
 
 
+//filter routes
+Route::get("properties", [FilterController::class, "getProperties"]);
+Route::post("filter", [FilterController::class, "filter"]);
 
 // sanctum auth middleware routes
 

@@ -25,7 +25,9 @@ class Category extends Model
 
     public function meta()
     {
-        return $this->hasMany(CategoryMeta::class);
+        return $this->hasMany(CategoryMeta::class)
+//            ->select('id', 'key', 'value')
+            ;
     }
 
 //    public function product(){

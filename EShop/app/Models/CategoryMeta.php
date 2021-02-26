@@ -17,5 +17,7 @@ class CategoryMeta extends Model
     {
         return $this->belongsTo(Category::class);
     }
-
+    public function product_property(){
+        return $this->hasMany(ProductProperty::class);
+    }
 }
