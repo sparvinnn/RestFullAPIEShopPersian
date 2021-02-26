@@ -68,10 +68,11 @@ class FilterController extends Controller
                 if($available) return $query->where('count', '>', 0);
                 else return $query->where('count', 0);
             })
-            ->when($available, function($query) use ($available){
-                if($available) return $query->where('count', '>', 0);
-                else return $query->where('count', 0);
-            })
+//            ->when($properties, function($query) use ($properties){
+//                foreach ($properties as $property){
+//                    $query->
+//                }
+//            })
 
 
 //            ->with(['properties'=>function($query) use ($request){
