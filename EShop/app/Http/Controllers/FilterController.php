@@ -49,9 +49,34 @@ class FilterController extends Controller
 
     public function filter(Request $request)
     {
-//        return Product::where('category_id', 'cat_id')
+        $min_price = $request->min_price;
+        $max_price = $request->max_price;
+        $cat_id = $request->cat_id;
+        $available = $request->available;
+        $properties = $request->properties[0];
+        return Product::where('category_id', $cat_id)
+            ->when($min_price, function($query) use ($min_price){
+                return $query->where('price', '>=', $min_price);
+            })
+            ->when($max_price, function($query) use ($max_price){
+                return $query->where('price', '<=', $max_price);
+            })
+            ->when($cat_id, function($query) use ($cat_id){
+                return $query->where('category_id', $cat_id);
+            })
+            ->when($available, function($query) use ($available){
+                if($available) return $query->where('count', '>', 0);
+                else return $query->where('count', 0);
+            })
+            ->when($available, function($query) use ($available){
+                if($available) return $query->where('count', '>', 0);
+                else return $query->where('count', 0);
+            })
+
+
 //            ->with(['properties'=>function($query) use ($request){
 //                $query->whereIn('key', $request->)
-//            }])->get();
+//            }])
+            ->get();
     }
 }
