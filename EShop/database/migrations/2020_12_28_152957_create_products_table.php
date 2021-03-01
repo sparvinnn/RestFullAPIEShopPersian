@@ -16,7 +16,7 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('name');
             $table->string('price');
             $table->string('description')->nullable();
             $table->unsignedBigInteger('category_id');
@@ -25,7 +25,11 @@ class CreateProductsTable extends Migration
             $table->unsignedBigInteger('branch_id');
             $table->foreign('branch_id')->references('id')->on('branches')
                 ->onDelete('cascade')->onUpdate('cascade');
-            $table->integer('count')->default(0);
+            $table->integer('inventory_number')->default(0);
+            $table->integer('total_number')->default(0);
+            $table->integer('sales_number')->default(0);
+            $table->integer('rate')->default(0);
+            $table->integer('vote')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

@@ -42,12 +42,12 @@ class CreateUsersTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('roles', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->unique();
-            $table->softDeletes();
-            $table->timestamps();
-        });
+//        Schema::create('roles', function (Blueprint $table) {
+//            $table->id();
+//            $table->string('name')->unique();
+//            $table->softDeletes();
+//            $table->timestamps();
+//        });
 
         Schema::create('users', function (Blueprint $table) {
             $table->id();
@@ -65,9 +65,9 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->unsignedBigInteger('role_id')->default('4');
-            $table->foreign('role_id')->references('id')->on('roles')
-                ->onDelete('cascade')->onUpdate('cascade');
+//            $table->unsignedBigInteger('role_id')->default('4');
+//            $table->foreign('role_id')->references('id')->on('roles')
+//                ->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('branch_id')->nullable();
             $table->foreign('branch_id')->references('id')->on('branches')
                 ->onDelete('cascade')->onUpdate('cascade');

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Helpers\Constants;
+use App\Helpers\Functions;
 
 class AuthController extends Controller
 {
@@ -41,7 +43,24 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json(auth()->user());
+        $user       =       Auth::user();
+        if(!is_null($user)) {
+            $data = [
+                'id' => $user->id,
+                'name' => ($user->first_name || $user->last_name) ? (ucfirst($user->first_name ?? "") . ucfirst($user->last_name ? " " . $user->last_name : "")) : null,
+                'username' => $user->username ?? "",
+//                'avatar' => thumbImage($user->getDetailValue('avatar') ?? Constants::DEFAULT_AVATAR_PATH),
+                'phone' => isset($user->phone) ? $user->phone : null,
+                'email' => $user->email ?? null,
+                'isPhoneVerified' => $user->is_phone_verified == 1,
+                'roles' => $user->getRoleNames()
+            ];
+            return $data;
+        }
+
+        else {
+            return response()->json(["status" => "failed", "message" => "Whoops! no user found"]);
+        }
     }
 
     /**

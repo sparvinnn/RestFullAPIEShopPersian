@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -27,19 +28,24 @@ class initUserSeeder extends Seeder
         ]);
 
         DB::table('roles')->insert([
-            'name' => 'سوپرادمین',
+            'name' => 'SuperAdmin',
+            'guard_name' => 'web'
         ]);
         DB::table('roles')->insert([
-            'name' => 'ادمین شعبه',
+            'name' => 'BranchAdmin',
+            'guard_name' => 'web'
         ]);
         DB::table('roles')->insert([
-            'name' => 'کانتر فروش',
+            'name' => 'SellCounter',
+            'guard_name' => 'web'
         ]);
         DB::table('roles')->insert([
-            'name' => 'حسابدار',
+            'name' => 'Accountant',
+            'guard_name' => 'web'
         ]);
         DB::table('roles')->insert([
-            'name' => 'کاربر',
+            'name' => 'EndUser',
+            'guard_name' => 'web'
         ]);
 
         DB::table('users')->insert([
@@ -56,8 +62,50 @@ class initUserSeeder extends Seeder
             'email' => 'sparvinnn@gmail.com',
             'email_verified_at' => Carbon::now(),
             'password' => Hash::make('123456'),
-            'role_id' => 1,
             'branch_id' => 1
         ]);
+
+        DB::table('users')->insert([
+            'username' => 'PublicUser',
+            'f_name' => 'Mahdi',
+            'l_name' => 'Moradi',
+            'mobile' => '09125146354',
+            'password' => Hash::make('123456'),
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'SuperAdmin',
+            'guard_name' => 'web'
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'Finance',
+            'guard_name' => 'web'
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'PublicUser',
+            'guard_name' => 'web'
+        ]);
+
+        DB::table('role_has_permissions')->insert([
+            'role_id' => 1,
+            'permission_id' => 1
+        ]);
+
+        User::find(1)->assignRole('SuperAdmin');
+        User::find(2)->assignRole('EndUser');
+
+//        DB::table('model_has_roles')->insert([
+//            'model_id' => 1,
+//            'model_type' => 'App\User',
+//            'role_id' => 1
+//        ]);
+//
+//        DB::table('model_has_roles')->insert([
+//            'model_id' => 2,
+//            'model_type' => 'App\User',
+//            'role_id' => 5
+//        ]);
     }
 }

@@ -104,7 +104,18 @@ class UserController extends Controller
     public function me() {
         $user       =       Auth::user();
         if(!is_null($user)) {
-            return response()->json(["status" => "success", "data" => $user]);
+            $data = [
+                'id' => $user->id,
+                'name' => ($user->first_name || $user->last_name) ? (ucfirst($user->first_name ?? "") . ucfirst($user->last_name ? " " . $user->last_name : "")) : null,
+                'username' => $user->username ?? "",
+                'avatar' => thumbImage($user->getDetailValue('avatar') ?? Constants::DEFAULT_AVATAR_PATH),
+                'phone' => isset($user->phone) ? $user->phone : null,
+                'email' => $user->email ?? null,
+                'isPhoneVerified' => $user->is_phone_verified == 1,
+                'roles' => $user->getAllRoles()->pluck('name')
+            ];
+            return 'test';
+            return response()->json(["status" => "success", "data" => $data]);
         }
 
         else {
