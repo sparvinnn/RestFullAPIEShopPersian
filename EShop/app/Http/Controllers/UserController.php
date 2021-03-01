@@ -19,29 +19,54 @@ class UserController extends Controller
     public function register(Request $request) {
 
         $validator  =   Validator::make($request->all(), [
-            'username' => 'min:6',
             'mobile' => 'required|min:10',
-            'national_code' => 'min:10|max:10',
-            'email' => 'email',
             'password' => 'required|min:6',
             'role_id' => 'required'
         ]);
-
         if($validator->fails()) {
             return response()->json(["status" => "failed", "validation_errors" => $validator->errors()]);
         }
-
-        $inputs = $request->all();
-        $inputs["password"] = Hash::make($request->password);
-
-        $user   =   User::create($inputs);
-
-        if(!is_null($user)) {
-            return response()->json(["status" => "success", "message" => "Success! registration completed", "data" => $user]);
+        if ($request->username){
+            $validator = Validator::make($request->all(), [
+                'username' => 'min:6',
+            ]);
         }
-        else {
+        if($validator->fails()) {
+            return response()->json(["status" => "failed", "validation_errors" => $validator->errors()]);
+        }
+        if ($request->national_code){
+            $validator = Validator::make($request->all(), [
+                'national_code' => 'min:10|max:10',
+            ]);
+        }
+        if($validator->fails()) {
+            return response()->json(["status" => "failed", "validation_errors" => $validator->errors()]);
+        }
+        if ($request->email){
+            $validator = Validator::make($request->all(), [
+                'email' => 'email',
+            ]);
+        }
+        if($validator->fails()) {
+            return response()->json(["status" => "failed", "validation_errors" => $validator->errors()]);
+        }
+        try{
+            $inputs = $request->all();
+            $inputs["password"] = Hash::make($request->password);
+            $user   =   User::where('mobile', $request->mobile)->first();
+            if($user) return response()->json(["status" => "duplicate mobile", "message" => "Registration failed!"]);
+            $user   =   User::create($inputs);
+
+            if(!is_null($user)) {
+                return response()->json(["status" => "success", "message" => "Success! registration completed", "data" => $user]);
+            }
+            else {
+                return response()->json(["status" => "failed", "message" => "Registration failed!"]);
+            }
+        }catch (\Exception $exception){
             return response()->json(["status" => "failed", "message" => "Registration failed!"]);
         }
+
     }
 
     // User login

@@ -64,6 +64,7 @@ Route::middleware('jwt.verify')->prefix('user/')->group(function() {
     Route::post("usersList", [UserController::class, "users"]);
     Route::post("userModify", [UserController::class, "modify"]);
     Route::post("userSearch", [UserController::class, "search"]);
+//    Route::post("userCreate", [UserController::class, "search"]);
 });
 
 //branch route
