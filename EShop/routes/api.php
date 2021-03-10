@@ -48,6 +48,7 @@ Route::get("counties", [GlobalController::class, "counties"]);
 Route::get("cities", [GlobalController::class, "cities"]);
 Route::get("roles", [GlobalController::class, "roles"]);
 Route::get("category/getParents", [GlobalController::class, "getParents"]);
+Route::get("category/{id}/getChildren", [GlobalController::class, "getChildren"]);
 Route::post("category/search", [CategoryController::class, "search"]);
 Route::get("category/{id}/getProperties", [CategoryController::class, "getProperties"]);
 Route::get("product/search", [GlobalController::class, "getProducts"]);

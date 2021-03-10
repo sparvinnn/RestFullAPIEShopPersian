@@ -63,8 +63,32 @@ class GlobalController extends Controller
                 ->orderBy('created_at')
                 ->get([
                     'id',
-                    'name',
+                    'name_fa',
+                    'slug',
                     'parent_id'
+                ]);
+
+            $response = [
+                'status' => true,
+                'msg' => 'list successfully get.',
+                'data' => $list
+            ];
+            return response()->json($response);
+
+        }catch(Exception $e){
+            return response($e, 202);
+        }
+    }
+
+    //get first level children of categories
+    public function getChildren($id){
+        try{
+            $list = Category::where('parent_id', $id)
+                ->orderBy('created_at')
+                ->get([
+                    'id',
+                    'name_fa',
+                    'slug'
                 ]);
 
             $response = [
