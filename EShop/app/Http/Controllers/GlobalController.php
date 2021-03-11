@@ -103,6 +103,29 @@ class GlobalController extends Controller
         }
     }
 
+    //get first level children of categories
+    public function getAllCategory(){
+        try{
+            $list = Category::query()
+                ->get([
+                    'id',
+                    'name_fa',
+                    'slug',
+                    'parent_id'
+                ]);
+
+            $response = [
+                'status' => true,
+                'msg' => 'list successfully get.',
+                'data' => $list
+            ];
+            return response()->json($response);
+
+        }catch(Exception $e){
+            return response($e, 202);
+        }
+    }
+
     //get and filter products
     public function getProducts(Request $request){
         $title = $request->title;
