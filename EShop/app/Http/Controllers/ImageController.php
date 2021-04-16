@@ -48,7 +48,7 @@ class ImageController extends Controller
     public function destroy($id)
     {
         try{
-            $img = Images::find($id);
+            $img = Media::find($id);
             if (!(empty($img->image))) {
                 if (file_exists(public_path() . '/storage/upload/product_images/' . $img['product_id'] . '/' . $img->image)) {
                     unlink(public_path() . 'storage/upload/product_images/' . $img['product_id'] . '/' . $img['image']);
