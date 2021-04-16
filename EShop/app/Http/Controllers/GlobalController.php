@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\CategoryMeta;
 use App\Models\City;
 use App\Models\County;
+use App\Models\Media;
 use App\Models\Product;
 use App\Models\ProductProperty;
 use App\Models\Role;
@@ -135,8 +136,8 @@ class GlobalController extends Controller
         $id = $request->id;
         $properties_filter = $request->properties_filter;
         try{
-            $list = Product::
-                when($title, function ($q, $title) {
+            $list = Product::query()
+                ->when($title, function ($q, $title) {
                     return $q->where('title', $title);
                 })
                 ->when($price, function ($q, $price) {
@@ -162,23 +163,25 @@ class GlobalController extends Controller
             $i = 0;
 //            return $properties_filter;
             foreach ($list as $item){
-                return $properties = ProductProperty::
-                    where('product_id', $item->id)
+                $properties = ProductProperty::query()
+                    ->where('product_id', $item->id)
                     ->when($properties_filter, function ($q, $properties_filter) {
                         return $q->whereIn('product_properties.property_id', $properties_filter);
                     })
                     ->join('category_metas', 'category_metas.id', 'product_properties.property_id')
-//                    ->select([
-//                        'product_properties.id',
-//                        'product_properties.property_id',
-//                        'category_metas.value as property',
-//                        'product_properties.value as value',
-//                    ])
+                    ->select([
+                        'category_metas.value as key',
+                        'product_properties.value as value',
+                    ])
                     ->get();
+
+                $images = Media::query()->where('product_id', $item->id)
+                    ->pluck('url');
 
                 $data[$i++] = array([
                     'product' => $item,
-                    'properties' => $properties
+                    'properties' => $properties,
+                    'images' => $images
                 ]);
             }
 
