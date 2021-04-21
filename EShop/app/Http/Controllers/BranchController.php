@@ -158,6 +158,7 @@ class BranchController extends Controller
                 ->when($city, function ($q, $city) {
                     return $q->where('city', $city);
                 })
+                ->with(['county','city'])
                 ->orderBy('created_at')
                 ->get([
                     'id',

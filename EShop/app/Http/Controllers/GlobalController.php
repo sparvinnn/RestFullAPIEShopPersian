@@ -152,6 +152,7 @@ class GlobalController extends Controller
                 ->when($id, function ($q, $id) {
                     return $q->where('id', $id);
                 })
+                // ->with('county', 'city')
 //                ->with('properties.property')
 //                ->with(['properties'=>function($q){
 //                    $q->with('property.value');

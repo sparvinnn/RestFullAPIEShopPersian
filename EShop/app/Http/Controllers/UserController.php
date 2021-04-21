@@ -125,7 +125,8 @@ class UserController extends Controller
 
     //userList
     public function users(){
-        $users       =       User::all();
+    
+        $users       =       User::with(['county','city'])->paginate(10);
         return response()->json(["status" => "success", "data" => $users]);
     }
 
@@ -208,8 +209,9 @@ class UserController extends Controller
                 ->when($l_name, function ($q, $l_name) {
                     return $q->where('l_name', $l_name);
                 })
+                ->with('county', 'city')
                 ->orderBy('created_at')
-                ->get();
+                ->paginate(10);
 
             $response = [
                 'status' => true,

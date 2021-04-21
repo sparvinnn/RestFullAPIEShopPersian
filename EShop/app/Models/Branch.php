@@ -22,11 +22,11 @@ class Branch extends Model
     ];
 
     public function county(){
-        return $this->belongsTo(County::class);
+        return $this->belongsTo(County::class, 'county');
     }
 
     public function city(){
-        return $this->belongsTo(City::class);
+        return $this->belongsTo(City::class, 'city');
     }
 
     public function users(){

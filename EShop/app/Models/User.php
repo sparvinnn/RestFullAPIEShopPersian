@@ -83,11 +83,11 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function county(){
-        return $this->belongsTo(County::class);
+        return $this->belongsTo(County::class, 'county');
     }
 
     public function city(){
-        return $this->belongsTo(City::class);
+        return $this->belongsTo(City::class, 'city');
     }
 
     public function role(){
