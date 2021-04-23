@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Carbon\Carbon;
 class UserController extends Controller
 {
     public function username()
@@ -21,7 +22,7 @@ class UserController extends Controller
         $validator  =   Validator::make($request->all(), [
             'mobile' => 'required|min:10',
             'password' => 'required|min:6',
-            'role_id' => 'required'
+            // 'role_id' => 'required'
         ]);
         if($validator->fails()) {
             return response()->json(["status" => "failed", "validation_errors" => $validator->errors()]);
@@ -55,7 +56,25 @@ class UserController extends Controller
             $inputs["password"] = Hash::make($request->password);
             $user   =   User::where('mobile', $request->mobile)->first();
             if($user) return response()->json(["status" => "duplicate mobile", "message" => "Registration failed!"]);
-            $user   =   User::create($inputs);
+            $user   =   User::create([
+                'f_name' => $request->f_name,
+                'l_name' => $request->l_name,
+                'national_code' => $request->national_code,
+                'mobile' => $request->mobile,
+                'mobile_verified_at' => Carbon::now(),
+                'county' => $request->county,
+                'city' => $request->city,
+                'address' => $request->address,
+                'postal_code' => $request->postal_code,
+                'email'  => $request->email,
+                'status' => 'active',
+                'password' => $inputs["password"],
+                // 'role_id' => $request->role_id,
+                'branch_id' => $request->branch_id,
+
+            ]);
+
+            $user->assignRole($request->role);
 
             if(!is_null($user)) {
                 return response()->json(["status" => "success", "message" => "Success! registration completed", "data" => $user]);
@@ -64,7 +83,7 @@ class UserController extends Controller
                 return response()->json(["status" => "failed", "message" => "Registration failed!"]);
             }
         }catch (\Exception $exception){
-            return response()->json(["status" => "failed", "message" => "Registration failed!"]);
+            return response()->json(["status" => "failed", "message" => $exception]);
         }
 
     }
@@ -150,6 +169,9 @@ class UserController extends Controller
             if($request->role_id) $user->role_id = $request->role_id;
             if($request->branch_id) $user->branch_id = $request->branch_id;
             $user->save();
+
+            $user->syncRoles($request->role);
+
             DB::commit();
 
             return response()->json(["status" => "success", "data" => $user]);
