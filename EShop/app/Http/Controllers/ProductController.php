@@ -112,22 +112,17 @@ class ProductController extends Controller
                 ->when($id, function ($q, $id) {
                     return $q->where('id', $id);
                 })
-                // ->with('county', 'city')
-//                ->with('properties.property')
-//                ->with(['properties'=>function($q){
-//                    $q->with('property.value');
-//                }])
-
                 ->orderBy('created_at');
             if ($available == 1)
-                $list->where('inventory_number', '>', 0)->get();
+                $list->where('inventory_number', '>', 0);
             else if ($available == 0)
-                $list->where('inventory_number', 0)->get();
-//                ->get();
+                $list->where('inventory_number', 0);
+
+
             $data = array();
             $i = 0;
-//            return $properties_filter;
-            foreach ($list as $item){
+
+            foreach ($list->get() as $item){
                 $properties = ProductProperty::query()
                     ->where('product_id', $item->id)
                     ->when($properties_filter, function ($q, $properties_filter) {
