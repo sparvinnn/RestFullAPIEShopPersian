@@ -97,12 +97,6 @@ class ProductController extends Controller
                 ->when($name, function ($q, $name) {
                     return $q->where('name', $name);
                 })
-                ->when($available, function ($q, $available) {
-                    if($available)
-                        return $q->where('inventory_number', '>', 0);
-                    else
-                        return $q->where('inventory_number', 0);
-                })
                 ->when($min_price, function ($q, $min_price) {
                     return $q->where('price', '>=', $min_price);
                 })
@@ -124,8 +118,12 @@ class ProductController extends Controller
 //                    $q->with('property.value');
 //                }])
 
-                ->orderBy('created_at')
-                ->get();
+                ->orderBy('created_at');
+            if ($available == 1)
+                $list->where('inventory_number', '>', 0)->get();
+            else if ($available == 0)
+                $list->where('inventory_number', 0)->get();
+//                ->get();
             $data = array();
             $i = 0;
 //            return $properties_filter;
