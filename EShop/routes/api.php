@@ -80,6 +80,7 @@ Route::middleware('jwt.verify')->prefix('category/')->group(function() {
     Route::put("{id}", [CategoryController::class, "update"]);
 
     Route::post("addProperties", [CategoryController::class, "addProperties"]);
+    Route::post("updateProperties", [CategoryController::class, "updateProperties"]);
 
 });
 

@@ -119,7 +119,29 @@ class CategoryController extends Controller
         }
     }
 
-    public function updateProperties($id, Request $request){
-
+    public function updateProperties(Request $request){
+        $list = $request->properties;
+        DB::beginTransaction();
+        try{
+            CategoryMeta::where('key', 'property')
+                ->where('category_id', $request->id)
+                ->delete();
+            for($i=0; $i<count($list); $i++){
+                try{
+                    $category_meta= CategoryMeta::create([
+                        'category_id' => $request->id,
+                        'key' => 'property',
+                        'value' => $list[$i]
+                    ]);
+                }catch (\Exception $exception){
+                    return response()->json(["status" => "failed", "message" => $exception]);
+                }
+            }
+            DB::commit();
+            return response()->json(["status" => "success", "message" => "Success! update category_meta completed"]);
+        }catch (\Exception $exception){
+            DB::rollBack();
+            return response()->json(["status" => "failed", "message" => $exception]);
+        }
     }
 }
