@@ -48,16 +48,18 @@ class ProductController extends Controller
     }
 
     public function update(Request $request, $id){
-        try{
+//        try{
             DB::beginTransaction();
             $inputs = $request->product[0];
             $product   =   Product::find($id);
-            if($inputs['title']) $product->title = $inputs['title'];
+            if($inputs['name']) $product->name = $inputs['name'];
             if($inputs['price']) $product->price = $inputs['price'];
             if($inputs['description']) $product->description = $inputs['description'];
             if($inputs['category_id']) $product->category_id = $inputs['category_id'];
             if($inputs['branch_id']) $product->branch_id = $inputs['branch_id'];
-            if($inputs['count']) $product->count = $inputs['count'];
+            if($inputs['inventory_number']) $product->inventory_number = $inputs['inventory_number'];
+            if($inputs['total_number']) $product->total_number = $inputs['total_number'];
+            if($inputs['sales_number']) $product->sales_number = $inputs['sales_number'];
             $product->save();
 
             $inputs = $request->properties[0];
@@ -75,10 +77,10 @@ class ProductController extends Controller
             DB::commit();
             return response()->json(["status" => "success", "message" => "Success! registration completed", "product" => $product, "properties" => $properties]);
 
-        }catch (\Exception $e){
-            DB::rollBack();
-            return response()->json(["status" => "failed", "message" => $e]);
-        }
+//        }catch (\Exception $e){
+//            DB::rollBack();
+//            return response()->json(["status" => "failed", "message" => $e]);
+//        }
     }
 
     public function search(Request $request){
