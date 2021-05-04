@@ -91,10 +91,17 @@ class ProductController extends Controller
         $branch_id = $request->branch_id;
         $id = $request->id;
         $properties_filter = $request->properties_filter;
+        $available = $request->available;
         try{
             $list = Product::query()
                 ->when($name, function ($q, $name) {
                     return $q->where('name', $name);
+                })
+                ->when($available, function ($q, $available) {
+                    if($available)
+                        return $q->where('inventory_number', '>', 0);
+                    else
+                        return $q->where('inventory_number', 0);
                 })
                 ->when($min_price, function ($q, $min_price) {
                     return $q->where('price', '>=', $min_price);
