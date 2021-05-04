@@ -118,4 +118,8 @@ class CategoryController extends Controller
             return response()->json(["status" => "failed", "message" => $exception]);
         }
     }
+
+    public function updateProperties($id, Request $request){
+
+    }
 }

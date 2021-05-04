@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Branch;
+use App\Models\Media;
 use App\Models\Product;
 use App\Models\ProductProperty;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Mockery\Exception;
 
 class ProductController extends Controller
 {
@@ -78,4 +80,79 @@ class ProductController extends Controller
             return response()->json(["status" => "failed", "message" => $e]);
         }
     }
+
+    public function search(Request $request){
+        $name = $request->name;
+        $min_price = $request->min_price;
+        $max_price = $request->max_price;
+        $category_id = $request->category_id;
+        $branch_id = $request->branch_id;
+        $id = $request->id;
+        $properties_filter = $request->properties_filter;
+        try{
+            $list = Product::query()
+                ->when($name, function ($q, $name) {
+                    return $q->where('name', $name);
+                })
+                ->when($min_price, function ($q, $min_price) {
+                    return $q->where('price', '>=', $min_price);
+                })
+                ->when($max_price, function ($q, $max_price) {
+                    return $q->where('price', '<=', $max_price);
+                })
+                ->when($category_id, function ($q, $category_id) {
+                    return $q->where('category_id', $category_id);
+                })
+                ->when($branch_id, function ($q, $branch_id) {
+                    return $q->where('branch_id', $branch_id);
+                })
+                ->when($id, function ($q, $id) {
+                    return $q->where('id', $id);
+                })
+                // ->with('county', 'city')
+//                ->with('properties.property')
+//                ->with(['properties'=>function($q){
+//                    $q->with('property.value');
+//                }])
+
+                ->orderBy('created_at')
+                ->get();
+            $data = array();
+            $i = 0;
+//            return $properties_filter;
+            foreach ($list as $item){
+                $properties = ProductProperty::query()
+                    ->where('product_id', $item->id)
+                    ->when($properties_filter, function ($q, $properties_filter) {
+                        return $q->whereIn('product_properties.property_id', $properties_filter);
+                    })
+                    ->join('category_metas', 'category_metas.id', 'product_properties.property_id')
+                    ->select([
+                        'category_metas.value as key',
+                        'product_properties.value as value',
+                    ])
+                    ->get();
+
+                $images = Media::query()->where('product_id', $item->id)
+                    ->pluck('url');
+
+                $data[$i++] = array([
+                    'product' => $item,
+                    'properties' => $properties,
+                    'images' => $images
+                ]);
+            }
+
+            $response = [
+                'status' => true,
+                'msg' => 'list successfully get.',
+                'data' => $data
+            ];
+
+            return response()->json($response);
+        }catch(Exception $e){
+            return response($e, 500);
+        }
+    }
+
 }

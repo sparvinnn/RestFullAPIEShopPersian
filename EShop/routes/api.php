@@ -51,8 +51,9 @@ Route::get("category/getParents", [GlobalController::class, "getParents"]);
 Route::get("category/{id}/getChildren", [GlobalController::class, "getChildren"]);
 Route::post("category/search", [CategoryController::class, "search"]);
 Route::get("category/{id}/getProperties", [CategoryController::class, "getProperties"]);
+Route::get("category/{id}/updateProperties", [CategoryController::class, "updateProperties"]);
 Route::get("categories", [GlobalController::class, "getAllCategory"]);
-Route::get("product/search", [GlobalController::class, "getProducts"]);
+Route::post("product/search", [GlobalController::class, "getProducts"]);
 
 
 //filter routes
@@ -87,7 +88,7 @@ Route::post('product/image/upload', [ImageController::class, "upload"])->name('i
 Route::middleware('jwt.verify')->prefix('product/')->group(function() {
     Route::post("", [ProductController::class, "store"]);
     Route::put("{id}", [ProductController::class, "update"]);
-    Route::post("search", [ProductController::class, "search"]);
+    Route::post("adminSearch", [ProductController::class, "search"]);
 //    Route::post('image/upload', [ImageController::class, "upload"])->name('image.upload');
     Route::delete('image/{id}', [ImageController::class, "destroy"])->name('image.delete');
 //    Route::post("addProperties", [ProductController::class, "addProperties"]);

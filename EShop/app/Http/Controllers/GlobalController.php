@@ -194,7 +194,7 @@ class GlobalController extends Controller
 
             return response()->json($response);
         }catch(Exception $e){
-            return response($e, 202);
+            return response($e, 500);
         }
     }
 }
