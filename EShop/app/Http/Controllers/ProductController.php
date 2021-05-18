@@ -115,9 +115,8 @@ class ProductController extends Controller
                 ->orderBy('created_at');
             if ($available == 1)
                 $list->where('inventory_number', '>', 0);
-            else if ($available == 0)
-                $list->where('inventory_number', 0);
-
+            else if ($available === 0)
+                $list->where('inventory_number', '=', 0);
 
             $data = array();
             $i = 0;
@@ -136,7 +135,7 @@ class ProductController extends Controller
                     ->get();
 
                 $images = Media::query()->where('product_id', $item->id)
-                    ->pluck('url');
+                    ->select('id','url')->get();
 
                 $data[$i++] = array([
                     'product' => $item,
