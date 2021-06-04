@@ -128,7 +128,7 @@ class UserController extends Controller
                 'name' => ($user->first_name || $user->last_name) ? (ucfirst($user->first_name ?? "") . ucfirst($user->last_name ? " " . $user->last_name : "")) : null,
                 'username' => $user->username ?? "",
                 'avatar' => thumbImage($user->getDetailValue('avatar') ?? Constants::DEFAULT_AVATAR_PATH),
-                'phone' => isset($user->phone) ? $user->phone : null,
+                'mobile' => isset($user->phone) ? $user->phone : null,
                 'email' => $user->email ?? null,
                 'isPhoneVerified' => $user->is_phone_verified == 1,
                 'roles' => $user->getAllRoles()->pluck('name')
@@ -144,7 +144,7 @@ class UserController extends Controller
 
     //userList
     public function users(){
-    
+
         $users       =       User::with(['county','city'])->paginate(10);
         return response()->json(["status" => "success", "data" => $users]);
     }

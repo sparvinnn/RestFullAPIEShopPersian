@@ -53,9 +53,12 @@ class FilterController extends Controller
         $max_price = $request->max_price;
         $cat_id = $request->cat_id;
         $available = $request->available;
+        $ordering = $request->ordering;
+
         if(isset($request->properties[0]))
             $properties = $request->properties[0];
-        return Product::where('category_id', $cat_id)
+        return Product::query()
+            ->where('category_id', $cat_id)
             ->when($min_price, function($query) use ($min_price){
                 return $query->where('price', '>=', $min_price);
             })
@@ -69,6 +72,10 @@ class FilterController extends Controller
                 if($available) return $query->where('count', '>', 0);
                 else return $query->where('count', 0);
             })
+            ->when($ordering, function($query) use ($ordering){
+                if($ordering === 'BestSelling') return $query->orderBy('sales_number');
+                else if($ordering === 'MostPopular') return $query->orderBy('rate');
+            })
 //            ->when($properties, function($query) use ($properties){
 //                foreach ($properties as $property){
 //                    $query->
@@ -81,5 +88,6 @@ class FilterController extends Controller
 //            }])
             ->with('media')
             ->get();
+//            ->paginate(20);
     }
 }

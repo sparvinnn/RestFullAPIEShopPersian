@@ -47,7 +47,8 @@ class AuthController extends Controller
         if(!is_null($user)) {
             $data = [
                 'id' => $user->id,
-                'name' => ($user->first_name || $user->last_name) ? (ucfirst($user->first_name ?? "") . ucfirst($user->last_name ? " " . $user->last_name : "")) : null,
+                'f_name' => $user->f_name || null,
+                'l_name' => $user->l_name || null,
                 'username' => $user->username ?? "",
 //                'avatar' => thumbImage($user->getDetailValue('avatar') ?? Constants::DEFAULT_AVATAR_PATH),
                 'phone' => isset($user->phone) ? $user->phone : null,
