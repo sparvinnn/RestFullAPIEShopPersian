@@ -2,15 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b3b9347e-18be-40e0-b855-b3fda5411b80" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/EShop/app/Http/Controllers/AuthController.php" beforeDir="false" afterPath="$PROJECT_DIR$/EShop/app/Http/Controllers/AuthController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EShop/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/EShop/app/Http/Controllers/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EShop/app/Http/Controllers/FilterController.php" beforeDir="false" afterPath="$PROJECT_DIR$/EShop/app/Http/Controllers/FilterController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EShop/app/Http/Controllers/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/EShop/app/Http/Controllers/HomeController.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/EShop/composer.json</pharConfigPath>
     <execution />
   </component>
@@ -152,6 +153,7 @@
       <option name="presentableId" value="Default" />
       <updated>1622788849558</updated>
       <workItem from="1622788851544" duration="7169000" />
+      <workItem from="1622870385012" duration="7569000" />
     </task>
     <servers />
   </component>

@@ -54,7 +54,8 @@ class FilterController extends Controller
         $cat_id = $request->cat_id;
         $available = $request->available;
         $ordering = $request->ordering;
-
+        $cats = Category::query()->where('parent_id', $cat_id)->pluck('id');
+        $cats->push($cat_id);
         if(isset($request->properties[0]))
             $properties = $request->properties[0];
         return Product::query()
@@ -65,12 +66,12 @@ class FilterController extends Controller
             ->when($max_price, function($query) use ($max_price){
                 return $query->where('price', '<=', $max_price);
             })
-            ->when($cat_id, function($query) use ($cat_id){
-                return $query->where('category_id', $cat_id);
+            ->when($cats, function($query) use ($cats){
+                return $query->whereIn('category_id', $cats);
             })
             ->when($available, function($query) use ($available){
-                if($available) return $query->where('count', '>', 0);
-                else return $query->where('count', 0);
+                if($available) return $query->where('inventory_number', '>', 0);
+                else return $query->where('inventory_number', 0);
             })
             ->when($ordering, function($query) use ($ordering){
                 if($ordering === 'BestSelling') return $query->orderBy('sales_number');

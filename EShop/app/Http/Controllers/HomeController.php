@@ -11,8 +11,8 @@ class HomeController extends Controller
 {
     public function index(Request $request){
         $ordering = $request->ordering;
-        $best_selling = Product::query()->orderBy('sales_number')->take(20)->get();
-        $most_popular = Product::query()->orderBy('rate')->take(20)->get();
+        $best_selling = Product::query()->orderBy('sales_number')->with('media')->take(20)->get();
+        $most_popular = Product::query()->orderBy('rate')->with('media')->take(20)->get();
         $slides = Slide::query()->get();
         $banners = Banner::query()->get();
         return response()->json([
