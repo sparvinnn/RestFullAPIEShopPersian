@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brands;
 use App\Models\Category;
 use App\Models\CategoryMeta;
 use App\Models\City;
@@ -196,5 +197,14 @@ class GlobalController extends Controller
         }catch(Exception $e){
             return response($e, 500);
         }
+    }
+
+    public function getBrands(Request $request){
+        $cat_id = $request->cat_id;
+        $filter = Product::query()
+            ->when($cat_id, function($query) use ($cat_id){
+                return $query->where('category_id', $cat_id);
+            })->pluck('brand_id');
+        return $data = Brands::whereIn('id', $filter)->select('id','name')->get();
     }
 }
