@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\CategoryMeta;
 use App\Models\Product;
 use App\Models\ProductProperty;
 use Illuminate\Http\Request;
@@ -61,7 +62,13 @@ class FilterController extends Controller
         $id = $request->id;
         if(isset($request->properties[0]))
             $properties = $request->properties[0];
-        return Product::query()
+        $index = 0;
+        foreach ($properties as $property){
+            $property['value'] = explode(',', $property['value']);
+            $properties[$index] = $property;
+            $index++;
+        }
+        $data = Product::query()
 //            ->whereIn('category_id', $cats)
 //            ->where('category_id', $cat_id)
             ->when($id, function($query) use ($id){
@@ -100,5 +107,49 @@ class FilterController extends Controller
             ->with('media', 'properties')
             ->get();
 //            ->paginate(20);
+
+        return $list = $data->map(function ($item) {
+            $product = [
+                "id"                => $item->id,
+                "name"              => $item->name,
+                "price"             => $item->price,
+                "description"       => $item->description,
+                "category_id"       => $item->category_id,
+                "branch_id"         => $item->branch_id,
+                "inventory_number"  => $item->inventory_number,
+                "total_number"      => $item->total_number,
+                "sales_number"      => $item->sales_number,
+                "rate"              => $item->rate,
+                "vote"              => $item->vote,
+            ];
+            $properties = [];
+            $x = [
+                'key' => '',
+                'value' => ''
+            ];
+
+            foreach ($item['properties'] as $temp){
+                $x['id']    = $temp['id'];
+                $x['property_id']    = $temp['property_id'];
+                $x['key']   = CategoryMeta::query()->where('id', $temp['property_id'])->first()['value'];
+                $x['value'] = $temp['value'];
+                array_push($properties, $x);
+            }
+            $product['properties'] = $properties;
+
+            $medias = [];
+            $x = [
+                'id' => '',
+                'url' => ''
+            ];
+            foreach ($item['media'] as $temp){
+                $x['id']    = $temp['id'];
+                $x['url']   = $temp['url'];
+                array_push($medias, $x);
+            }
+            $product['media'] = $medias;
+
+            return $product;
+        });
     }
 }
