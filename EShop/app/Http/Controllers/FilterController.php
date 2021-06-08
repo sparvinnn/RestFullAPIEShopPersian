@@ -131,7 +131,7 @@ class FilterController extends Controller
             foreach ($item['properties'] as $temp){
                 $x['id']    = $temp['id'];
                 $x['property_id']    = $temp['property_id'];
-                $x['key']   = CategoryMeta::query()->where('id', $temp['property_id'])->first()['value'];
+                $x['key']   = CategoryMeta::query()->where('id', $temp['property_id'])->firstOrFail()['value'];
                 $x['value'] = $temp['value'];
                 array_push($properties, $x);
             }
