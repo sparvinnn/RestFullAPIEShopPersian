@@ -69,7 +69,7 @@ class FilterController extends Controller
                 $index++;
             }
         }
-            
+
         $data = Product::query()
 //            ->whereIn('category_id', $cats)
 //            ->where('category_id', $cat_id)
@@ -107,8 +107,8 @@ class FilterController extends Controller
 //                $query->whereIn('key', $request->)
 //            }])
             ->with('media', 'properties')
-            ->get();
-//            ->paginate(20);
+//            ->get();
+            ->paginate(20);
 
         return $list = $data->map(function ($item) {
             $product = [
@@ -129,7 +129,7 @@ class FilterController extends Controller
                 'key' => '',
                 'value' => ''
             ];
-            
+
             foreach ($item['properties'] as $temp){
                 if(CategoryMeta::query()->where('id', $temp['property_id'])->first()){
                     $x['id']    = $temp['id'];
@@ -139,7 +139,7 @@ class FilterController extends Controller
                     array_push($properties, $x);
                 }
             }
-            
+
             $product['properties'] = $properties;
 
             $medias = [];
