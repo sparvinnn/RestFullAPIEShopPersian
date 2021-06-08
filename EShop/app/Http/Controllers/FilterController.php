@@ -60,14 +60,16 @@ class FilterController extends Controller
         if (!$cat_id) $cats = null;
         $brand_id = $request->brand_id;
         $id = $request->id;
-        if(isset($request->properties[0]))
+        if(isset($request->properties[0])){
             $properties = $request->properties[0];
-        $index = 0;
-        foreach ($properties as $property){
-            $property['value'] = explode(',', $property['value']);
-            $properties[$index] = $property;
-            $index++;
+            $index = 0;
+            foreach ($properties as $property){
+                $property['value'] = explode(',', $property['value']);
+                $properties[$index] = $property;
+                $index++;
+            }
         }
+            
         $data = Product::query()
 //            ->whereIn('category_id', $cats)
 //            ->where('category_id', $cat_id)
@@ -127,14 +129,17 @@ class FilterController extends Controller
                 'key' => '',
                 'value' => ''
             ];
-
+            
             foreach ($item['properties'] as $temp){
-                $x['id']    = $temp['id'];
-                $x['property_id']    = $temp['property_id'];
-                $x['key']   = CategoryMeta::query()->where('id', $temp['property_id'])->firstOrFail()['value'];
-                $x['value'] = $temp['value'];
-                array_push($properties, $x);
+                if(CategoryMeta::query()->where('id', $temp['property_id'])->first()){
+                    $x['id']    = $temp['id'];
+                    $x['property_id']    = $temp['property_id'];
+                    $x['key'] = CategoryMeta::query()->where('id', $temp['property_id'])->firstOrFail()['value'];
+                    $x['value'] = $temp['value'];
+                    array_push($properties, $x);
+                }
             }
+            
             $product['properties'] = $properties;
 
             $medias = [];
