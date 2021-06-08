@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brands;
 use App\Models\Category;
 use App\Models\CategoryMeta;
 use App\Models\Product;
@@ -117,7 +118,6 @@ class FilterController extends Controller
                 "price"             => $item->price,
                 "description"       => $item->description,
                 "category_id"       => $item->category_id,
-                "branch_id"         => $item->branch_id,
                 "inventory_number"  => $item->inventory_number,
                 "total_number"      => $item->total_number,
                 "sales_number"      => $item->sales_number,
@@ -152,6 +152,13 @@ class FilterController extends Controller
                 $x['url']   = $temp['url'];
                 array_push($medias, $x);
             }
+            if($item->brand_id)
+                $product['brand'] = [
+                    "id"         => $item->branch_id,
+                    "name"       => Brands::find($item->brand_id)['name']
+                ];
+
+
             $product['media'] = $medias;
 
             return $product;
