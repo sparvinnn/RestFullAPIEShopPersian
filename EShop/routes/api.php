@@ -10,7 +10,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\BrandController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -74,6 +74,12 @@ Route::middleware('jwt.verify')->prefix('user/')->group(function() {
 //branch route
 Route::middleware('jwt.verify')->get('branch/search', [BranchController::class, "search"]);
 Route::middleware('jwt.verify')->resource('branch', BranchController::class);
+
+//brand route
+Route::middleware('jwt.verify')->prefix('brand/')->group(function() {
+    Route::post("", [BrandController::class, "store"]);
+    Route::put("{id}", [BrandController::class, "update"]);
+});
 
 //category route
 Route::middleware('jwt.verify')->prefix('category/')->group(function() {
