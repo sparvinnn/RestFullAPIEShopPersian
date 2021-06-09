@@ -29,7 +29,7 @@ class ProductController extends Controller
             $inputs = $request->properties[0];
 
             foreach($inputs as $input)
-                ProductProperty::create([
+                ProductProperty::query()->create([
                     'product_id'=>$product->id,
                     'property_id'=>$input[0]['property_id'],
                     'value'=>$input[0]['value'],
