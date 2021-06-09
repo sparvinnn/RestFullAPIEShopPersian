@@ -144,4 +144,14 @@ class CategoryController extends Controller
             return response()->json(["status" => "failed", "message" => $exception]);
         }
     }
+
+    public function delete($id){
+        try{
+            $category = Category::find($id);
+            $category->delete();
+            return response()->json(['data'=>'ok'], 200);
+        }catch (\Exception $exception){
+            return response()->json(['data'=>'error'], 500);
+        }
+    }
 }

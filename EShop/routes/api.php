@@ -79,6 +79,7 @@ Route::middleware('jwt.verify')->resource('branch', BranchController::class);
 Route::middleware('jwt.verify')->prefix('category/')->group(function() {
     Route::post("", [CategoryController::class, "store"]);
     Route::put("{id}", [CategoryController::class, "update"]);
+    Route::delete("{id}", [CategoryController::class, "delete"]);
 
     Route::post("addProperties", [CategoryController::class, "addProperties"]);
     Route::post("updateProperties", [CategoryController::class, "updateProperties"]);
@@ -90,6 +91,7 @@ Route::post('product/image/upload', [ImageController::class, "upload"])->name('i
 Route::middleware('jwt.verify')->prefix('product/')->group(function() {
     Route::post("", [ProductController::class, "store"]);
     Route::put("{id}", [ProductController::class, "update"]);
+    Route::delete("{id}", [ProductController::class, "delete"]);
     Route::post("adminSearch", [ProductController::class, "search"]);
 //    Route::post('image/upload', [ImageController::class, "upload"])->name('image.upload');
     Route::delete('image/{id}', [ImageController::class, "destroy"])->name('image.delete');

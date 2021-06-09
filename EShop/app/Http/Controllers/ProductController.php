@@ -156,4 +156,13 @@ class ProductController extends Controller
         }
     }
 
+    public function delete($id){
+        try{
+            $product = Product::find($id);
+            $product->delete();
+            return response()->json(['data'=>'ok'], 200);
+        }catch (\Exception $exception){
+            return response()->json(['data'=>'error'], 500);
+        }
+    }
 }
