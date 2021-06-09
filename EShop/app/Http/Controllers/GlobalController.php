@@ -205,7 +205,7 @@ class GlobalController extends Controller
             ->when($cat_id, function($query) use ($cat_id){
                 return $query->where('category_id', $cat_id);
             })->pluck('brand_id');
-        if(!$filter) return Brands::select(['id', 'name'])->get();
+        return Brands::select(['id', 'name'])->get();
         return $data = Brands::whereIn('id', $filter)->select('id','name')->get();
     }
 }
