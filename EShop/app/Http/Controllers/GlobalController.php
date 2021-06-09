@@ -200,12 +200,13 @@ class GlobalController extends Controller
     }
 
     public function getBrands(Request $request){
+        return Brands::query()->select(['id', 'name'])->get();
         $cat_id = $request->cat_id;
         $filter = Product::query()
             ->when($cat_id, function($query) use ($cat_id){
                 return $query->where('category_id', $cat_id);
             })->pluck('brand_id');
-        return Brands::select(['id', 'name'])->get();
+
         return $data = Brands::whereIn('id', $filter)->select('id','name')->get();
     }
 }
