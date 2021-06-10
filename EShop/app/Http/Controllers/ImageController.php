@@ -27,7 +27,7 @@ class ImageController extends Controller
                     else{
                         $img = Media::create([
                             'product_id' => $request['product_id'],
-                            'url' => '/storage/upload/product_images/'.$request['product_id'].'/'.$name,
+                            'url' => 'http://jahanistyle.ir/backend/storage/upload/product_images/'.$request['product_id'].'/'.$name,
                         ]);
                         $filename = $file->move('storage/upload/product_images/' . $request['product_id'] . '/', $name);
                         $uploadId[] = [ $img['id'] ];
