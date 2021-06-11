@@ -55,6 +55,7 @@ Route::get("category/{id}/updateProperties", [CategoryController::class, "update
 Route::get("categories", [GlobalController::class, "getAllCategory"]);
 Route::post("product/search", [GlobalController::class, "getProducts"]);
 Route::post("getBrands", [GlobalController::class, "getBrands"]);
+Route::get("getAllBrands", [GlobalController::class, "getAllBrands"]);
 
 
 //filter routes
