@@ -60,6 +60,7 @@ class ProductController extends Controller
             if($inputs['inventory_number']) $product->inventory_number = $inputs['inventory_number'];
             if($inputs['total_number']) $product->total_number = $inputs['total_number'];
             if($inputs['sales_number']) $product->sales_number = $inputs['sales_number'];
+            if($inputs['brand_id']) $product->brand_id = $inputs['brand_id'];
             $product->save();
 
             $inputs = $request->properties[0];
