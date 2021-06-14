@@ -209,7 +209,16 @@ class GlobalController extends Controller
         return $data = Brands::whereIn('id', $filter)->select('id','name')->get();
     }
 
-    public function getAllBrands(){
-        return Brands::query()->select(['id', 'name'])->get();
+    public function getAllBrands(Request $request){
+        $id = $request->id;
+        $name = $request->name;
+        return Brands::query()
+            ->when($id, function ($q, $id) {
+                return $q->where('id', $id);
+            })
+            ->when($name, function ($q, $name) {
+                return $q->where('name', $name);
+            })
+            ->select(['id', 'name'])->get();
     }
 }

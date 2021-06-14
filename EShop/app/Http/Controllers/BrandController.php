@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class BrandController extends Controller
 {
+
     public function store(Request $request){
         DB::beginTransaction();
         try{
@@ -35,4 +36,5 @@ class BrandController extends Controller
             return response()->json(['data'=>'error'], 500);
         }
     }
+
 }
