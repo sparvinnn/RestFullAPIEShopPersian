@@ -11,6 +11,8 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\CartController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -80,6 +82,30 @@ Route::middleware('jwt.verify')->resource('branch', BranchController::class);
 Route::middleware('jwt.verify')->prefix('brand/')->group(function() {
     Route::post("", [BrandController::class, "store"]);
     Route::put("{id}", [BrandController::class, "update"]);
+});
+
+//cart route
+Route::middleware('jwt.verify')->prefix('cart/')->group(function() {
+    Route::get("", [CartController::class, "getCart"]);
+    Route::post("", [CartController::class, "addToCard"]);
+//    Route::put("{id}", [CartController::class, "update"]);
+    Route::delete("{id}", [CartController::class, "delete"]);
+//
+//    Route::post("addProperties", [CartController::class, "addProperties"]);
+//    Route::post("updateProperties", [CartController::class, "updateProperties"]);
+
+});
+
+//cart route
+Route::middleware('jwt.verify')->prefix('favorite/')->group(function() {
+    Route::get("", [FavoriteController::class, "getFavorite"]);
+    Route::post("", [FavoriteController::class, "addToFavorite"]);
+//    Route::put("{id}", [CartController::class, "update"]);
+    Route::delete("{id}", [FavoriteController::class, "delete"]);
+//
+//    Route::post("addProperties", [CartController::class, "addProperties"]);
+//    Route::post("updateProperties", [CartController::class, "updateProperties"]);
+
 });
 
 //category route
