@@ -27,6 +27,27 @@ class CartController extends Controller
         }
     }
 
+    public function addAllToCard(Request $request){
+        try{
+            $carts = $request->carts;
+            foreach ($carts as $cart) {
+                $old = Cart::query()
+                    ->where('user_id', Auth()->user()['id'])
+                    ->where('product_id', $cart)
+                    ->first();
+                if (!$old) {
+                    $cart = Cart::query()->create([
+                        'user_id' => Auth()->user()['id'],
+                        'product_id' => $cart
+                    ]);
+                }
+            }
+            return response()->json(['data'=>'ok'],200);
+        }catch (\Exception $exception){
+            return response()->json(['data'=>$exception],500);
+        }
+    }
+
     public function getCart(){
         try{
             $mycarts  = Cart::query()->where('user_id', Auth()->user()['id'])->pluck('product_id');

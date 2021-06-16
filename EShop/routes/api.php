@@ -88,6 +88,7 @@ Route::middleware('jwt.verify')->prefix('brand/')->group(function() {
 Route::middleware('jwt.verify')->prefix('cart/')->group(function() {
     Route::get("", [CartController::class, "getCart"]);
     Route::post("", [CartController::class, "addToCard"]);
+    Route::post("group", [CartController::class, "addAllToCard"]);
 //    Route::put("{id}", [CartController::class, "update"]);
     Route::delete("{id}", [CartController::class, "delete"]);
 //
