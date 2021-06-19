@@ -39,8 +39,7 @@ class CartController extends Controller
                 if (!$old) {
                     $cart = Cart::query()->create([
                         'user_id' => Auth()->user()['id'],
-                        'product_id' => $cart->product_id,
-                        'number'   => $cart->number
+                        'product_id' => $cart,
                     ]);
                 }
             }
@@ -63,6 +62,17 @@ class CartController extends Controller
     public function delete($id){
         try{
             $cart  = Cart::query()->where('product_id', $id)->delete();
+            return response()->json(['data'=>'ok'],200);
+        }catch (\Exception $exception){
+            return response()->json(['data'=>$exception],500);
+        }
+    }
+
+    public function update($id, Request $request){
+        try{
+            $cart  = Cart::query()->where('product_id', $id)->first();
+            $cart->number = $request->number;
+            $cart->save();
             return response()->json(['data'=>'ok'],200);
         }catch (\Exception $exception){
             return response()->json(['data'=>$exception],500);
