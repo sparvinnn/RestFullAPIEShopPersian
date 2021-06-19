@@ -17,7 +17,8 @@ class CartController extends Controller
             if(!$old){
                 $cart = Cart::query()->create([
                     'user_id' => Auth()->user()['id'],
-                    'product_id' => $request->product_id
+                    'product_id' => $request->product_id,
+                    'number'   => $request->number
                 ]);
                 return response()->json(['data'=>'ok'],200);
             }
@@ -38,7 +39,8 @@ class CartController extends Controller
                 if (!$old) {
                     $cart = Cart::query()->create([
                         'user_id' => Auth()->user()['id'],
-                        'product_id' => $cart
+                        'product_id' => $cart->product_id,
+                        'number'   => $cart->number
                     ]);
                 }
             }
