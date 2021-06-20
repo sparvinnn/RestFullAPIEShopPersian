@@ -34,12 +34,13 @@ class CartController extends Controller
             foreach ($carts as $cart) {
                 $old = Cart::query()
                     ->where('user_id', Auth()->user()['id'])
-                    ->where('product_id', $cart)
+                    ->where('product_id', $cart['product_id'])
                     ->first();
                 if (!$old) {
                     $cart = Cart::query()->create([
-                        'user_id' => Auth()->user()['id'],
-                        'product_id' => $cart,
+                        'user_id'    => Auth()->user()['id'],
+                        'product_id' => $cart['product_id'],
+                        'number'     => $cart['number']
                     ]);
                 }
             }
