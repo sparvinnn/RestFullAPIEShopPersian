@@ -54,7 +54,13 @@ class CartController extends Controller
         try{
             $mycarts  = Cart::query()->where('user_id', Auth()->user()['id'])->pluck('product_id');
             $products = Product::query()->whereIn('id', $mycarts)->with('media')->get();
-            return response()->json(['data'=>$products],200);
+            $data = $products->map(function ($item) {
+                return [
+                    'product' => $item,
+                    'number'  => Cart::query()->where('product_id', $item['id'])->first()['number']
+                ];
+            });
+            return response()->json(['data'=>$data],200);
         }catch (\Exception $exception){
             return response()->json(['data'=>$exception],500);
         }
