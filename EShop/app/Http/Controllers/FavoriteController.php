@@ -10,22 +10,22 @@ use Illuminate\Http\Request;
 class FavoriteController extends Controller
 {
     public function addToFavorite(Request $request){
-        try{
+//        try{
             $old = Favorite::query()
                 ->where('user_id', Auth()->user()['id'])
                 ->where('product_id', $request->product_id)
                 ->first();
             if(!$old){
                 $cart = Favorite::query()->create([
-                    'user_id' => Auth()->user()['id'],
+                    'user_id' => Auth()->id(),
                     'product_id' => $request->product_id
                 ]);
                 return response()->json(['data'=>'ok'],200);
             }
             return response()->json(['data'=>'duplicate'],200);
-        }catch (\Exception $exception){
-            return response()->json(['data'=>$exception],500);
-        }
+//        }catch (\Exception $exception){
+//            return response()->json(['data'=>$exception],500);
+//        }
     }
 
     public function getFavorite(){

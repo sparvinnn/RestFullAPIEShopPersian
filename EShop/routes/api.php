@@ -13,6 +13,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CommentController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -77,6 +78,14 @@ Route::middleware('jwt.verify')->prefix('user/')->group(function() {
 //branch route
 Route::middleware('jwt.verify')->get('branch/search', [BranchController::class, "search"]);
 Route::middleware('jwt.verify')->resource('branch', BranchController::class);
+
+//comment route
+Route::middleware('jwt.verify')->prefix('comment/')->group(function() {
+    Route::post("", [CommentController::class, "store"]);
+    Route::delete("{id}", [CommentController::class, "delete"]);
+    Route::put("{id}", [CommentController::class, "update"]);
+});
+
 
 //brand route
 Route::middleware('jwt.verify')->prefix('brand/')->group(function() {
