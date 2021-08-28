@@ -24,7 +24,12 @@ class Comment extends Model
     }
 
     public function parent(){
-        return $this->belongsTo(Comment::class);
+        return $this->belongsTo(Comment::class, 'parent_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Category::class,  'parent_id');
     }
 
     public function admin(){

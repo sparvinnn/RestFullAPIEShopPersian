@@ -23,9 +23,9 @@ class CommentController extends Controller
 
     public function getAll(){
         try{
-//            $comment = Comment::query()->find($id);
-//            if($comment) return response()->json(["status" => "success", "message" => "Success! fined.", "data" => $comment], 200);
-//            else return response()->json(["status" => "fail", "message" => "not Exist!"], 200);
+            $comments = Comment::query()->with('children')->get();
+            if($comments) return response()->json(["status" => "success", "message" => "Success! fined.", "data" => $comments], 200);
+            else return response()->json(["status" => "empty"], 200);
             DB::commit();
         }catch (\Exception $exception){
             return response()->json(["status" => "fail", "message" => $exception], 500);
