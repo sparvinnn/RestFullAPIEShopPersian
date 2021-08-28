@@ -81,6 +81,8 @@ Route::middleware('jwt.verify')->resource('branch', BranchController::class);
 
 //comment route
 Route::middleware('jwt.verify')->prefix('comment/')->group(function() {
+    Route::get("{id}", [CommentController::class, "get"]);
+    Route::get("", [CommentController::class, "getAll"]);
     Route::post("", [CommentController::class, "store"]);
     Route::delete("{id}", [CommentController::class, "delete"]);
     Route::put("{id}", [CommentController::class, "update"]);
