@@ -16,11 +16,16 @@ class Comment extends Model
         'description',
         'suggestion',
         'parent_id',
-        'admin_id'
+        'admin_id',
+        'status'
     ];
 
     public function user(){
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function product(){
+        return $this->belongsTo(Product::class, 'product_id');
     }
 
     public function parent(){

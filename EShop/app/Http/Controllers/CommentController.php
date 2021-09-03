@@ -11,7 +11,30 @@ class CommentController extends Controller
 {
     public function get($id){
         try{
-            $comment = Comment::query()->find($id);
+            $comment = Comment::query()
+                ->where('id', $id)
+                ->with('user')
+                ->with('product')
+                ->with('admin')
+                ->get()
+                ->map(function($item){
+                    return [
+                        'id'          => $item->id,
+                        'user_id'     => $item->user_id,
+                        'user_name'   => $item->user->f_name?? '' . ' ' . $item->user->l_name?? '',
+                        'product_id'  => $item->product_id,
+                        'product_name'=> $item->product->name?? '',
+                        'title'       => $item->title,
+                        'description' => $item->description,
+                        'suggestion'  => $item->suggestion,
+                        'status'      => $item->status,
+                        'parent_id'   => $item->parent_id,
+                        'admin_id'    => $item->admin_id,
+                        'admin_name'  => $item->user->admin?? '' . ' ' . $item->user->admin,
+                    ];
+
+                })
+            ;
             if($comment) return response()->json(["status" => "success", "message" => "Success! fined.", "data" => $comment], 200);
             else return response()->json(["status" => "fail", "message" => "not Exist!"], 200);
             DB::commit();
