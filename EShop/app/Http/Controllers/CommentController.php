@@ -84,7 +84,7 @@ class CommentController extends Controller
                 'product_id'  => $request->product_id,
                 'title'       => $request->title?? null,
                 'description' => $request->description,
-                'suggestion'  => $request->suggestion?? null,
+                'suggestion'  => $request->suggestion?? 1,
                 'parent_id'   => $request->parent_id?? null,
             ]);
 
@@ -121,13 +121,17 @@ class CommentController extends Controller
         try{
             $comment = Comment::query()->find($id);
 
-            if($request->user_id) $comment->user_id    = $request->user_id;
-            if($request->product_id) $comment->product_id = $request->product_id;
-            if($request->status == 1 || $request->status == 0) $comment->status = $request->status;
+            if($request->user_id)
+                $comment->user_id = $request->user_id;
+            if($request->product_id)
+                $comment->product_id = $request->product_id;
+            if($request->status == 1 || $request->status == 0)
+                $comment->status = $request->status;
+            if($request->ssuggestion)
+                $comment->suggestion = $request->suggestion;
 
             $comment->title         =   $request->title;
             $comment->description   =   $request->description;
-            $comment->suggestion    =   $request->suggestion;
             $comment->parent_id     =   $request->parent_id;
             $comment->admin_id      =   Auth::id();
             $comment->save();
