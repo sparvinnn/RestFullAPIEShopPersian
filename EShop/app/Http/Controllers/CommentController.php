@@ -45,7 +45,29 @@ class CommentController extends Controller
 
     public function getAll(){
         try{
-            $comments = Comment::query()->with('children')->get();
+            $comments = Comment::query()
+                ->with('user')
+                ->with('product')
+                ->with('admin')
+//                ->with('children')
+                ->get()
+                ->map(function($item){
+                    return [
+                        'id'          => $item->id,
+                        'user_id'     => $item->user_id,
+                        'user_name'   => $item->user->f_name?? '' . ' ' . $item->user->l_name?? '',
+                        'product_id'  => $item->product_id,
+                        'product_name'=> $item->product->name?? '',
+                        'title'       => $item->title,
+                        'description' => $item->description,
+                        'suggestion'  => $item->suggestion,
+                        'status'      => $item->status,
+                        'parent_id'   => $item->parent_id,
+                        'admin_id'    => $item->admin_id,
+                        'admin_name'  => $item->user->admin?? '' . ' ' . $item->user->admin,
+                    ];
+
+                });
             if($comments) return response()->json(["status" => "success", "message" => "Success! fined.", "data" => $comments], 200);
             else return response()->json(["status" => "empty"], 200);
             DB::commit();
@@ -63,7 +85,7 @@ class CommentController extends Controller
                 'title'       => $request->title?? null,
                 'description' => $request->description,
                 'suggestion'  => $request->suggestion?? null,
-                'parent_id'   => $request->parent_id?? null
+                'parent_id'   => $request->parent_id?? null,
             ]);
 
             if(!is_null($comment)) {
@@ -101,6 +123,7 @@ class CommentController extends Controller
 
             if($request->user_id) $comment->user_id    = $request->user_id;
             if($request->product_id) $comment->product_id = $request->product_id;
+            if($request->status == 1 || $request->status == 0) $comment->status = $request->status;
 
             $comment->title         =   $request->title;
             $comment->description   =   $request->description;
