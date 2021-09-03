@@ -129,6 +129,7 @@ class CommentController extends Controller
             $comment->description   =   $request->description;
             $comment->suggestion    =   $request->suggestion;
             $comment->parent_id     =   $request->parent_id;
+            $comment->admin_id      =   Auth::id();
             $comment->save();
             DB::commit();
             return response()->json(["status" => "success", "message" => "Success! edit completed", "data" => $comment], 200);
