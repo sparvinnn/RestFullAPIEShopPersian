@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -47,15 +48,25 @@ class CommentController extends Controller
     public function getAll(Request $request){
         $product_id = $request->product_id;
         $product_title = $request->product_title;
+        $mobile = $request->mobile?? null;
+        $user_id = null;
         try{
             if($product_title){
                 $product = Product::query()->where('name', $product_title)->first();
                 if($product) $product_id = $product->id;
             }
 
+            if($mobile){
+                $user = User::query()->where('mobile', $mobile)->first();
+                if($user) $user_id = $user->id;
+            }
+
             $comments = Comment::query()
                 ->when($product_id, function ($query) use ($product_id){
                     return $query->where('product_id', $product_id);
+                })
+                ->when($user_id, function ($query) use ($user_id){
+                    return $query->where('user_id', $user_id);
                 })
                 ->with('user')
                 ->with('product')
