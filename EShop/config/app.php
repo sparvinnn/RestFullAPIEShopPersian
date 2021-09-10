@@ -163,7 +163,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
-
+        Zarinpal\Laravel\ZarinpalServiceProvider::class,
         /*
          * Package Service Providers...
          */

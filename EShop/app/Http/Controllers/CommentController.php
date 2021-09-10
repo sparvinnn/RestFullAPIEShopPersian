@@ -50,8 +50,8 @@ class CommentController extends Controller
         try{
             if($product_title){
                 $product = Product::query()->where('name', $product_title)->first();
+                if($product) $product_id = $product->id;
             }
-            if($product) $product_id = $product->id;
 
             $comments = Comment::query()
                 ->when($product_id, function ($query) use ($product_id){
