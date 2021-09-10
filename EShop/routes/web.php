@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+use App\Http\Controllers\testController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -20,5 +20,5 @@ Route::get('test',function(){
     return view('test');
 });
 
-Route::get('order','testController@order');
-Route::post('shop','testController@add_order');
+Route::get('order',[testController::class, "order"]);
+Route::post('shop',[testController::class, "add_order"]);

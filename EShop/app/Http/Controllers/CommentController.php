@@ -130,8 +130,8 @@ class CommentController extends Controller
             $comment = Comment::query()->find($id);
             if($comment) $comment->delete();
             else return response()->json(["status" => "success", "message" => "not Exist!"], 200);
-            return response()->json(["status" => "success", "message" => "Success! delete completed", "data" => $comment], 200);
             DB::commit();
+            return response()->json(["status" => "success", "message" => "Success! delete completed", "data" => $comment], 200);
         }catch (\Exception $exception){
             DB::rollBack();
             return response()->json($exception, 500);
@@ -140,14 +140,14 @@ class CommentController extends Controller
 
     public function update($id, Request $request){
         DB::beginTransaction();
-        try{
+//        try{
             $comment = Comment::query()->find($id);
 
             if($request->user_id)
                 $comment->user_id = $request->user_id;
             if($request->product_id)
                 $comment->product_id = $request->product_id;
-            if($request->status == 1 || $request->status == 0)
+            if($request->status == '1' || $request->status == '0')
                 $comment->status = $request->status;
             if($request->ssuggestion)
                 $comment->suggestion = $request->suggestion;
@@ -159,10 +159,10 @@ class CommentController extends Controller
             $comment->save();
             DB::commit();
             return response()->json(["status" => "success", "message" => "Success! edit completed", "data" => $comment], 200);
-        }catch (\Exception $exception){
-            DB::rollBack();
-            return response()->json($exception, 500);
-        }
+//        }catch (\Exception $exception){
+//            DB::rollBack();
+//            return response()->json($exception, 500);
+//        }
     }
 
 }
