@@ -43,9 +43,13 @@ class CommentController extends Controller
         }
     }
 
-    public function getAll(){
+    public function getAll(Request $request){
+        $product_id = $request->product_id;
         try{
             $comments = Comment::query()
+                ->when($product_id, function ($query) use ($product_id){
+                    return $query->where('product_id', $product_id);
+                })
                 ->with('user')
                 ->with('product')
                 ->with('admin')
