@@ -14,6 +14,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\paymentController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -41,6 +42,13 @@ Route::group([
     Route::post('logout', [AuthController::class, "logout"]);
     Route::post('refresh', [AuthController::class, "refresh"]);
     Route::post('me', [AuthController::class, "me"]);
+});
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+], function () {
+    Route::post('pay',[paymentController::class, "start"]);
 });
 //Route::post("login",
 //    LoginController::class);
