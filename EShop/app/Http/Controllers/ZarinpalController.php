@@ -98,7 +98,8 @@ class ZarinpalController extends Controller
             $order = new zarinpal();
             $url  = "/user/balance/verifyBuy?content_id=".(string)$id."&site_income=". $site_income . "&Amount_pay=" . $Amount_pay . "&mode=" . $mode. "&back_url=" . $back_url;
             $res = $order->pay($Amount_pay,"","", $url);
-            return  redirect('https://www.zarinpal.com/pg/StartPay/' . $res);
+//            return  redirect('https://www.zarinpal.com/pg/StartPay/' . $res);
+            return  redirect('https://sandbox.zarinpal.com/pg/StartPay/' . $res);
         } catch (Exception $ex) {
             if (\Config::get('app.debug')) {
                 \Session::put('error', 'Connection timeout');
@@ -129,7 +130,8 @@ class ZarinpalController extends Controller
 
         // $Amount = $transaction->price;
         if ($request->get('Status') == 'OK') {
-            $client = new nusoap_client('https://www.zarinpal.com/pg/services/WebGate/wsdl', 'wsdl');
+//            $client = new nusoap_client('https://www.zarinpal.com/pg/services/WebGate/wsdl', 'wsdl');
+            $client = new nusoap_client('https://sandbox.zarinpal.com/pg/services/WebGate/wsdl', 'wsdl');
             $client->soap_defencoding = 'UTF-8';
 
             $result = $client->call('PaymentVerification', [
@@ -273,7 +275,8 @@ class ZarinpalController extends Controller
 
         $Amount = $transaction->price;
         if ($request->get('Status') == 'OK') {
-            $client = new nusoap_client('https://www.zarinpal.com/pg/services/WebGate/wsdl', 'wsdl');
+//            $client = new nusoap_client('https://www.zarinpal.com/pg/services/WebGate/wsdl', 'wsdl');
+            $client = new \nusoap_client('https://sandbox.zarinpal.com/pg/services/WebGate/wsdl', 'wsdl');
             $client->soap_defencoding = 'UTF-8';
 
             $result = $client->call('PaymentVerification', [

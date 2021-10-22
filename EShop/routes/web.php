@@ -22,3 +22,4 @@ Route::get('test',function(){
 
 Route::get('order',[testController::class, "order"]);
 Route::post('shop',[testController::class, "add_order"]);
+Route::post('start',[testController::class, "test"]);

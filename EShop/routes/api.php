@@ -29,6 +29,7 @@ use App\Http\Controllers\CommentController;
 //    return $request->user();
 //});
 
+Route::get('test', [\App\Http\Controllers\testController::class, "test"])->name('test');
 
 // user controller routes
 Route::get('home', [HomeController::class, "index"])->name('home');

@@ -140,7 +140,7 @@ class CommentController extends Controller
 
     public function update($id, Request $request){
         DB::beginTransaction();
-//        try{
+        try{
             $comment = Comment::query()->find($id);
 
             if($request->user_id)
@@ -159,10 +159,10 @@ class CommentController extends Controller
             $comment->save();
             DB::commit();
             return response()->json(["status" => "success", "message" => "Success! edit completed", "data" => $comment], 200);
-//        }catch (\Exception $exception){
-//            DB::rollBack();
-//            return response()->json($exception, 500);
-//        }
+        }catch (\Exception $exception){
+            DB::rollBack();
+            return response()->json($exception, 500);
+        }
     }
 
 }
