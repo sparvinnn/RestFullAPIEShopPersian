@@ -15,25 +15,21 @@ class paymentController extends Controller
     private $amount=0;
 
     public function start(Request $request){
-
+        
         $change_price = [];
-        $products = json_decode($request->list);
-//        $products = $request->list;
+    
+       $products = $request->list;
 
         foreach ($products as $item) {
-//            $item = json_decode($item);
+    
             $temp = Product::query()
-                ->where('id', $item->id)
-//                ->where('id', $item['id'])
+               ->where('id', $item['id'])
                 ->first()['price'];
-//            if($item['price'] == $temp) {
-            if($item->price == $temp) {
-//                $this->amount += $item['price'] * $item['num'];
-                $this->amount += $item->price * $item->num;
+           if($item['price'] == $temp) {
+               $this->amount += $item['price'] * $item['num'];
                 continue;
             }
-//            $item['price'] = $temp;
-            $item->price = $temp;
+           $item['price'] = $temp;
             array_push($change_price, $item);
         }
 
@@ -45,21 +41,17 @@ class paymentController extends Controller
                 'amount'  => $this->amount
             ]);
             foreach ($products as $item) {
-//                PaymentProduct::create([
-//                    'product_id' => $item['id'],
-//                    'payment_id' => $payment['id'],
-//                    'num'        => $item['num']
-//                ]);
-                PaymentProduct::create([
-                    'product_id' => $item->id,
-                    'payment_id' => $payment['id'],
-                    'num'        => $item->num
-                ]);
+               PaymentProduct::create([
+                   'product_id' => $item['id'],
+                   'payment_id' => $payment['id'],
+                   'num'        => $item['num']
+               ]);
             }
         }
 
         $order = new zarinpal();
         $res = $order->pay($request->price,"sparvinnn@gmail.com","09117158276");
+        return 'https://sandbox.zarinpal.com/pg/StartPay/' . $res;
         return redirect('https://sandbox.zarinpal.com/pg/StartPay/' . $res);
     }
 
