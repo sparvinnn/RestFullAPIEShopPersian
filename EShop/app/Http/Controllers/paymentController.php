@@ -22,19 +22,23 @@ class paymentController extends Controller
 
         foreach ($products as $item) {
     
-            $temp = Product::query()
-               ->where('id', $item['id'])
-                ->first()['price'];
-           if($item['price'] == $temp) {
+            return $temp = Product::query()
+                ->where('id', $item['id'])
+                ->first();
+            if($item['price'] == $temp['price'] && $temp['inventory_number']>0) {
                $this->amount += $item['price'] * $item['num'];
                 continue;
             }
-           $item['price'] = $temp;
+            $item['price'] = $temp;
             array_push($change_price, $item);
         }
 
         if(count($change_price)>0)
-            return $change_price;
+            return response()->json([
+                'status'=>false,
+                'data'=>$change_price
+            ]);
+            
         else{
             $payment = Payment::create([
                 'user_id' => Auth::id(),
@@ -51,8 +55,12 @@ class paymentController extends Controller
 
         $order = new zarinpal();
         $res = $order->pay($request->price,"sparvinnn@gmail.com","09117158276");
-        return 'https://sandbox.zarinpal.com/pg/StartPay/' . $res;
-        return redirect('https://sandbox.zarinpal.com/pg/StartPay/' . $res);
+        return response()->json([
+            'status'=>true,
+            'data'=>'https://sandbox.zarinpal.com/pg/StartPay/' . $res
+        ]);
+    
+        
     }
 
     public function order(Request $request){
@@ -95,7 +103,10 @@ class paymentController extends Controller
                 'ref_id'  => $result['RefID']
             ]);
 
+            return redirect('http://localhost:3000/dashboard/basket?status='.$result['Status'].'&RefID='.$result['RefID']);
+
             if ($result['Status'] == 100) {
+                
                 return 'پرداخت با موفقیت انجام شد.';
 
             } else {

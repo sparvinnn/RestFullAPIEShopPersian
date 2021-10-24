@@ -105,6 +105,7 @@ class testController extends Controller
             ]);
 
             if ($result['Status'] == 100) {
+                return redirect('http://localhost:3000/dashboard/basket');
                 return 'پرداخت با موفقیت انجام شد.';
 
             } else {
