@@ -20,9 +20,12 @@ class CartController extends Controller
                     'product_id' => $request->product_id,
                     'number'   => $request->number
                 ]);
-                return response()->json(['data'=>'ok'],200);
             }
-            return response()->json(['data'=>'duplicate'],200);
+            else{
+                $old->number = $old->number + 1;
+                $old->save();
+            }
+            return response()->json(['data'=>'ok'],200);
         }catch (\Exception $exception){
             return response()->json(['data'=>$exception],500);
         }
