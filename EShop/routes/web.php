@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 use App\Http\Controllers\testController;
+use App\Http\Controllers\paymentController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -20,6 +21,6 @@ Route::get('test',function(){
     return view('test');
 });
 
-Route::get('order',[testController::class, "order"]);
+Route::get('order',[paymentController::class, "order"]);
 Route::post('shop',[testController::class, "add_order"]);
 Route::post('start',[testController::class, "test"]);

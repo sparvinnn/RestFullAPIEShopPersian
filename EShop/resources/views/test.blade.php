@@ -3,18 +3,18 @@
     <input type="text" name="price">
     <input type="text" name="list" value='[
     {
-        "id": 4,
+        "id": 78,
     "price": 157000,
     "num":  1
     },
     {
-    "id": 21,
-    "price": 6656,
+    "id": 79,
+    "price": 120000,
     "num":  1
     },
     {
-    "id": 22,
-    "price": 6656,
+    "id": 80,
+    "price":200000,
     "num":  1
     }
     ]'>

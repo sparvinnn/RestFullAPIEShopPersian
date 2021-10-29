@@ -46,7 +46,7 @@ Route::group([
 
 Route::group([
     'middleware' => 'api',
-    'prefix' => 'auth'
+
 ], function () {
     Route::post('pay',[paymentController::class, "start"]);
 });
