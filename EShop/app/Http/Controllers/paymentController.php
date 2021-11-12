@@ -104,7 +104,7 @@ class paymentController extends Controller
                 'ref_id'  => $result['RefID']
             ]);
 
-            return redirect('http://localhost:3000/dashboard/basket?status='.$result['Status'].'&RefID='.$result['RefID']);
+            return redirect('http://localhost:3000/dashboard/basket/register?status='.$result['Status'].'&RefID='.$result['RefID']);
 
             if ($result['Status'] == 100) {
                 
