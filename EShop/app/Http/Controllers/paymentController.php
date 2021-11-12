@@ -19,10 +19,10 @@ class paymentController extends Controller
         $change_price = [];
     
        $products = $request->list;
-
+    
         foreach ($products as $item) {
     
-            return $temp = Product::query()
+            $temp = Product::query()
                 ->where('id', $item['id'])
                 ->first();
             if($item['price'] == $temp['price'] && $temp['inventory_number']>0) {
@@ -32,6 +32,7 @@ class paymentController extends Controller
             $item['price'] = $temp;
             array_push($change_price, $item);
         }
+
 
         if(count($change_price)>0)
             return response()->json([
