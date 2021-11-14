@@ -112,6 +112,8 @@
       <path value="$PROJECT_DIR$/EShop/vendor/psy/psysh" />
       <path value="$PROJECT_DIR$/EShop/vendor/phpoption/phpoption" />
       <path value="$PROJECT_DIR$/EShop/vendor/webmozart/assert" />
+      <path value="$PROJECT_DIR$/EShop/vendor/zarinpal/zarinpal" />
+      <path value="$PROJECT_DIR$/EShop/vendor/econea/nusoap" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.3" />

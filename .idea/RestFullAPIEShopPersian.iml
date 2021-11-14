@@ -118,6 +118,8 @@
       <excludeFolder url="file://$MODULE_DIR$/EShop/vendor/psy/psysh" />
       <excludeFolder url="file://$MODULE_DIR$/EShop/vendor/phpoption/phpoption" />
       <excludeFolder url="file://$MODULE_DIR$/EShop/vendor/webmozart/assert" />
+      <excludeFolder url="file://$MODULE_DIR$/EShop/vendor/zarinpal/zarinpal" />
+      <excludeFolder url="file://$MODULE_DIR$/EShop/vendor/econea/nusoap" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

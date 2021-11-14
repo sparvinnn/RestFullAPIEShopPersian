@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="b3b9347e-18be-40e0-b855-b3fda5411b80" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/RestFullAPIEShopPersian.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/RestFullAPIEShopPersian.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EShop/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/EShop/routes/api.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,6 +133,8 @@
       <path value="$PROJECT_DIR$/EShop/vendor/psy/psysh" />
       <path value="$PROJECT_DIR$/EShop/vendor/phpoption/phpoption" />
       <path value="$PROJECT_DIR$/EShop/vendor/webmozart/assert" />
+      <path value="$PROJECT_DIR$/EShop/vendor/zarinpal/zarinpal" />
+      <path value="$PROJECT_DIR$/EShop/vendor/econea/nusoap" />
     </include_path>
   </component>
   <component name="ProjectId" id="1tTMuU1zCYzZ8ypDTUkBDKKDsxT" />
@@ -140,6 +146,11 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -163,6 +174,7 @@
       <workItem from="1623643037461" duration="5234000" />
       <workItem from="1626548191737" duration="81000" />
       <workItem from="1626939278598" duration="7435000" />
+      <workItem from="1636721929323" duration="3094000" />
     </task>
     <servers />
   </component>
@@ -179,5 +191,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

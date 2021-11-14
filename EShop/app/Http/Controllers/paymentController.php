@@ -15,13 +15,13 @@ class paymentController extends Controller
     private $amount=0;
 
     public function start(Request $request){
-        
+
         $change_price = [];
-    
+
        $products = $request->list;
-    
+
         foreach ($products as $item) {
-    
+
             $temp = Product::query()
                 ->where('id', $item['id'])
                 ->first();
@@ -39,7 +39,7 @@ class paymentController extends Controller
                 'status'=>false,
                 'data'=>$change_price
             ]);
-            
+
         else{
             $payment = Payment::create([
                 'user_id' => Auth::id(),
@@ -60,8 +60,8 @@ class paymentController extends Controller
             'status'=>true,
             'data'=>'https://sandbox.zarinpal.com/pg/StartPay/' . $res
         ]);
-    
-        
+
+
     }
 
     public function order(Request $request){
@@ -76,6 +76,10 @@ class paymentController extends Controller
         $products = PaymentProduct::query()
             ->where('payment_id', $payment->id)
             ->get();
+
+        $amount = $products = PaymentProduct::query()
+            ->where('payment_id', $payment->id)
+            ->first()['amount'];
 
         foreach ($products as $item){
             $amount += $item->num * Product::query()->where('id', $item->product_id)->first()['price'];
@@ -107,7 +111,7 @@ class paymentController extends Controller
             return redirect('http://localhost:3000/dashboard/basket/register?status='.$result['Status'].'&RefID='.$result['RefID']);
 
             if ($result['Status'] == 100) {
-                
+
                 return 'پرداخت با موفقیت انجام شد.';
 
             } else {
