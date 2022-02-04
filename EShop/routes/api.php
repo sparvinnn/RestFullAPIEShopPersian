@@ -15,6 +15,7 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\paymentController;
+use App\Http\Controllers\PropertiesController;
 /*
 |--------------------------------------------------------------------------
 | API Routes

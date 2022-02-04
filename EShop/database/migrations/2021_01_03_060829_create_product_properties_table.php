@@ -18,10 +18,30 @@ class CreateProductPropertiesTable extends Migration
             $table->unsignedBigInteger('product_id')->nullable();
             $table->foreign('product_id')->references('id')->on('products')
                 ->onDelete('cascade')->onUpdate('cascade');
-            $table->unsignedBigInteger('property_id')->nullable();
-            $table->foreign('property_id')->references('id')->on('category_metas')
-                ->onDelete('cascade')->onUpdate('cascade');
-            $table->string('value');
+            $table->foreignId('size_id')->nullable();
+            $table->foreignId('material_id')->nullable();
+            $table->foreignId('color_id')->nullable();
+            $table->foreignId('design_id')->nullable();
+            $table->foreignId('alessve_id')->nullable();
+            $table->foreignId('piece_id')->nullable();
+            $table->foreignId('set_type_id')->nullable();
+            $table->foreignId('description_id')->nullable();
+            $table->foreignId('maintenance_id')->nullable();
+            $table->foreignId('made_in_id')->nullable();
+            $table->foreignId('origin_id')->nullable();
+            $table->foreignId('type_id')->nullable();
+            $table->foreignId('for_use_id')->nullable();
+            $table->foreignId('collar_id')->nullable();
+            $table->foreignId('height_id')->nullable();
+            $table->foreignId('physical_feature_id')->nullable();
+            $table->foreignId('production_time_id')->nullable();
+            $table->foreignId('demension_id')->nullable();
+            $table->foreignId('crotch_id')->nullable();
+            $table->foreignId('close_id')->nullable();
+            $table->foreignId('drop_id')->nullable();
+            $table->foreignId('cumin_id')->nullable();
+            $table->foreignId('close_shoes_id')->nullable();
+            $table->integer('inventory_number')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });
