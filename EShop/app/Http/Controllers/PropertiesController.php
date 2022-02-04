@@ -79,9 +79,15 @@ class PropertiesController extends Controller
             'نوع لباس'
         ];
 
+        $ressult = [];
+        for($i=0 ; $i<23; $i++){
+            $temp['en'] = $data[$i];
+            $temp['fa'] = $data_fa[$i];
+            array_push($ressult,$temp);
+        }
+
         return response()->json([
-            'data' => $data,
-            'fa' => $data_fa,
+            'data' => $ressult,
             'msg' => 'با موفقیت انجام شد'
         ],200);
     }

@@ -39,7 +39,7 @@ class CreateCategoryPropertiesTable extends Migration
             $table->boolean('drop')->nullable();//دراپ
             $table->boolean('cumin')->nullable();//زیره
             $table->boolean('close_shoes')->nullable();//نوع بستن کفش
-            $table->boolean('typeـofـclothing')->nullable();//نوع لباس
+            $table->boolean('typeـofـclothing')->nullable();//نوع لباس 
             $table->boolean('specialized_features')->nullable();//ویژگی ها تخصصی
             $table->timestamps();
         });

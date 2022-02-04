@@ -23,28 +23,75 @@ class ProductController extends Controller
     {
         try{
             DB::beginTransaction();
-            $inputs = $request->product[0];
-            $product   =   Product::create($inputs);
-
-            $inputs = $request->properties[0];
-
-            foreach($inputs as $input)
-                ProductProperty::query()->create([
-                    'product_id'=>$product->id,
-                    'property_id'=>$input[0]['property_id'],
-                    'value'=>$input[0]['value'],
-                ]);
-            $properties = ProductProperty::where('product_id', $product->id)
-                ->get();
+            $inputs     = $request->product;
+            $product    = Product::create([
+                "name"=> $inputs->name,
+                "price"=> $inputs->price,
+                "description"=> $inputs->description,
+                "category_id"=> $inputs->category_id,
+                "branch_id"=> $inputs->branch_id,
+                "inventory_number"=> $inputs->inventory_number,
+                "total_number"=> $inputs->total_number,
+                "sales_number"=> $inputs->sales_number,
+                "rate"=> $inputs->rate,
+                "vote"=> $inputs->vote
+            ]);
             DB::commit();
-            return response()->json(["status" => "success", "message" => "Success! registration completed", "product" => $product, "properties" => $properties]);
+            return response()->json([
+                "status"  => "success", 
+                "message" => "با موفقیت افزوده شد", 
+                "product" => $product],
+            200);
 
         }catch (\Exception $e){
             DB::rollBack();
-            return response()->json(["status" => "failed", "message" => $e]);
+            return response()->json(["status" => "failed", "message" => $e], 500);
         }
 
 
+    }
+
+    public function productProperties(Request $request){
+        try{
+            DB::beginTransaction();
+            ProductProperty::query()->create([
+                'product_id'=> $request->product_id,
+                'branch_id' => $request->branch_id,
+                'size' => $request->size?? null,
+                'material'=> $request->material?? null,
+                'color'=> $request->color?? null,
+                'design'=> $request->design?? null,
+                'sleeve'=> $request->sleeve?? null,
+                'piece'=> $request->piece?? null,
+                'set_type'=> $request->set_type?? null,
+                'description'=> $request->description?? null,
+                'maintenance'=> $request->maintenance?? null,
+                'made_in'=> $request->made_in?? null,
+                'origin'=> $request->origin?? null,
+                'type'=> $request->type?? null,
+                'for_use'=> $request->for_use?? null,
+                'collar'=> $request->collar?? null,
+                'height'=> $request->height?? null,
+                'physical_feature'=> $request->physical_feature?? null,
+                'production_time'=> $request->production_time?? null,
+                'demension'=> $request->demension?? null,
+                'crotch'=> $request->crotch?? null,
+                'close'=> $request->close?? null,
+                'drop'=> $request->drop?? null,
+                'cumin'=> $request->cumin?? null,
+                'close_shoes'=> $request->close_shoes?? null,
+                'typeـofـclothing'=> $request->typeـofـclothing?? null,
+                'specialized_features'=> $request->specialized_features?? null
+            ]);
+            DB::commit();
+            return response()->json([
+                "status" => "success", 
+                "message" => "با موفقیت افزوده شد", 
+            ],200);
+        }catch(\Exception $exception){
+            DB::rollBack();
+            return response()->json(["status" => "failed", "message" => $exception],500);
+        }
     }
 
     public function update(Request $request, $id){

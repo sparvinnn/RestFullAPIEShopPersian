@@ -18,30 +18,35 @@ class CreateProductPropertiesTable extends Migration
             $table->unsignedBigInteger('product_id')->nullable();
             $table->foreign('product_id')->references('id')->on('products')
                 ->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('size_id')->nullable();
-            $table->foreignId('material_id')->nullable();
-            $table->foreignId('color_id')->nullable();
-            $table->foreignId('design_id')->nullable();
-            $table->foreignId('alessve_id')->nullable();
-            $table->foreignId('piece_id')->nullable();
-            $table->foreignId('set_type_id')->nullable();
-            $table->foreignId('description_id')->nullable();
-            $table->foreignId('maintenance_id')->nullable();
-            $table->foreignId('made_in_id')->nullable();
-            $table->foreignId('origin_id')->nullable();
-            $table->foreignId('type_id')->nullable();
-            $table->foreignId('for_use_id')->nullable();
-            $table->foreignId('collar_id')->nullable();
-            $table->foreignId('height_id')->nullable();
-            $table->foreignId('physical_feature_id')->nullable();
-            $table->foreignId('production_time_id')->nullable();
-            $table->foreignId('demension_id')->nullable();
-            $table->foreignId('crotch_id')->nullable();
-            $table->foreignId('close_id')->nullable();
-            $table->foreignId('drop_id')->nullable();
-            $table->foreignId('cumin_id')->nullable();
-            $table->foreignId('close_shoes_id')->nullable();
-            $table->integer('inventory_number')->default(0);
+
+            $table->unsignedBigInteger('branch_id')->nullable();
+            $table->foreign('branch_id')->references('id')->on('products')
+                ->onDelete('cascade')->onUpdate('cascade');
+            $table->string('size')->nullable();//اندازه
+            $table->string('material')->nullable();//جنس
+            $table->string('color')->nullable();//رنگ
+            $table->string('design')->nullable();//طرح
+            $table->string('sleeve')->nullable();//آستین
+            $table->string('piece')->nullable();//تعداد تکه
+            $table->string('set_type')->nullable();//نوع ست
+            $table->string('description')->nullable();//توضیحات
+            $table->string('maintenance')->nullable();//نگهداری
+            $table->string('made_in')->nullable();//تولید کننده
+            $table->string('origin')->nullable();//مبدا
+            $table->string('type')->nullable();//نوع
+            $table->string('for_use')->nullable();//استفاده برای
+            $table->string('collar')->nullable();//یقه
+            $table->string('height')->nullable();//قد
+            $table->string('physical_feature')->nullable();//ویژگی های ظاهری
+            $table->string('production_time')->nullable();//زمان تولید
+            $table->string('demension')->nullable();
+            $table->string('crotch')->nullable();//فاق
+            $table->string('close')->nullable();//بسته شدن
+            $table->string('drop')->nullable();//دراپ
+            $table->string('cumin')->nullable();//زیره
+            $table->string('close_shoes')->nullable();//نوع بستن کفش
+            $table->string('typeـofـclothing')->nullable();//نوع لباس 
+            $table->string('specialized_features')->nullable();//ویژگی ها تخصصی
             $table->softDeletes();
             $table->timestamps();
         });
