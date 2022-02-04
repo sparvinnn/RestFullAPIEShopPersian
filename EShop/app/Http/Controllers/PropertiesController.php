@@ -23,4 +23,66 @@ class PropertiesController extends Controller
         ],200);
 
     }
+
+    public function allProperties(){
+        $data = [
+            'size',
+            'material',
+            'color',
+            'design',
+            'sleeve',
+            'piece',
+            'set_type',
+            'description',
+            'maintenance',
+            'made_in',
+            'origin',
+            'type',
+            'for_use',
+            'collar',
+            'height',
+            'physical_feature',
+            'production_time',
+            'demension',
+            'crotch',
+            'close',
+            'drop',
+            'cumin',
+            'close_shoes',
+            'specialized_features',
+            'typeـofـclothing'
+        ];
+        $data_fa = [
+            'سایز',
+            'جنس',
+            'رنگ',
+            'طرح',
+            'آستین',
+            'تعداد تکه',
+            'نوع ست',
+            'نگهداری',
+            'کشور تولید کننده',
+            'کشور مبدا',
+            'نوع',
+            'مناسب برای استفاده',
+            'یقه',
+            'قد',
+            'ویژگی های ظاهری',
+            'زمان تولید',
+            'ابعاد',
+            'فاق',
+            'نحوه بسته شدن',
+            'دراپ',
+            'زیره',
+            'نحوه بسته شدن کفش',
+            'ویژگی های تخصصی',
+            'نوع لباس'
+        ];
+
+        return response()->json([
+            'data' => $data,
+            'fa' => $data_fa,
+            'msg' => 'با موفقیت انجام شد'
+        ],200);
+    }
 }

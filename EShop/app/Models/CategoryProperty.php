@@ -33,6 +33,8 @@ class CategoryProperty extends Model
         'close',
         'drop',
         'cumin',
-        'close_shoes'];
+        'close_shoes',
+        'typeـofـclothing',
+        'specialized_features'];
     
 }

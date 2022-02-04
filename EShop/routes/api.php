@@ -142,6 +142,7 @@ Route::middleware('jwt.verify')->prefix('category/')->group(function() {
     // Route::post("updateProperties", [CategoryController::class, "updateProperties"]);
     
     Route::post("updateProperties", [PropertiesController::class, "updateProperties"]);
+    Route::post("allProperties", [PropertiesController::class, "allProperties"]);
 });
 
 //product route
