@@ -133,13 +133,15 @@ Route::middleware('jwt.verify')->prefix('favorite/')->group(function() {
 
 //category route
 Route::middleware('jwt.verify')->prefix('category/')->group(function() {
+    // Route::prefix('category/')->group(function() {
     Route::post("", [CategoryController::class, "store"]);
     Route::put("{id}", [CategoryController::class, "update"]);
     Route::delete("{id}", [CategoryController::class, "delete"]);
 
     Route::post("addProperties", [CategoryController::class, "addProperties"]);
-    Route::post("updateProperties", [CategoryController::class, "updateProperties"]);
-
+    // Route::post("updateProperties", [CategoryController::class, "updateProperties"]);
+    
+    Route::post("updateProperties", [PropertiesController::class, "updateProperties"]);
 });
 
 //product route
