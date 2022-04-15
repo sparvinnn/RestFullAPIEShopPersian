@@ -15,6 +15,26 @@ class testController extends Controller
 {
     private $amount=0;
 
+    public function mytest(){
+        // return 
+        $APIkey = [
+            'key'   => 'WEB_TOKEN',
+            'value' => '727c8e6b-e34f-49fe-9abe-59d5e4301e74'
+        ];
+
+        $client = new \GuzzleHttp\Client(); 
+        $res    = $client->request('GET', env('API_REQUEST_URL').
+        'itemcategoryl3?count=&lastdate=&ParentCategoryCode=01',  [
+            'headers' => [
+                'WEB_TOKEN' => ['727c8e6b-e34f-49fe-9abe-59d5e4301e74']
+            ],
+        ]);
+        // return $res->getBody();
+        //decode string response to json format
+        $data = json_decode($res->getBody());
+        return $data;
+    }
+
     public function test(Request $request){
 
         $change_price = [];

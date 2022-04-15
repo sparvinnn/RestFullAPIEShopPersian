@@ -54,7 +54,7 @@ class AuthController extends Controller
                 'phone' => isset($user->phone) ? $user->phone : null,
                 'email' => $user->email ?? null,
                 'isPhoneVerified' => $user->is_phone_verified == 1,
-                'roles' => $user->getRoleNames()
+                // 'roles' => $user->getRoleNames()
             ];
             return $data;
         }

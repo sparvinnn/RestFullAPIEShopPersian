@@ -24,3 +24,5 @@ Route::get('test',function(){
 Route::get('order',[paymentController::class, "order"]);
 Route::post('shop',[testController::class, "add_order"]);
 Route::post('start',[testController::class, "test"]);
+
+Route::get('test2',[testController::class, "mytest"]);

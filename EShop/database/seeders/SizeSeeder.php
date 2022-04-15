@@ -23,7 +23,7 @@ class SizeSeeder extends Seeder
 
         for ($i=5; $i<100; $i++)
             Size::create([
-                'name' => $item
+                'name' => $i
             ]);
     }
 }
