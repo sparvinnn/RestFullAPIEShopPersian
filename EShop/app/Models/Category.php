@@ -11,7 +11,17 @@ class Category extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['name_fa', 'name_en', 'slug', 'parent_id'];
+    protected $fillable = [
+        'name_fa', 
+        'name_en', 
+        'slug', 
+        'parent_id',
+        'category_id_giv',
+        'category_code_giv',
+        'parent_category_code_giv',
+        'category_is_active_giv',
+        'level_giv',
+        'last_date_giv'];
 
     public function parent()
     {

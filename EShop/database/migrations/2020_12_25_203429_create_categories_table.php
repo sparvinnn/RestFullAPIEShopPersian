@@ -16,16 +16,17 @@ class CreateCategoriesTable extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name_fa');
-            $table->string('name_en');
-            $table->string('slug');
+            $table->string('name_en')->nullable();
+            $table->string('slug')->nullable();
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->foreign('parent_id')->references('id')->on('categories')
                 ->onDelete('cascade')->onUpdate('cascade');
-            $table->unsignedBigInteger('CategoryID');
-            $table->unsignedBigInteger('CategoryCode');
-            $table->unsignedBigInteger('ParentCategoryCode');
-            $table->boolean('CategoryIsActive');
-            $table->unsignedInteger('CategoryIsActive');
+            $table->unsignedBigInteger('category_id_giv');
+            $table->unsignedBigInteger('category_code_giv');
+            $table->unsignedBigInteger('parent_category_code_giv')->nullable();
+            $table->boolean('category_is_active_giv');
+            $table->unsignedInteger('level_giv');
+            $table->date('last_date_giv');
             $table->softDeletes();
             $table->timestamps();
         });
