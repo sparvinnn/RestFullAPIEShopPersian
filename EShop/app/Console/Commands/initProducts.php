@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-
+use App\Http\Controllers\GivController as giv;
 class initProducts extends Command
 {
     /**
@@ -11,7 +11,7 @@ class initProducts extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'products:init';
 
     /**
      * The console command description.
@@ -37,6 +37,8 @@ class initProducts extends Command
      */
     public function handle()
     {
+        $categories = new giv();
+        $categories->getProductsList();
         return 0;
     }
 }

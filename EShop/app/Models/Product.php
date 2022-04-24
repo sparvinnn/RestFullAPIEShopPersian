@@ -12,7 +12,7 @@ class Product extends Model
 
     protected $fillable = [
         'name',
-        'price',
+        'sell_price',
         'images',
         'video',
         'description',
@@ -24,7 +24,13 @@ class Product extends Model
         'total_number',
         'sales_number',
         'rate',
-        'vote'
+        'vote',
+        'last_date_giv',
+        'item_code_giv',
+        'is_active',
+        'item_group_giv',
+        'item_parent_id_giv'
+
     ];
 
 //    public function category(){

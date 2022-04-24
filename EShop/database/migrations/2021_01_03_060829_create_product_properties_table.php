@@ -47,6 +47,7 @@ class CreateProductPropertiesTable extends Migration
             $table->string('close_shoes')->nullable();//نوع بستن کفش
             $table->string('typeـofـclothing')->nullable();//نوع لباس 
             $table->string('specialized_features')->nullable();//ویژگی ها تخصصی
+            $table->string('sell_price');
             $table->softDeletes();
             $table->timestamps();
         });

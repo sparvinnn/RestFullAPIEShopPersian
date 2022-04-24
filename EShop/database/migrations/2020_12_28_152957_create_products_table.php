@@ -17,7 +17,7 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('price');
+            $table->string('sell_price');
             $table->string('description')->nullable();
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories')
@@ -30,6 +30,10 @@ class CreateProductsTable extends Migration
             $table->integer('sales_number')->default(0);
             $table->integer('rate')->default(0);
             $table->integer('vote')->default(0);
+            $table->dateTime('last_date_giv');
+            $table->integer('item_code_giv');
+            $table->integer('item_group_giv');
+            $table->integer('item_parent_id_giv');
             $table->softDeletes();
             $table->timestamps();
         });
