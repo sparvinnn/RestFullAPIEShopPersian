@@ -30,10 +30,11 @@ class CreateProductsTable extends Migration
             $table->integer('sales_number')->default(0);
             $table->integer('rate')->default(0);
             $table->integer('vote')->default(0);
-            $table->dateTime('last_date_giv');
-            $table->integer('item_code_giv');
-            $table->integer('item_group_giv');
-            $table->integer('item_parent_id_giv');
+            $table->dateTime('last_date_giv')->default(now());
+            $table->string('item_code_giv');
+            $table->string('item_group_giv');
+            $table->string('item_parent_id_giv');
+            $table->boolean('is_active_giv')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });

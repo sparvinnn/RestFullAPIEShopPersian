@@ -10,7 +10,7 @@ class GetCategoriesList
         
         $client = new \GuzzleHttp\Client(); 
         $res    = $client->request('GET', env('API_REQUEST_URL').
-        'itemcategoryl1',  [
+        'itemcategoryl1?count=2000',  [
             'headers' => [
                 'WEB_TOKEN' => ['727c8e6b-e34f-49fe-9abe-59d5e4301e74']
             ],
@@ -33,7 +33,7 @@ class GetCategoriesList
 
         $client = new \GuzzleHttp\Client(); 
         $res    = $client->request('GET', env('API_REQUEST_URL').
-        'itemcategoryl2',  [
+        'itemcategoryl2?count=2000',  [
             'headers' => [
                 'WEB_TOKEN' => ['727c8e6b-e34f-49fe-9abe-59d5e4301e74']
             ],
@@ -56,7 +56,7 @@ class GetCategoriesList
 
             $client = new \GuzzleHttp\Client(); 
             $res    = $client->request('GET', env('API_REQUEST_URL').
-            'itemcategoryl3',  [
+            'itemcategoryl3?count=2000',  [
                 'headers' => [
                     'WEB_TOKEN' => ['727c8e6b-e34f-49fe-9abe-59d5e4301e74']
                 ],

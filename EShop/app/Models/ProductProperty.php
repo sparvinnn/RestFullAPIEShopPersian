@@ -37,7 +37,8 @@ class ProductProperty extends Model
         'cumin',
         'close_shoes',
         'typeـofـclothing',
-        'specialized_features'];
+        'specialized_features',
+        'sell_price'];
 
     public function product(){
         return $this->belongsTo(Product::class);
