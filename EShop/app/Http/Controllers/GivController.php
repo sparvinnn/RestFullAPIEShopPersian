@@ -13,6 +13,11 @@ class GivController extends Controller
         $temp->categoriesList();
     }
 
+    public function categoriesUpdate(){
+        $temp = new GetCategoriesList();
+        $temp->updateParentId();
+    }
+
     public function getProductsList(){
         $temp = new GetProductsList();
         $temp->productsList();

@@ -59,6 +59,7 @@ class CategoryController extends Controller
         $name = $request->name;
         $parent_id = $request->parent_id;
         $with_childeren = $request->with_childeren;
+        $right_menu = $request->right_menu;
         try{
             $list = Category::
                 when($id, function ($q, $id) {
@@ -70,6 +71,9 @@ class CategoryController extends Controller
                 ->when($parent_id, function ($q, $parent_id) {
                     return $q->where('parent_id', $parent_id);
                 })
+                ->when($right_menu, function ($q) {
+                    return $q->whereNull('parent_id');
+                })
                 ->orderBy('created_at')
                 ->with(['children', 'parent', 'meta'])
                 ->get([
@@ -77,7 +81,7 @@ class CategoryController extends Controller
                     'name_fa',
                     'name_en',
                     'slug',
-                    'parent_id'
+                    'parent_category_code_giv as parent_id'
                 ]);
 
             $response = [

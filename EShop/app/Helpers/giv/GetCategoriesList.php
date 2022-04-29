@@ -48,7 +48,6 @@ class GetCategoriesList
                 'category_id_giv'           => $item->CategoryID,
                 'category_code_giv'         => $item->CategoryCode,
                 'parent_category_code_giv'  => $item->ParentCategoryCode,
-                'parent_category_code_giv'  => $item->CategoryID,
                 'category_is_active_giv'    => $item->CategoryIsActive,   
                 'level_giv'                 => 2,    
                 'last_date_giv'             => $item->LastDate,
@@ -71,11 +70,22 @@ class GetCategoriesList
                     'category_id_giv'           => $item->CategoryID,
                     'category_code_giv'         => $item->CategoryCode,
                     'parent_category_code_giv'  => $item->ParentCategoryCode,
-                    'parent_category_code_giv'  => $item->CategoryID,
                     'category_is_active_giv'    => $item->CategoryIsActive,   
                     'level_giv'                 => 3,    
                     'last_date_giv'             => $item->LastDate,
                 ]);
+    }
+
+    public function updateParentId(){
+        $list = Category::all();
+
+        foreach($list as $item){
+            $temp = Category::find($item->id);
+            $temp->parent_id = Category::
+                where('category_code_giv', $temp['parent_category_code_giv'])
+                ->first()['id']?? null;
+            $temp->save();
+        }
     }
 
     
