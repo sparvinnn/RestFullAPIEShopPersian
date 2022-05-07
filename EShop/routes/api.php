@@ -70,6 +70,7 @@ Route::get("categories", [GlobalController::class, "getAllCategory"]);
 Route::post("product/search", [GlobalController::class, "getProducts"]);
 Route::post("getBrands", [GlobalController::class, "getBrands"]);
 Route::get("getAllBrands", [GlobalController::class, "getAllBrands"]);
+Route::get("getAllProperties", [GlobalController::class, "getAllProperties"]);
 
 
 //filter routes
@@ -147,6 +148,7 @@ Route::middleware('jwt.verify')->prefix('category/')->group(function() {
 
 //product route
 Route::post('product/image/upload', [ImageController::class, "upload"])->name('image.upload');
+Route::post('category/image/upload', [CategoryController::class, "upload"])->name('category.image.upload');
 Route::middleware('jwt.verify')->prefix('product/')->group(function() {
     Route::post("", [ProductController::class, "store"]);
     Route::put("{id}", [ProductController::class, "update"]);

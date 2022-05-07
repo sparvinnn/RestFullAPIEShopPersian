@@ -221,4 +221,114 @@ class GlobalController extends Controller
             })
             ->select(['id', 'name'])->get();
     }
+
+    public function getAllProperties(Request $request){
+        $list = array (
+            array(
+                'en' => 'size',
+                'fa' => 'اندازه'
+            ),
+            array(
+                'en' => 'material',
+                'fa' => 'جنس'
+            ),
+            array(
+                'en' => 'color',
+                'fa' => 'رنگ'
+            ),
+            array(
+                'en' => 'design',
+                'fa' => 'طرح'
+            ),
+            array(
+                'en' => 'sleeve',
+                'fa' => 'آستین'
+            ),
+            array(
+                'en' => 'piece',
+                'fa' => 'تعداد تکه'
+            ),
+            array(
+                'en' => 'set_type',
+                'fa' => 'نوع ست'
+            ),
+            array(
+                'en' => 'description',
+                'fa' => 'توضیحات'
+            ),
+            array(
+                'en' => 'maintenance',
+                'fa' => 'نگهداری'
+            ),
+            array(
+                'en' => 'made_in',
+                'fa' => 'تولید شده در'
+            ),
+            array(
+                'en' => 'origin',
+                'fa' => 'مبدا'
+            ),
+            array(
+                'en' => 'type',
+                'fa' => 'نوع'
+            ),
+            array(
+                'en' => 'for_use',
+                'fa' => 'استفاده برای'
+            ),
+            array(
+                'en' => 'collar',
+                'fa' => 'یقه'
+            ),
+            array(
+                'en' => 'height',
+                'fa' => 'قد'
+            ),
+            array(
+                'en' => 'physical_feature',
+                'fa' => 'ویژگی های ظاهری'
+            ),
+            array(
+                'en' => 'production_time',
+                'fa' => 'تاریخ تولید'
+            ),
+            array(
+                'en' => 'demension',
+                'fa' => 'ابعاد'
+            ),
+            array(
+                'en' => 'crotch',
+                'fa' => 'فاق'
+            ),
+            array(
+                'en' => 'close',
+                'fa' => 'بسته شدن'
+            ),
+            array(
+                'en' => 'drop',
+                'fa' => 'دراپ'
+            ),
+            array(
+                'en' => 'cumin',
+                'fa' => 'زیره'
+            ),
+            array(
+                'en' => 'close_shoes',
+                'fa' => 'نوع بستن کفش'
+            ),
+            array(
+                'en' => 'typeـofـclothing',
+                'fa' => 'نوع لباس'
+            ),
+            array(
+                'en' => 'specialized_features',
+                'fa' => 'ویژگی های تخصصی'
+            ),
+        );
+    
+
+        return response()->json([
+            'data' => $list
+        ]);
+    }
 }

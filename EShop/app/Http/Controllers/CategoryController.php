@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\CategoryMeta;
+use App\Models\CategoryProperty;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Mockery\Exception;
 
@@ -60,6 +62,7 @@ class CategoryController extends Controller
         $parent_id = $request->parent_id;
         $with_childeren = $request->with_childeren;
         $right_menu = $request->right_menu;
+        $all = $request->all?? true;
         try{
             $list = Category::
                 when($id, function ($q, $id) {
@@ -76,18 +79,22 @@ class CategoryController extends Controller
                 })
                 ->orderBy('created_at')
                 ->with(['children', 'parent', 'meta'])
-                ->get([
+                ->select([
                     'id',
                     'name_fa',
                     'name_en',
                     'slug',
-                    'parent_category_code_giv as parent_id'
-                ]);
+                    'parent_id'
+                ])
+                ;
+
+            if($all) $result = $list->get();
+            else $result = $list->paginate(20);
 
             $response = [
                 'status' => true,
                 'msg' => 'list successfully get.',
-                'data' => $list
+                'data' => $result
             ];
             return response()->json($response);
 
@@ -124,23 +131,27 @@ class CategoryController extends Controller
     }
 
     public function updateProperties(Request $request){
+        
         $list = $request->properties;
         DB::beginTransaction();
         try{
-            CategoryMeta::where('key', 'property')
-                ->where('category_id', $request->id)
-                ->delete();
+            // $item = CategoryMeta::where('key', 'property')
+            //     ->where('category_id', $request->id)
+            //     ->first();
+            $category_property= CategoryProperty::create([
+                'category_id' => $request->id
+            ]);
             for($i=0; $i<count($list); $i++){
                 try{
-                    $category_meta= CategoryMeta::create([
-                        'category_id' => $request->id,
-                        'key' => 'property',
-                        'value' => $list[$i]
-                    ]);
+                    
+                    // $list[$i]['en'] => 1,
+                    $category_property[$list[$i]['en']] = 1;
+                    
                 }catch (\Exception $exception){
                     return response()->json(["status" => "failed", "message" => $exception]);
                 }
             }
+            $category_property->save();
             DB::commit();
             return response()->json(["status" => "success", "message" => "Success! update category_meta completed"]);
         }catch (\Exception $exception){
@@ -157,5 +168,60 @@ class CategoryController extends Controller
         }catch (\Exception $exception){
             return response()->json(['data'=>'error'], 500);
         }
+    }
+
+    /**
+     * Upload list of files via elementUi
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function upload(Request $request)
+    {
+//        return $request;
+        try{
+            $uploadId = array();
+            $old_files = Storage::disk('local')->files('public/category_images');
+            if ($files = $request->file('file')) {
+                foreach ($request->file('file') as $key => $file) {
+                    $name = $file->getClientOriginalName();
+                    if(in_array('/storage/upload/category_images/'.$request['category_id'].'/'.$name, $old_files))
+                        return 'repeat';
+                    else{
+                        $img = CategoryMeta::create([
+                            'category_id' => $request['category_id'],
+                            'key' => $request['type']?? 'image',
+                            'value' => 'http://localhost:8000/storage/upload/category_images/'.$request['category_id'].'/'.$name,
+                        ]);
+                        $filename = $file->move('storage/upload/category_images/' . $request['category_id'] . '/', $name);
+                        $uploadId[] = [ $img['id'] ];
+                    }
+                }
+            }
+            return $uploadId;
+        }catch(\Exception $e){
+            return $e;
+        }
+    }
+
+    /**
+     * Upload list of files via elementUi
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        try{
+            $img = CategoryMeta::find($id);
+            if (!(empty($img->image))) {
+                if (file_exists(public_path() . '/storage/upload/category_images/' . $img['category_id'] . '/' . $img->image)) {
+                    unlink(public_path() . 'storage/upload/category_images/' . $img['category_id'] . '/' . $img['image']);
+                }
+            }
+            $img->delete();
+            return 'ok';
+        }catch (\Exception $e){
+            return 'no';
+        }
+
     }
 }

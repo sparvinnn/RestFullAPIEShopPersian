@@ -1,0 +1,102 @@
+"list": {
+            {
+                "en": "size",
+                "fa": "اندازه"
+            },
+            {
+                "en": "material",
+                "fa": "جنس"
+            },
+            {
+                "en": "color",
+                "fa": "رنگ"
+            },
+            {
+                "en": "design",
+                "fa": "طرح"
+            },
+            {
+                "en": "sleeve",
+                "fa": "آستین"
+            },
+            {
+                "en": "piece",
+                "fa": "تعداد تکه"
+            },
+            {
+                "en": "set_type",
+                "fa": "نوع ست"
+            },
+            {
+                "en": "description",
+                "fa": "توضیحات"
+            },
+            {
+                "en": "maintenance",
+                "fa": "نگهداری"
+            },
+            {
+                "en": "made_in",
+                "fa": "تولید شده در"
+            },
+            {
+                "en": "origin",
+                "fa": "مبدا"
+            },
+            {
+                "en": "type",
+                "fa": "نوع"
+            },
+            {
+                "en": "for_use",
+                "fa": "استفاده برای"
+            },
+            {
+                "en": "collar",
+                "fa": "یقه"
+            },
+            {
+                "en": "height",
+                "fa": "قد"
+            },
+            {
+                "en": "physical_feature",
+                "fa": "ویژگی های ظاهری"
+            },
+            {
+                "en": "production_time",
+                "fa": "تاریخ تولید"
+            },
+            {
+                "en": "demension",
+                "fa": "ابعاد"
+            },
+            {
+                "en": "crotch",
+                "fa": "فاق"
+            },
+            {
+                "en": "close",
+                "fa": "بسته شدن"
+            },
+            {
+                "en": "drop",
+                "fa": "دراپ"
+            },
+            {
+                "en": "cumin",
+                "fa": "زیره"
+            },
+            {
+                "en": "close_shoes",
+                "fa": "نوع بستن کفش"
+            },
+            {
+                "en": "typeـofـclothing",
+                "fa": "نوع لباس"
+            },
+            {
+                "en": "specialized_features",
+                "fa": "ویژگی های تخصصی"
+            },
+}
