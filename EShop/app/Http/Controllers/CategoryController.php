@@ -78,7 +78,7 @@ class CategoryController extends Controller
                     return $q->whereNull('parent_id');
                 })
                 ->orderBy('created_at')
-                ->with(['children', 'parent', 'meta'])
+                ->with(['children', 'parent', 'meta', 'properties'])
                 ->select([
                     'id',
                     'name_fa',
@@ -105,6 +105,7 @@ class CategoryController extends Controller
     }
 
     public function addProperties(Request $request){
+
         $list = $request->properties;
         for($i=0; $i<count($list); $i++){
             try{
@@ -122,8 +123,9 @@ class CategoryController extends Controller
 
     //get properties for specific category
     public function getProperties($id){
+
         try{
-            $properties = CategoryMeta::where('category_id', $id)->where('key', 'property')->select('id', 'value')->get();
+            $properties = CategoryProperty::where('category_id', $id)->get();
             return response()->json(["status" => "success", "data" => $properties]);
         }catch (\Exception $exception){
             return response()->json(["status" => "failed", "message" => $exception]);
@@ -131,32 +133,28 @@ class CategoryController extends Controller
     }
 
     public function updateProperties(Request $request){
+    
         
         $list = $request->properties;
+        // return count($list);
         DB::beginTransaction();
         try{
-            // $item = CategoryMeta::where('key', 'property')
-            //     ->where('category_id', $request->id)
-            //     ->first();
+            $item = CategoryProperty::
+                where('category_id', $request->id)
+                ->delete();
             $category_property= CategoryProperty::create([
                 'category_id' => $request->id
             ]);
             for($i=0; $i<count($list); $i++){
-                try{
-                    
-                    // $list[$i]['en'] => 1,
-                    $category_property[$list[$i]['en']] = 1;
-                    
-                }catch (\Exception $exception){
-                    return response()->json(["status" => "failed", "message" => $exception]);
-                }
+                if(isset($list[$i][0])) $category_property[$list[$i][0]['en']] = 1;
+                else if($list[$i])$category_property[$list[$i]['en']] = 1;
             }
             $category_property->save();
             DB::commit();
             return response()->json(["status" => "success", "message" => "Success! update category_meta completed"]);
         }catch (\Exception $exception){
             DB::rollBack();
-            return response()->json(["status" => "failed", "message" => $exception]);
+            return response()->json(["status" => "failed", "message" => $exception],500);
         }
     }
 
@@ -177,8 +175,24 @@ class CategoryController extends Controller
      */
     public function upload(Request $request)
     {
-//        return $request;
         try{
+            if ($request->type == 'icon'){
+                CategoryMeta::where('category_id', $request->category_id)
+                    ->where('key', $request->type)
+                    ->delete();
+            }
+            else if ($request->type == 'image'){
+                $images = CategoryMeta::where('category_id', $request->category_id)
+                ->where('key', $request->type)
+                ->count();
+                if($images>4){
+                    $temp = CategoryMeta::where('category_id', $request->category_id)
+                        ->where('key', 'image')
+                        ->first();
+                    $temp->delete();
+                    }
+                
+            }
             $uploadId = array();
             $old_files = Storage::disk('local')->files('public/category_images');
             if ($files = $request->file('file')) {

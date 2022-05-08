@@ -142,7 +142,7 @@ Route::middleware('jwt.verify')->prefix('category/')->group(function() {
     Route::post("addProperties", [CategoryController::class, "addProperties"]);
     // Route::post("updateProperties", [CategoryController::class, "updateProperties"]);
     
-    Route::post("updateProperties", [PropertiesController::class, "updateProperties"]);
+    Route::post("updateProperties", [CategoryController::class, "updateProperties"]);
     Route::post("allProperties", [PropertiesController::class, "allProperties"]);
 });
 

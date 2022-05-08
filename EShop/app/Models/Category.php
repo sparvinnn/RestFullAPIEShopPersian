@@ -33,9 +33,15 @@ class Category extends Model
         return $this->hasMany(Category::class,  'parent_id');
     }
 
-    public function meta()
+    public function properties()
     {
         return $this->hasMany(CategoryProperty::class)
+//            ->select('id', 'key', 'value')
+            ;
+    }
+    public function meta()
+    {
+        return $this->hasMany(CategoryMeta::class)
 //            ->select('id', 'key', 'value')
             ;
     }

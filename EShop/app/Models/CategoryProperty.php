@@ -36,5 +36,10 @@ class CategoryProperty extends Model
         'close_shoes',
         'typeـofـclothing',
         'specialized_features'];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
     
 }
