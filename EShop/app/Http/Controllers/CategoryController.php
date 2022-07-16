@@ -65,7 +65,8 @@ class CategoryController extends Controller
         $all = $request->all?? true;
         try{
             $list = Category::
-                when($id, function ($q, $id) {
+                where('is_active', 1)   
+                ->when($id, function ($q, $id) {
                     return $q->where('id', $id);
                 })
                 ->when($name, function ($q, $name) {
@@ -159,12 +160,22 @@ class CategoryController extends Controller
     }
 
     public function delete($id){
-        try{
-            $category = Category::find($id);
-            $category->delete();
-            return response()->json(['data'=>'ok'], 200);
-        }catch (\Exception $exception){
-            return response()->json(['data'=>'error'], 500);
+        $category = Category::find($id);
+        if(!is_null($category)) {
+            DB::beginTransaction();
+            try{
+                $category->is_active = 0;
+                $category->save();
+                DB::commit();
+                return response()->json(["status" => "success", "data" => $category]);
+            }catch (Exception $exception){
+                DB::rollBack();
+                return response()->json(["status" => "failed", "message" => $exception]);
+            }
+        }
+        else {
+            DB::rollBack();
+            return response()->json(["status" => "failed", "message" => "Whoops! no category found"]);
         }
     }
 
