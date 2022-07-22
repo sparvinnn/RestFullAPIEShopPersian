@@ -64,6 +64,7 @@ Route::get("roles", [GlobalController::class, "roles"]);
 Route::get("category/getParents", [GlobalController::class, "getParents"]);
 Route::get("category/{id}/getChildren", [GlobalController::class, "getChildren"]);
 Route::post("category/search", [CategoryController::class, "search"]);
+Route::post("category/toggle-active/{id}", [CategoryController::class, "toggleActive"]);
 Route::get("category/{id}/getProperties", [CategoryController::class, "getProperties"]);
 Route::get("category/{id}/updateProperties", [CategoryController::class, "updateProperties"]);
 Route::get("categories", [GlobalController::class, "getAllCategory"]);

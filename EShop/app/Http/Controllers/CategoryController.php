@@ -63,9 +63,13 @@ class CategoryController extends Controller
         $with_childeren = $request->with_childeren;
         $right_menu = $request->right_menu;
         $all = $request->all?? true;
+        $dashboard = $request->dashboard?? false;
         try{
             $list = Category::
-                where('is_active', 1)   
+            when(!$dashboard, function ($q, $id) {
+                return $q->where('is_active', 1);
+            })
+                 
                 ->when($id, function ($q, $id) {
                     return $q->where('id', $id);
                 })
@@ -159,12 +163,13 @@ class CategoryController extends Controller
         }
     }
 
-    public function delete($id){
+    public function toggleActive($id){
+        // return $id;
         $category = Category::find($id);
         if(!is_null($category)) {
             DB::beginTransaction();
             try{
-                $category->is_active = 0;
+                $category->is_active = $category->is_active? 0: 1;
                 $category->save();
                 DB::commit();
                 return response()->json(["status" => "success", "data" => $category]);
