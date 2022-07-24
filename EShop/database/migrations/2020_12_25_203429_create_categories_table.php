@@ -28,6 +28,7 @@ class CreateCategoriesTable extends Migration
             $table->unsignedInteger('level_giv')->nullable();
             $table->date('last_date_giv')->nullable();
             $table->boolean('is_active')->default(0);
+            $table->integer('priority')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

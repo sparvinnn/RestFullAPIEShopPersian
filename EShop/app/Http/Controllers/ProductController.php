@@ -162,7 +162,7 @@ class ProductController extends Controller
                 ->when($id, function ($q, $id) {
                     return $q->where('id', $id);
                 })
-                ->orderBy('created_at')->take(10);
+                ->orderBy('created_at');
             if ($available == 1)
                 $list->where('inventory_number', '>', 0);
             else if ($available === 0)

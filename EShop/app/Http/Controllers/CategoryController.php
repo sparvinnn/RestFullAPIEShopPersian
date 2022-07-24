@@ -25,11 +25,21 @@ class CategoryController extends Controller
         }
         try{
             $input = $request->all();
-            $category = Category::create($input);
+            // return $input;
+            return $category = Category::create($input);
             return response()->json(["status" => "success", "message" => "Success! create category completed", "data" => $category]);
         }catch (\Exception $exception){
             return response()->json(["status" => "failed", "message" => $exception]);
         }
+    }
+
+    public function withParent(Request $request){
+        $categories = Category::
+        // where('name_fa', 'LIKE', '%'.$request->name.'%')
+        // ->orWhere('name_fa', 'LIKE', '%'.$request->name.'%')
+        with('parent')
+        ->get();
+        return response()->json(["status" => "success", "message" => "Success! create category completed", "data" => $categories]);
     }
 
     public function update(Request $request, $id)
@@ -42,6 +52,7 @@ class CategoryController extends Controller
                 $category->name_en = $request->name_en;
                 $category->slug = $request->slug;
                 $category->parent_id = $request->parent_id;
+                $category->priority = $request->priority;
                 $category->save();
                 DB::commit();
                 return response()->json(["status" => "success", "data" => $category]);
@@ -82,7 +93,7 @@ class CategoryController extends Controller
                 ->when($right_menu, function ($q) {
                     return $q->whereNull('parent_id');
                 })
-                ->orderBy('created_at')
+                ->orderBy('priority', 'Desc')
                 ->with(['children', 'parent', 'meta', 'properties'])
                 ->select([
                     'id',
@@ -91,6 +102,7 @@ class CategoryController extends Controller
                     'slug',
                     'parent_id'
                 ])
+                
                 ;
 
             if($all) $result = $list->get();

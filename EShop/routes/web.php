@@ -26,3 +26,5 @@ Route::post('shop',[testController::class, "add_order"]);
 Route::post('start',[testController::class, "test"]);
 
 Route::get('test2',[testController::class, "mytest"]);
+use App\Http\Controllers\CategoryController;
+Route::get("withParent", [CategoryController::class, "withParent"]);
