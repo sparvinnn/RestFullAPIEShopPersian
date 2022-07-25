@@ -30,7 +30,7 @@ class Category extends Model
 
     public function children()
     {
-        return $this->hasMany(Category::class,  'parent_id');
+        return $this->hasMany(Category::class,  'parent_id')->where('is_active', 1);
     }
 
     public function properties()

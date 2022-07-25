@@ -85,7 +85,7 @@ class CategoryController extends Controller
                     return $q->where('id', $id);
                 })
                 ->when($name, function ($q, $name) {
-                    return $q->where('name_fa', $name);
+                    return $q->where('name_fa', 'LIKE', '%'.$name.'%');
                 })
                 ->when($parent_id, function ($q, $parent_id) {
                     return $q->where('parent_id', $parent_id);
