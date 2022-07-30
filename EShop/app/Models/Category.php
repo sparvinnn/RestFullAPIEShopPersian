@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model
 {
     use HasFactory;
-    use SoftDeletes;
+
+
+    protected $table = "categories";
 
     protected $fillable = [
         'name_fa', 
@@ -21,7 +22,8 @@ class Category extends Model
         'parent_category_code_giv',
         'category_is_active_giv',
         'level_giv',
-        'last_date_giv'];
+        'last_date_giv'
+    ];
 
     public function parent()
     {
@@ -30,23 +32,23 @@ class Category extends Model
 
     public function children()
     {
-        return $this->hasMany(Category::class,  'parent_id')->where('is_active', 1);
+        return $this->hasMany(Category::class, 'parent_id')->where('is_active', 1);
     }
 
     public function properties()
     {
         return $this->hasMany(CategoryProperty::class)
-//            ->select('id', 'key', 'value')
-            ;
+    // ->select('id', 'key', 'value')
+    ;
     }
     public function meta()
     {
         return $this->hasMany(CategoryMeta::class)
-//            ->select('id', 'key', 'value')
-            ;
+    // ->select('id', 'key', 'value')
+        ;
     }
 
-//    public function product(){
-//        return $this->hasMany(Product::class);
-//    }
+// public function product(){
+// return $this->hasMany(Product::class);
+
 }

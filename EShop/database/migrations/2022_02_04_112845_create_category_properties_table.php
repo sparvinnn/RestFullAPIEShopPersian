@@ -41,6 +41,13 @@ class CreateCategoryPropertiesTable extends Migration
             $table->boolean('close_shoes')->nullable();//نوع بستن کفش
             $table->boolean('typeـofـclothing')->nullable();//نوع لباس 
             $table->boolean('specialized_features')->nullable();//ویژگی ها تخصصی
+            $table->boolean('model')->nullable();//مدل کیف
+            $table->boolean('outerـpocket')->nullable();//جیب خارجی
+            $table->boolean('inner_pocket')->nullable();//جیب داخلی
+            $table->boolean('bag_handle')->nullable();//دسته کیف
+            $table->boolean('shower_strap')->nullable();//بند دوشی
+            $table->boolean('top_material')->nullable();//جنس رویه
+            $table->boolean('Heel')->nullable();//پاشنه
             $table->timestamps();
         });
     }

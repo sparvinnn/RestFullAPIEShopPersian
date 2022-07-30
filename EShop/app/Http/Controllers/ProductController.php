@@ -134,6 +134,7 @@ class ProductController extends Controller
     }
 
     public function search(Request $request){
+
         $name = $request->name;
         $min_price = $request->min_price;
         $max_price = $request->max_price;
@@ -143,6 +144,7 @@ class ProductController extends Controller
         $properties_filter = $request->properties_filter;
         $available = $request->available;
         try{
+            
             $list = Product::query()
                 ->when($name, function ($q, $name) {
                     return $q->where('name', $name);

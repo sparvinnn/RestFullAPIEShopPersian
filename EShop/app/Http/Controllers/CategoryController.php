@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\CategoryMeta;
 use App\Models\CategoryProperty;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -19,6 +20,13 @@ class CategoryController extends Controller
             "name_en" =>  "required",
             "slug" =>  "required",
         ]);
+
+        if($request->parent_id){
+            $old = Category::where('parent_id', $request->parent_id)
+            ->where('name_fa', $request->name_fa)
+            ->first();
+            if($old) return response()->json(["status" => "failed", "message" => 'شما نمی توانید در یک دسته بندی زیر دسته هم نام داشته باشید. (دسته بندی تکراری است)']);
+        }
 
         if($validator->fails()) {
             return response()->json(["validation_errors" => $validator->errors()]);
@@ -45,6 +53,16 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $category = Category::find($id);
+
+        if($request->parent_id){
+            $old = Category::
+            where('parent_id', $request->parent_id)
+            ->where('id', '!=', $id)
+            ->where('name_fa', $request->name_fa)
+            ->first();
+            if($old) return response()->json(["status" => "failed", "message" => 'شما نمی توانید در یک دسته بندی زیر دسته هم نام داشته باشید. (دسته بندی تکراری است)']);
+        }
+
         if(!is_null($category)) {
             DB::beginTransaction();
             try{
@@ -68,6 +86,7 @@ class CategoryController extends Controller
     }
 
     public function search(Request $request){
+       
         $id = $request->id;
         $name = $request->name;
         $parent_id = $request->parent_id;
@@ -76,6 +95,15 @@ class CategoryController extends Controller
         $all = $request->all?? true;
         $dashboard = $request->dashboard?? false;
         try{
+            if($request->right_menu){
+                $category = Category::where('slug', 'right')->first()['id'];
+                $parent_id = $category;
+            }else if($request->left_menu){
+                $category = Category::where('slug', 'left')->first()['id'];
+                $parent_id = $category;
+            }
+            
+            // return User::all();
             $list = Category::
             when(!$dashboard, function ($q, $id) {
                 return $q->where('is_active', 1);
@@ -87,12 +115,12 @@ class CategoryController extends Controller
                 ->when($name, function ($q, $name) {
                     return $q->where('name_fa', 'LIKE', '%'.$name.'%');
                 })
-                ->when($parent_id, function ($q, $parent_id) {
+                ->when($parent_id, function ($q) use ($parent_id) {
                     return $q->where('parent_id', $parent_id);
                 })
-                ->when($right_menu, function ($q) {
-                    return $q->whereNull('parent_id');
-                })
+                // ->when($right_menu, function ($q) {
+                //     return $q->whereNull('parent_id');
+                // })
                 ->orderBy('priority', 'Desc')
                 ->with(['children', 'parent', 'meta', 'properties'])
                 ->select([
@@ -100,7 +128,8 @@ class CategoryController extends Controller
                     'name_fa',
                     'name_en',
                     'slug',
-                    'parent_id'
+                    'parent_id',
+                    'is_active'
                 ])
                 
                 ;
@@ -119,6 +148,54 @@ class CategoryController extends Controller
 
             return response($e, 202);
         }
+    }
+
+    public function getByLevel(Request $request){
+        if($request->level==0){
+            $categories = Category::whereNull('parent_id')
+                ->where('is_active', 1)
+                ->select([
+                    'id',
+                    'name_fa',
+                    'name_en',
+                    'slug',
+                    'parent_id',
+                    'is_active'
+                ])
+                ->get();
+        }
+        else if($request->level==1){
+            $category = Category::where('slug', 'right')->first()['id'];
+            $categories = Category::where('parent_id', $category)
+                ->where('is_active', 1)
+                ->select([
+                    'id',
+                    'name_fa',
+                    'name_en',
+                    'slug',
+                    'parent_id',
+                    'is_active'
+                ])
+                ->get();
+        }else{
+            $categories = Category::where('parent_id', $request->parent_id)
+                ->where('is_active', 1)
+                ->select([
+                    'id',
+                    'name_fa',
+                    'name_en',
+                    'slug',
+                    'parent_id',
+                    'is_active'
+                ])
+                ->get();
+        }
+        $response = [
+            'status' => true,
+            'msg' => 'list successfully get.',
+            'data' => $categories
+        ];
+        return response()->json($response);
     }
 
     public function addProperties(Request $request){

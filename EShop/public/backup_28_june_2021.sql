@@ -283,16 +283,6 @@ LOCK TABLES `media` WRITE;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `migrations`
---
-
-LOCK TABLES `migrations` WRITE;
-/*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_resets_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1),(5,'2020_12_25_203429_create_categories_table',1),(6,'2020_12_28_132124_create_category_metas_table',1),(7,'2020_12_28_152957_create_products_table',1),(8,'2021_01_03_060829_create_product_properties_table',1),(9,'2021_01_03_180808_create_media_table',1),(10,'2021_03_01_072917_create_permission_tables',1),(11,'2021_04_17_190853_add_columns_to_roles',1),(12,'2021_06_04_131723_create_transactions_table',1),(13,'2021_06_04_161540_create_home_settings_table',1),(14,'2021_06_04_161607_create_slides_table',1),(15,'2021_06_04_164435_create_banners_table',1),(16,'2021_06_05_055348_create_rates_table',1),(17,'2021_06_05_162238_create_brands_table',1),(18,'2021_06_05_170810_add_brand_column_to_product',1),(19,'2021_06_14_042707_create_carts_table',1),(20,'2021_06_14_050846_create_favorites_table',1),(21,'2021_06_19_180318_add_number_column_to_cart',1),(22,'2021_07_21_125550_create_comments_table',1),(23,'2021_09_03_093540_add_status_column_to_comments',1),(24,'2021_10_22_153637_create_payments_table',1),(25,'2021_10_22_160240_create_payment_products_table',1),(26,'2021_10_22_181021_create_orders_table',1),(27,'2022_02_03_210355_create_sizes_table',1),(28,'2022_02_03_210415_create_materials_table',1),(29,'2022_02_03_210422_create_colors_table',1),(30,'2022_02_03_210449_create_designs_table',1),(31,'2022_02_03_210511_create_sleeves_table',1),(32,'2022_02_03_210546_create_pieces_table',1),(33,'2022_02_03_210622_create_set_types_table',1),(34,'2022_02_03_210728_create_description_materials_table',1),(35,'2022_02_03_210751_create_maintenances_table',1),(36,'2022_02_03_210844_create_made_ins_table',1),(37,'2022_02_03_210913_create_origins_table',1),(38,'2022_02_03_211045_create_types_table',1),(39,'2022_02_03_211424_create_for_uses_table',1),(40,'2022_02_03_211456_create_collars_table',1),(41,'2022_02_03_211531_create_heights_table',1),(42,'2022_02_03_211612_create_physical_features_table',1),(43,'2022_02_03_211738_create_dimensions_table',1),(44,'2022_02_03_212120_create_crotches_table',1),(45,'2022_02_04_100619_create_closes_table',1),(46,'2022_02_04_100659_create_drops_table',1),(47,'2022_02_04_105648_create_cumin_materials_table',1),(48,'2022_02_04_105731_create_close_shoes_table',1),(49,'2022_02_04_112845_create_category_properties_table',1),(50,'2022_02_04_142549_create_type_of_clothing_table',1),(51,'2022_02_04_142817_create_specialized_features_table',1);
-/*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Dumping data for table `model_has_permissions`
 --
 
