@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\AuthController;
@@ -147,6 +148,20 @@ Route::middleware('jwt.verify')->prefix('category/')->group(function() {
     Route::post("updateProperties", [CategoryController::class, "updateProperties"]);
     Route::post("allProperties", [PropertiesController::class, "allProperties"]);
     Route::post("withParent", [CategoryController::class, "withParent"]);
+});
+
+Route::post("banners/upload", [BannerController::class, "upload"]);
+//banners route
+Route::middleware('jwt.verify')->prefix('banners/')->group(function() {
+    // Route::prefix('category/')->group(function() {
+    Route::get("", [BannerController::class, "index"]);
+    Route::get("{id}", [BannerController::class, "show"]);
+    Route::post("", [BannerController::class, "store"]);
+    Route::put("{id}", [BannerController::class, "update"]);
+    Route::delete("{id}", [BannerController::class, "delete"]);
+    
+
+    
 });
 
 //product route

@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Banner extends Model
+class Image extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'use_for', 'link', 'url', 'category_id', 'location'
+        'url', 'use_for', 'created_at'
     ];
 }
