@@ -30,7 +30,7 @@ class BannerController extends Controller
     }
 
     public function store(Request $request){
-        // try{
+        try{
             $validator  =   Validator::make($request->all(), [
                 'use_for' => 'required',
                 'location' => 'required',
@@ -49,6 +49,7 @@ class BannerController extends Controller
                 'category_id' => $request->category_id,
                 'location' => $request->location,
                 'url' => $request->url,
+                'link' => $request->link
             ]);
     
             return response()->json([
@@ -56,26 +57,30 @@ class BannerController extends Controller
                 'data' => $banner,
                 'msg' => 'اطلاعات با موفقیت دریافت شد'
             ]);
-        // }catch(\Exception $exception){
-        //     return response()->json([
-        //         'success' => false,
-        //         'data' => $exception,
-        //         'msg' => 'مشکلی به وجود آمده با پشتیبانی تماس بگیرید'
-        //     ]);
-        // }
-        
-    }
-
-    public function update(Request $request){
-
-    }
-
-    public function show($id){
-
+        }catch(\Exception $exception){
+            return response()->json([
+                'success' => false,
+                'data' => $exception,
+                'msg' => 'مشکلی به وجود آمده با پشتیبانی تماس بگیرید'
+            ]);
+        }
     }
 
     public function delete($id){
-
+        try{
+            $banner = Banner::find($id)->delete();
+            return response()->json([
+                'success' => true,
+                'data' => $banner,
+                'msg' => ' با موفقیت حذف شد'
+            ]);
+        }catch(\Exception $exception){
+            return response()->json([
+                'success' => false,
+                'data' => $exception,
+                'msg' => 'مشکلی به وجود آمده با پشتیبانی تماس بگیرید'
+            ]);
+        }
     }
 
     /**
@@ -85,22 +90,7 @@ class BannerController extends Controller
      */
     public function upload(Request $request)
     {
-        // // $file = $request->file('file')[0];
-        // if($request->hasFile('file')){
-        //     $upload_path = public_path('upload');
-        //     $file_name = $request->file('file')[0]->getClientOriginalName();
-        //     $generated_new_name = time() . '.' . $request->file('file')[0]->getClientOriginalExtension();
-        //     $request->file('file')[0]->move($upload_path, $generated_new_name);
-        // }
-        
-        
-        // $insert['title'] = $file_name;
-        // $check = Photo::insertGetId($insert);
-        // return response()->json(['success' => 'we have successfully uploaded "' . $file_name . '"']);
-
-        // return $request;
         try{
-        //     // $file = $request->file('file');
             if($request->hasFile('file')) {
 
                 $file = $request->file('file')[0];
@@ -117,6 +107,46 @@ class BannerController extends Controller
             return $img;
         }catch(\Exception $e){
             return $e;
+        }
+    }
+
+    public function filter(Request $request){
+        $location    = $request->location;
+        $use_for     = $request->use_for;
+        $category_id = $request->category_id;
+
+        try{
+            $banners = Banner::when($location, function($query) use($location){
+                $query->where('location', $location);
+            })
+            ->when($use_for, function($query) use($use_for){
+                $query->where('use_for', $use_for);
+            })
+            ->when($category_id, function($query) use($category_id){
+                $query->where('category_id', $category_id);
+            })
+            ->select([
+                'id',
+                'url as imageSrc',
+                'link',
+                'location',
+                'use_for'
+            ])
+            ->get()
+            ;
+
+            return response()->json([
+                'success' => true,
+                'data' => $banners,
+                'msg' => 'اطلاعات با موفقیت دریافت شد'
+            ]);
+            
+        }catch(\Exception $exception){
+            return response()->json([
+                'success' => false,
+                'data' => $exception,
+                'msg' => 'مشکلی به وجود آمده با پشتیبانی تماس بگیرید'
+            ]);
         }
     }
 }

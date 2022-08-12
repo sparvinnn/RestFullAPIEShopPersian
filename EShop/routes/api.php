@@ -36,6 +36,8 @@ Route::get('test', [\App\Http\Controllers\testController::class, "test"])->name(
 
 // user controller routes
 Route::get('home', [HomeController::class, "index"])->name('home');
+Route::get('global/banners', [BannerController::class, "filter"])->name('banners');
+
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
