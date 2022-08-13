@@ -30,7 +30,7 @@ class GetProductsList
                 'name'                   => $item->ItemName, 
                 'sell_price'             => $item->ItemCurrentSelPrice?? 10,
                 'description'            => null,
-                'category_id'            => Category::where('category_code_giv', $item->ItemCategory->CategoryCode)->first()['id'],
+                'category_id'            => Category::where('category_code_giv', $item->ItemCategory->CategoryCode)->first()? Category::where('category_code_giv', $item->ItemCategory->CategoryCode)->first()['id']: 1,
                 'branch_id'              => 1,   
                 'inventory_number'       => 1,    
                 'last_date_giv'          => $item->LastDate,
