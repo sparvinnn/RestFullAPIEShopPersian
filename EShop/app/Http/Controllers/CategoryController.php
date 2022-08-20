@@ -42,12 +42,31 @@ class CategoryController extends Controller
     }
 
     public function withParent(Request $request){
+        // return 'test';
         $categories = Category::
         // where('name_fa', 'LIKE', '%'.$request->name.'%')
         // ->orWhere('name_fa', 'LIKE', '%'.$request->name.'%')
-        with('parent')
-        ->get();
-        return response()->json(["status" => "success", "message" => "Success! create category completed", "data" => $categories]);
+        // with('parent')
+        // with(['parent' => function ($query) {
+        //     $query->select('id', 'name_fa');
+        // }])
+        where('is_active', 1)
+        ->orderBy('name_fa')
+        ->get()
+        
+        ;
+
+        $result = [];
+        foreach($categories as $item){
+            $temp = [];
+            $temp['cate']['id'] = $item->id;
+            $temp['cate']['name'] = $item->name_fa;
+            $temp['parents'] = $item->getParentsNames();
+
+            array_push($result, $temp);
+        }
+
+        return response()->json(["status" => "success", "message" => "Success! create category completed", "data" => $result]);
     }
 
     public function update(Request $request, $id)

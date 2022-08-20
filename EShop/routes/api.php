@@ -33,7 +33,7 @@ use App\Http\Controllers\PropertiesController;
 //});
 
 Route::get('test', [\App\Http\Controllers\testController::class, "test"])->name('test');
-
+Route::get("withParent", [CategoryController::class, "withParent"]);
 // user controller routes
 Route::get('home', [HomeController::class, "index"])->name('home');
 Route::get('global/banners', [BannerController::class, "filter"])->name('banners');

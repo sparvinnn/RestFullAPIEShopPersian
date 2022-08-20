@@ -48,6 +48,28 @@ class Category extends Model
         ;
     }
 
+    public function getParentsAttribute()
+    {
+        $parents = collect([]);
+
+        $parent = $this->parent;
+
+        while(!is_null($parent)) {
+            $parents->push($parent);
+            $parent = $parent->parent;
+        }
+
+        return $parents;
+    }
+
+    public function getParentsNames() {
+        if($this->parent) {
+            return $this->parent->getParentsNames(). " - " . $this->name_fa;
+        } else {
+            return $this->name;
+        }
+    }
+
 // public function product(){
 // return $this->hasMany(Product::class);
 
