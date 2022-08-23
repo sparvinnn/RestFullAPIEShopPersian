@@ -10,10 +10,10 @@ use App\Models\Size;
 
 class GetProductsList
 {
-    public function productsList(){
+    public function productsList(){      
         $client = new \GuzzleHttp\Client(); 
         $res    = $client->request('GET', env('API_REQUEST_URL').
-        'itemparent?count=2068',  [
+        'itemparent?count=5000',  [
             'headers' => [
                 'WEB_TOKEN' => ['727c8e6b-e34f-49fe-9abe-59d5e4301e74']
             ],
@@ -54,20 +54,24 @@ class GetProductsList
             $data_temp = json_decode($res_temp->getBody())->Value->Table->TableData[0]->Items;
 
             $sum_qoh = 0;
+            
             foreach($data_temp as $value){
+                if ( $value->ItemColorName){
+                    $color = Color::firstOrCreate([
+                        'name' => $value->ItemColorName
+                    ]);
+                }
 
-                $color = Color::firstOrNew([
-                    'name' => $value->ItemColorName
-                ]);
-
-                $size = Size::firstOrNew([
-                    'name' => $value->ItemSizeDesc
-                ]);
+                if( $value->ItemSizeDesc){
+                    $size = Size::firstOrCreate([
+                        'name' => $value->ItemSizeDesc
+                    ]);
+                }
 
                 ProductProperty::create([
                     'product_id' => $product->id,
-                    'size'  => $size->id,//اندازه
-                    'color' => $color->id,//رنگ
+                    'size_id'  => $size->id? (integer)$size->id: null,//اندازه
+                    'color_id' => $color->id?? null,//رنگ
                     'sell_price' => $item->ItemCurrentSelPrice
                 ]);
                 $sum_qoh += $value->QOH;

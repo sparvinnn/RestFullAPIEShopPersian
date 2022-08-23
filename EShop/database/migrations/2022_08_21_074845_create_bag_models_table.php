@@ -15,6 +15,7 @@ class CreateBagModelsTable extends Migration
     {
         Schema::create('bag_models', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->unique();
             $table->timestamps();
         });
     }
