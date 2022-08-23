@@ -47,7 +47,7 @@ class CreateCategoryPropertiesTable extends Migration
             $table->boolean('bag_handle')->nullable();//دسته کیف
             $table->boolean('shower_strap')->nullable();//بند دوشی
             $table->boolean('top_material')->nullable();//جنس رویه
-            $table->boolean('Heel')->nullable();//پاشنه
+            $table->boolean('heel')->nullable();//پاشنه
             $table->timestamps();
         });
     }

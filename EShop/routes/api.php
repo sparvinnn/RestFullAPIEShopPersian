@@ -178,3 +178,8 @@ Route::middleware('jwt.verify')->prefix('product/')->group(function() {
     Route::delete('image/{id}', [ImageController::class, "destroy"])->name('image.delete');
 //    Route::post("addProperties", [ProductController::class, "addProperties"]);
 });
+
+Route::middleware('jwt.verify')->prefix('properties/')->group(function() {
+    Route::get("", [PropertiesController::class, "list"]);
+    Route::post("", [PropertiesController::class, "save"]);
+});

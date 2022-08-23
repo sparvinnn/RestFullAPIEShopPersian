@@ -9,8 +9,193 @@ use Illuminate\Support\Facades\DB;
 
 class PropertiesController extends Controller
 {
-    public function create(Request $request){
-        
+    private $tables = [
+        [
+            "en" => "size",
+            "fa" => 'اندازه',
+            "table" => 'sizes'
+        ],
+        [
+            "en" => "material",
+            "fa" => "جنس",
+            "table" => 'materials'
+        ],
+        [
+            "en" => "color",
+            "fa" => "رنگ",
+            "table" => 'colors'
+        ],
+        [
+            "en" => "design",
+            "fa" => "طرح",
+            "table" => 'designs'
+        ],
+        [
+            "en" => "sleeve",
+            "fa" => "آستین",
+            "table" => 'sleeves'
+        ],
+        [
+            "en" => "piece",
+            "fa" => "تعداد تکه",
+            "table" => 'pieces'
+        ],
+        [
+            "en" => "set_type",
+            "fa" => "نوع ست",
+            "table" => 'set_types'
+        ],
+        [
+            "en" => "maintenance",
+            "fa" => "نگهداری",
+            "table" => 'maintenances'
+        ],
+        [
+            "en" => "made_in",
+            "fa" => "تولید شده در",
+            "table" => 'made_ins'
+        ],
+        [
+            "en" => "origin",
+            "fa" => "مبدا",
+            "table" => 'origins'
+        ],
+        [
+            "en" => "type",
+            "fa" => "نوع",
+            "table" => 'types'
+        ],
+        [
+            "en" => "for_use",
+            "fa" => "استفاده برای",
+            "table" => 'for_uses'
+        ],
+        [
+            "en" => "collar",
+            "fa" => "یقه",
+            "table" => 'collars'
+        ],
+        [
+            "en" => "height",
+            "fa" => "قد",
+            "table" => 'heights'
+        ],
+        [
+            "en" => "physical_feature",
+            "fa" => "ویژگی های ظاهری",
+            "table" => 'physical_features'
+        ],
+        [
+            "en" => "demension",
+            "fa" => "ابعاد",
+            "table" => 'demensions'
+        ],
+        [
+            "en" => "crotch",
+            "fa" => "فاق",
+            "table" => 'crotches'
+        ],
+        [
+            "en" => "close",
+            "fa" => "بسته شدن",
+            "table" => 'closes'
+        ],
+        [
+            "en" => "drop",
+            "fa" => "دراپ",
+            "table" => 'drops'
+        ],
+        [
+            "en" => "cumin",
+            "fa" => "زیره",
+            "table" => 'cumin_materials'
+        ],
+        [
+            "en" => "close_shoes",
+            "fa" => "نوع بستن کفش",
+            "table" => 'close_shoes'
+        ],
+        [
+            "en" => "typeـofـclothing",
+            "fa" => "نوع لباس",
+            "table" => 'type_of_clothing'
+        ],
+        // [
+        //     "en" => "model",
+        //     "fa" => "مدل",
+        //     "table" => 'models'
+        // ],
+        [
+            "en" => "outerـpocket",
+            "fa" => "جیب خارجی",
+            "table" => 'outer_pockets'
+        ],
+        [
+            "en" => "inner_pocket",
+            "fa" => "جیب داخلی",
+            "table" => 'inner_pockets'
+        ],
+        [
+            "en" => "bag_handle",
+            "fa" => "دسته کیف",
+            "table" => 'bag_handles'
+        ],
+        [
+            "en" => "shower_strap",
+            "fa" => "بند دوشی",
+            "table" => 'shower_straps'
+        ],
+        [
+            "en" => "top_material",
+            "fa" => "جنس رویه",
+            "table" => 'top_materials'
+        ],
+        [
+            "en" => "Heel",
+            "fa" => "پاشنه",
+            "table" => 'heels'
+        ],
+      
+    ];
+
+    public function save(Request $request){
+        // return $request;
+        $table= $request->table;
+        try{
+            DB::table($table)->insert([
+                'name' => $request->name
+            ]);
+            return response()->json([
+                "success" => true, 
+                "message" => "Success! update category_meta completed"
+            ]);
+        }catch(\Exception $exception){
+            return response()->json([
+                "success" => false, 
+                "message" => "Success! update category_meta failed"]);
+        }
+
+    }
+
+    public function list(){
+        $data = [];
+        foreach($this->tables as $item){
+            $temp = [];
+            $temp['en'] = $item['en'];
+            $temp['fa'] = $item['fa'];
+            $temp['table'] = $item['table'];
+            $temp['data'] = DB::table($item['table'])
+                            ->select(['id', 'name'])
+                            ->get();
+            array_push($data, $temp);
+        }
+
+        return response()->json(
+            [
+                "status" => "success", 
+                "message" => "Success! registration completed", 
+                "data" => $data
+            ]);
     }
 
     public function updateProperties(Request $request){
@@ -36,7 +221,9 @@ class PropertiesController extends Controller
             }
             $category_property->save();
             DB::commit();
-            return response()->json(["status" => "success", "message" => "Success! update category_meta completed"]);
+            return response()->json([
+                "status" => "success", 
+                "message" => "Success! update category_meta completed"]);
         }catch (\Exception $exception){
             DB::rollBack();
             return response()->json(["status" => "failed", "message" => $exception]);
