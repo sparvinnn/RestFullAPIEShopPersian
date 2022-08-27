@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CategoryMeta;
 use App\Models\CategoryProperty;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -196,6 +197,38 @@ class PropertiesController extends Controller
                 "message" => "Success! registration completed", 
                 "data" => $data
             ]);
+    }
+
+    public function listWithProductId($id){
+        $data = [];
+        $product = Product::where('id', $id)->first();
+        if(!$product) 
+            return response()->json(
+                [
+                    "success" => false, 
+                    "message" => "failed! Product not find", 
+                ],404);
+                
+        $category_id = Product::where('id', $id)->first()->category_id;
+        $category_property_list = CategoryProperty::where('id', $category_id)->first();
+        foreach($this->tables as $item){
+            if($category_property_list[$item['en']]!=1) continue;
+            $temp = [];
+            $temp['en'] = $item['en'];
+            $temp['fa'] = $item['fa'];
+            $temp['table'] = $item['table'];
+            $temp['data'] = DB::table($item['table'])
+                            ->select(['id', 'name'])
+                            ->get();
+            array_push($data, $temp);
+        }
+
+        return response()->json(
+            [
+                "status" => true, 
+                "message" => "Success! registration completed", 
+                "data" => $data
+            ], 200);
     }
 
     public function updateProperties(Request $request){

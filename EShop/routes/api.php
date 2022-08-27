@@ -28,6 +28,9 @@ use App\Http\Controllers\PropertiesController;
 |
 */
 
+Route::get("with-product-id/{id}", [PropertiesController::class, "listWithProductId"]);
+Route::get("get_properties/{id}", [ProductController::class, "get_properties"]);
+Route::get("adminSearch", [ProductController::class, "search"]);
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    return $request->user();
 //});
@@ -174,6 +177,9 @@ Route::middleware('jwt.verify')->prefix('product/')->group(function() {
     Route::put("{id}", [ProductController::class, "update"]);
     Route::delete("{id}", [ProductController::class, "delete"]);
     Route::post("adminSearch", [ProductController::class, "search"]);
+    Route::post("product_properties", [ProductController::class, "product_properties"]);
+    Route::get("get_properties/{id}", [ProductController::class, "get_properties"]);
+
 //    Route::post('image/upload', [ImageController::class, "upload"])->name('image.upload');
     Route::delete('image/{id}', [ImageController::class, "destroy"])->name('image.delete');
 //    Route::post("addProperties", [ProductController::class, "addProperties"]);

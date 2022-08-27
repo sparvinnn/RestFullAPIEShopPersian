@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Branch;
 use App\Models\Category;
 use App\Models\CategoryProperty;
+use App\Models\Color;
+use App\Models\Design;
+use App\Models\Material;
 use App\Models\Media;
 use App\Models\Product;
 use App\Models\ProductProperty;
+use App\Models\Size;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -15,6 +19,154 @@ use Mockery\Exception;
 
 class ProductController extends Controller
 {
+    private $tables = [
+        [
+            "en" => "size",
+            "fa" => 'اندازه',
+            "table" => 'sizes'
+        ],
+        [
+            "en" => "material",
+            "fa" => "جنس",
+            "table" => 'materials'
+        ],
+        [
+            "en" => "color",
+            "fa" => "رنگ",
+            "table" => 'colors'
+        ],
+        [
+            "en" => "design",
+            "fa" => "طرح",
+            "table" => 'designs'
+        ],
+        [
+            "en" => "sleeve",
+            "fa" => "آستین",
+            "table" => 'sleeves'
+        ],
+        [
+            "en" => "piece",
+            "fa" => "تعداد تکه",
+            "table" => 'pieces'
+        ],
+        [
+            "en" => "set_type",
+            "fa" => "نوع ست",
+            "table" => 'set_types'
+        ],
+        [
+            "en" => "maintenance",
+            "fa" => "نگهداری",
+            "table" => 'maintenances'
+        ],
+        [
+            "en" => "made_in",
+            "fa" => "تولید شده در",
+            "table" => 'made_ins'
+        ],
+        [
+            "en" => "origin",
+            "fa" => "مبدا",
+            "table" => 'origins'
+        ],
+        [
+            "en" => "type",
+            "fa" => "نوع",
+            "table" => 'types'
+        ],
+        [
+            "en" => "for_use",
+            "fa" => "استفاده برای",
+            "table" => 'for_uses'
+        ],
+        [
+            "en" => "collar",
+            "fa" => "یقه",
+            "table" => 'collars'
+        ],
+        [
+            "en" => "height",
+            "fa" => "قد",
+            "table" => 'heights'
+        ],
+        [
+            "en" => "physical_feature",
+            "fa" => "ویژگی های ظاهری",
+            "table" => 'physical_features'
+        ],
+        [
+            "en" => "demension",
+            "fa" => "ابعاد",
+            "table" => 'demensions'
+        ],
+        [
+            "en" => "crotch",
+            "fa" => "فاق",
+            "table" => 'crotches'
+        ],
+        [
+            "en" => "close",
+            "fa" => "بسته شدن",
+            "table" => 'closes'
+        ],
+        [
+            "en" => "drop",
+            "fa" => "دراپ",
+            "table" => 'drops'
+        ],
+        [
+            "en" => "cumin",
+            "fa" => "زیره",
+            "table" => 'cumin_materials'
+        ],
+        [
+            "en" => "close_shoes",
+            "fa" => "نوع بستن کفش",
+            "table" => 'close_shoes'
+        ],
+        [
+            "en" => "typeـofـclothing",
+            "fa" => "نوع لباس",
+            "table" => 'type_of_clothing'
+        ],
+        // [
+        //     "en" => "model",
+        //     "fa" => "مدل",
+        //     "table" => 'models'
+        // ],
+        [
+            "en" => "outerـpocket",
+            "fa" => "جیب خارجی",
+            "table" => 'outer_pockets'
+        ],
+        [
+            "en" => "inner_pocket",
+            "fa" => "جیب داخلی",
+            "table" => 'inner_pockets'
+        ],
+        [
+            "en" => "bag_handle",
+            "fa" => "دسته کیف",
+            "table" => 'bag_handles'
+        ],
+        [
+            "en" => "shower_strap",
+            "fa" => "بند دوشی",
+            "table" => 'shower_straps'
+        ],
+        [
+            "en" => "top_material",
+            "fa" => "جنس رویه",
+            "table" => 'top_materials'
+        ],
+        [
+            "en" => "Heel",
+            "fa" => "پاشنه",
+            "table" => 'heels'
+        ],
+      
+    ];
     /**
      * Store a newly created resource in storage.
      *
@@ -97,9 +249,9 @@ class ProductController extends Controller
     }
 
     public function update(Request $request, $id){
-//        try{
+        try{
             DB::beginTransaction();
-            $inputs = $request->product[0];
+            $inputs = $request;
             $product   =   Product::find($id);
             if($inputs['name']) $product->name = $inputs['name'];
             if($inputs['price']) $product->price = $inputs['price'];
@@ -111,26 +263,13 @@ class ProductController extends Controller
             if($inputs['sales_number']) $product->sales_number = $inputs['sales_number'];
             if($inputs['brand_id']) $product->brand_id = $inputs['brand_id'];
             $product->save();
-
-            $inputs = $request->properties[0];
-            ProductProperty::where('product_id', $product->id)->delete();
-            foreach($inputs as $input){
-                ProductProperty::create([
-                    'product_id'=>$product->id,
-                    'property_id'=>$input[0]['property_id'],
-                    'value'=>$input[0]['value'],
-                ]);
-            }
-
-            $properties = ProductProperty::where('product_id', $product->id)
-                ->get();
             DB::commit();
-            return response()->json(["status" => "success", "message" => "Success! registration completed", "product" => $product, "properties" => $properties]);
+            return response()->json(["status" => "success", "message" => "Success! registration completed", "product" => $product]);
 
-//        }catch (\Exception $e){
-//            DB::rollBack();
-//            return response()->json(["status" => "failed", "message" => $e]);
-//        }
+        }catch (\Exception $e){
+            DB::rollBack();
+            return response()->json(["status" => "failed", "message" => $e]);
+        }
     }
 
     public function search(Request $request){
@@ -143,7 +282,7 @@ class ProductController extends Controller
         $id = $request->id;
         $properties_filter = $request->properties_filter;
         $available = $request->available;
-        try{
+        // try{
             
             $list = Product::query()
                 ->when($name, function ($q, $name) {
@@ -164,7 +303,9 @@ class ProductController extends Controller
                 ->when($id, function ($q, $id) {
                     return $q->where('id', $id);
                 })
-                ->orderBy('created_at');
+                ->orderBy('created_at')
+                ->limit(20)
+                ->get();
             if ($available == 1)
                 $list->where('inventory_number', '>', 0);
             else if ($available === 0)
@@ -173,8 +314,8 @@ class ProductController extends Controller
             $data = array();
             $i = 0;
 
-            foreach ($list->get() as $item){
-                $property_keys = CategoryProperty::where('category_id', 45)
+            foreach ($list as $item){
+                $property_keys = CategoryProperty::where('category_id', 9)
                     ->first();
 
                 $category = Category::where('id', $item->category_id)->select('id','name_fa')->first();
@@ -182,132 +323,137 @@ class ProductController extends Controller
                 if($property_keys){
                     $size = $property_keys->size? ProductProperty::query()
                     ->where('product_id', $item->id)
-                    ->whereNotNull('size')
-                    ->pluck('size'): null;
+                    ->whereNotNull('size_id')
+                    ->pluck('size_id'): null;
+                    if($size) $size_list = Size::whereIn('id', $size)->pluck('name');
 
                     $material = $property_keys->material? ProductProperty::query()
                         ->where('product_id', $item->id)
-                        ->whereNotNull('material')
-                        ->pluck('material'): null;
+                        ->whereNotNull('material_id')
+                        ->pluck('material_id'): null;
+                    if($size) $material_list = Material::whereIn('id', $material)->pluck('name');
 
                     $color = $property_keys->color? ProductProperty::query()
-                        ->where('color', $item->id)
-                        ->whereNotNull('color')
-                        ->pluck('color'): null;
+                        ->where('product_id', $item->id)
+                        ->whereNotNull('color_id')
+                        ->pluck('color_id'): null;
+                    if($size) $color_list = Color::whereIn('id', $color)->pluck('name');
 
                     $design = $property_keys->design? ProductProperty::query()
                         ->where('product_id', $item->id)
-                        ->pluck('design'): null;
+                        ->whereNotNull('design_id')
+                        ->pluck('design_id'): null;
+                    if($size) $design_list = Design::whereIn('id', $design)->pluck('name');
 
-                    $sleeve = $property_keys->sleeve? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('sleeve')
-                        ->pluck('sleeve'): null;
+                    // $sleeve = $property_keys->sleeve? ProductProperty::query()
+                    //     ->where('product_id', $item->id)
+                    //     ->whereNotNull('sleeve')
+                    //     ->pluck('sleeve'): null;
                 
-                    $piece = $property_keys->piece? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('piece')
-                        ->pluck('piece'): null;
+                    // $piece = $property_keys->piece? ProductProperty::query()
+                    //     ->where('product_id', $item->id)
+                    //     ->whereNotNull('piece')
+                    //     ->pluck('piece'): null;
 
-                    $set_type = $property_keys->set_type? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('set_type')
-                        ->pluck('set_type'): null;
+                    // $set_type = $property_keys->set_type? ProductProperty::query()
+                    //     ->where('product_id', $item->id)
+                    //     ->whereNotNull('set_type')
+                    //     ->pluck('set_type'): null;
                         
-                    $description = $property_keys->description? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('description')
-                        ->pluck('description'): null;
+                    // $description = $property_keys->description? ProductProperty::query()
+                    //     ->where('product_id', $item->id)
+                    //     ->whereNotNull('description')
+                    //     ->pluck('description'): null;
 
-                    $maintenance = $property_keys->maintenance? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('maintenance')
-                        ->pluck('maintenance'): null;
+                    // $maintenance = $property_keys->maintenance? ProductProperty::query()
+                    //     ->where('product_id', $item->id)
+                    //     ->whereNotNull('maintenance')
+                    //     ->pluck('maintenance'): null;
 
-                    $made_in = $property_keys->made_in? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('made_in')
-                        ->pluck('made_in'): null;
+                    // $made_in = $property_keys->made_in? ProductProperty::query()
+                    //     ->where('product_id', $item->id)
+                    //     ->whereNotNull('made_in')
+                    //     ->pluck('made_in'): null;
+ 
+                    // $origin = $property_keys->origin? ProductProperty::query()
+                    //     ->where('product_id', $item->id)
+                    //     ->whereNotNull('origin')
+                    //     ->pluck('origin'): null;
 
-                    $origin = $property_keys->origin? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('origin')
-                        ->pluck('origin'): null;
+                    // $type = $property_keys->type? ProductProperty::query()
+                    //     ->where('product_id', $item->id)
+                    //     ->whereNotNull('type')
+                    //     ->pluck('type'): null;
 
-                    $type = $property_keys->type? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('type')
-                        ->pluck('type'): null;
+                    // $for_use = $property_keys->for_use? ProductProperty::query()
+                    //     ->where('product_id', $item->id)
+                    //     ->whereNotNull('for_use')
+                    //     ->pluck('for_use'): null;
 
-                    $for_use = $property_keys->for_use? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('for_use')
-                        ->pluck('for_use'): null;
+                    // $collar = $property_keys->collar? ProductProperty::query()
+                    //     ->where('product_id', $item->id)
+                    //     ->whereNotNull('collar')
+                    //     ->pluck('collar'): null;
 
-                    $collar = $property_keys->collar? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('collar')
-                        ->pluck('collar'): null;
+                    // $height = $property_keys->height? ProductProperty::query()
+                    //     ->where('product_id', $item->id)
+                    //     ->whereNotNull('height')
+                    //     ->pluck('height'): null;
 
-                    $height = $property_keys->height? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('height')
-                        ->pluck('height'): null;
+                    // $physical_feature = $property_keys->physical_feature? ProductProperty::query()
+                    //     ->where('product_id', $item->id)
+                    //     ->whereNotNull('physical_feature')
+                    //     ->pluck('physical_feature'): null;
 
-                    $physical_feature = $property_keys->physical_feature? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('physical_feature')
-                        ->pluck('physical_feature'): null;
+                    // $production_time = $property_keys->production_time? ProductProperty::query()
+                    //     ->where('product_id', $item->id)
+                    //     ->whereNotNull('production_time')
+                    //     ->pluck('production_time'): null;
 
-                    $production_time = $property_keys->production_time? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('production_time')
-                        ->pluck('production_time'): null;
+                    // $demension = $property_keys->demension? ProductProperty::query()
+                    //     ->where('product_id', $item->id)
+                    //     ->whereNotNull('demension')
+                    //     ->pluck('demension'): null;
 
-                    $demension = $property_keys->demension? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('demension')
-                        ->pluck('demension'): null;
+                    // $crotch = $property_keys->crotch? ProductProperty::query()
+                    //     ->where('product_id', $item->id)
+                    //     ->whereNotNull('crotch')
+                    //     ->pluck('crotch'): null;
 
-                    $crotch = $property_keys->crotch? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('crotch')
-                        ->pluck('crotch'): null;
+                    // $close = $property_keys->close? ProductProperty::query()
+                    //     ->where('product_id', $item->id)
+                    //     ->whereNotNull('close')
+                    //     ->pluck('close'): null;
 
-                    $close = $property_keys->close? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('close')
-                        ->pluck('close'): null;
+                    // $drop = $property_keys->drop? ProductProperty::query()
+                    //     ->where('product_id', $item->id)
+                    //     ->whereNotNull('drop')
+                    //     ->pluck('drop'): null;
 
-                    $drop = $property_keys->drop? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('drop')
-                        ->pluck('drop'): null;
+                    // $cumin = $property_keys->cumin? ProductProperty::query()
+                    //     ->where('product_id', $item->id)
+                    //     ->whereNotNull('cumin')
+                    //     ->pluck('cumin'): null;
 
-                    $cumin = $property_keys->cumin? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('cumin')
-                        ->pluck('cumin'): null;
+                    // $close_shoes = $property_keys->close_shoes? ProductProperty::query()
+                    //     ->where('product_id', $item->id)
+                    //     ->whereNotNull('close_shoes')
+                    //     ->pluck('close_shoes'): null;
 
-                    $close_shoes = $property_keys->close_shoes? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('close_shoes')
-                        ->pluck('close_shoes'): null;
+                    // $typeـofـclothing = $property_keys->typeـofـclothing? ProductProperty::query()
+                    //     ->where('product_id', $item->id)
+                    //     ->whereNotNull('typeـofـclothing')
+                    //     ->pluck('typeـofـclothing'): null;
 
-                    $typeـofـclothing = $property_keys->typeـofـclothing? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('typeـofـclothing')
-                        ->pluck('typeـofـclothing'): null;
+                    // $specialized_features = $property_keys->specialized_features? ProductProperty::query()
+                    //     ->where('product_id', $item->id)
+                    //     ->whereNotNull('specialized_features')
+                    //     ->pluck('specialized_features'): null;
 
-                    $specialized_features = $property_keys->specialized_features? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('specialized_features')
-                        ->pluck('specialized_features'): null;
-
-                    $sell_price = $property_keys? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('sell_price')
-                        ->pluck('sell_price'): null;
+                    // $sell_price = $property_keys? ProductProperty::query()
+                    //     ->where('product_id', $item->id)
+                    //     ->whereNotNull('sell_price')
+                    //     ->pluck('sell_price'): null;
 
                 }else{
                     $size = null;
@@ -353,27 +499,29 @@ class ProductController extends Controller
                 $data[$i++] = array([
                     'product' => $item,
                     'properties' => [
-                        'size' => $size,
-                        'design' => $design,
-                        'description' => $description,
-                        'maintenance' => $maintenance,
-                        'made_in' => $made_in,
-                        'origin' => $origin,
-                        'type' => $type,
-                        'for_use' => $for_use,
-                        'collar' => $collar,
-                        'height' => $height,
-                        'physical_feature' => $physical_feature,
-                        'production_time' => $production_time,
-                        'demension' => $demension,
-                        'crotch' => $crotch,
-                        'close' => $close,
-                        'drop' => $drop,
-                        'cumin' => $cumin,
-                        'close_shoes' => $close_shoes,
-                        'typeـofـclothing' => $typeـofـclothing,
-                        'specialized_features' => $specialized_features,
-                        'sell_price' => $sell_price
+                        'size' => $size_list,
+                        'color' => $color_list,
+                        'design' => $design_list,
+                        'material' => $material_list,
+                        // 'description' => $description,
+                        // 'maintenance' => $maintenance,
+                        // 'made_in' => $made_in,
+                        // 'origin' => $origin,
+                        // 'type' => $type,
+                        // 'for_use' => $for_use,
+                        // 'collar' => $collar,
+                        // 'height' => $height,
+                        // 'physical_feature' => $physical_feature,
+                        // 'production_time' => $production_time,
+                        // 'demension' => $demension,
+                        // 'crotch' => $crotch,
+                        // 'close' => $close,
+                        // 'drop' => $drop,
+                        // 'cumin' => $cumin,
+                        // 'close_shoes' => $close_shoes,
+                        // 'typeـofـclothing' => $typeـofـclothing,
+                        // 'specialized_features' => $specialized_features,
+                        // 'sell_price' => $sell_price
                     ],
                     'category' => $category,
                     'images' => $images
@@ -387,9 +535,64 @@ class ProductController extends Controller
             ];
 
             return response()->json($response);
-        }catch(Exception $e){
-            return response($e, 500);
+        // }catch(Exception $e){
+        //     return response($e, 500);
+        // }
+    }
+
+    public function product_properties(Request $request){
+        foreach($request->tables as $item){
+            if($item['value']!=''){
+                $id = DB::table($item['table'])->where('id', $item['value'])->first();
+
+                if($id){ 
+                    $id = $id->id;
+                    $input[$item['en'].'_id'] = $item['value'];
+                }
+
+            }
+                
         }
+
+        $input['product_id'] = $request->branch_id?? null;
+        $input['product_id'] = $request->product_id;
+        $input['sell_price'] = $request->sell_price;
+        $input['is_active'] = $request->is_active;
+
+        $data =ProductProperty::create($input);
+
+        return response()->json([
+            "success"  => true, 
+            "message" => "با موفقیت افزوده شد", 
+            "product" => $data
+        ], 200);
+        
+    }
+
+    public function get_properties($id){
+
+        $properties = ProductProperty::where('product_id', $id)->get();
+
+        $data = [];
+        foreach($properties as $value){
+            $temp = [];
+            foreach($this->tables as $item){
+                if($value[$item['en'].'_id']){
+                    // return $item['table'];
+                    $name = DB::table($item['table'])->where('id', $value[$item['en'].'_id'])->first();
+                    if($name) $temp[$item['en']] = $name->name;
+                }
+            }
+            $temp['sell_price'] = $value->sell_price;
+            $temp['is_active'] = $value->is_active;
+            $temp['branch_id'] = $value->brnach_id;
+            $temp['id'] = $value->id;
+            array_push($data, $temp);
+        }
+
+        return $data;
+        
+
     }
 
     public function delete($id){
