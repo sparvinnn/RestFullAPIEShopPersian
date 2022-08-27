@@ -273,7 +273,7 @@ class ProductController extends Controller
     }
 
     public function search(Request $request){
-
+// return $request;
         $name = $request->name;
         $min_price = $request->min_price;
         $max_price = $request->max_price;
@@ -286,7 +286,7 @@ class ProductController extends Controller
             
             $list = Product::query()
                 ->when($name, function ($q, $name) {
-                    return $q->where('name', $name);
+                    return $q->where('name', 'LIKE', '%'.$name.'%');
                 })
                 ->when($min_price, function ($q, $min_price) {
                     return $q->where('sell_price', '>=', $min_price);
