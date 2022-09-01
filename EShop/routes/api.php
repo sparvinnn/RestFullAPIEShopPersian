@@ -15,6 +15,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FieldController;
 use App\Http\Controllers\paymentController;
 use App\Http\Controllers\PropertiesController;
 /*
@@ -113,6 +114,21 @@ Route::middleware('jwt.verify')->prefix('comment/')->group(function() {
 Route::middleware('jwt.verify')->prefix('brand/')->group(function() {
     Route::post("", [BrandController::class, "store"]);
     Route::put("{id}", [BrandController::class, "update"]);
+});
+
+//fields route
+Route::middleware('jwt.verify')->prefix('fields/')->group(function() {
+    Route::post("", [FieldController::class, "create"]);
+    Route::get("", [FieldController::class, "list"]);
+    Route::put("{id}", [FieldController::class, "update"]);
+    Route::delete("{id}", [FieldController::class, "delete"]);
+});
+
+//category fields route
+Route::middleware('jwt.verify')->prefix('fields/')->group(function() {
+    Route::get("cate-fields/list/{id}", [FieldController::class, "catFields"]);
+    Route::post("cate-fields", [FieldController::class, "storeCatFields"]);
+    Route::delete("cate-fields/{id}", [FieldController::class, "deleteCatFields"]);
 });
 
 //cart route

@@ -44,6 +44,8 @@ class AddNewColumnToProductProperties extends Migration
             $table->foreignId('heel_id')->nullable()->constrained('heels');
             $table->foreignId('bag_model_id')->nullable()->constrained('bag_models');
             $table->boolean('is_active')->default(1);
+            $table->boolean('is_active')->default(1);
+            $table->integer('inventory_number')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

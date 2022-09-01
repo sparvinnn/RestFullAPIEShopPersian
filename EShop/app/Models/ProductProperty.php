@@ -43,7 +43,8 @@ class ProductProperty extends Model
         'heel_id',
         'bag_model_id',
         'is_active',
-        'sell_price'
+        'sell_price',
+        'inventory_number'
     ];
 
     public function product(){
