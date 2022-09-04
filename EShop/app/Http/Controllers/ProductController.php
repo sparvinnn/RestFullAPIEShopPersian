@@ -169,7 +169,7 @@ class ProductController extends Controller
                 ->when($id, function ($q, $id) {
                     return $q->where('id', $id);
                 })
-                ->orderBy('created_at')
+                ->orderBy('updated_at', 'desc')
                 ->limit(20)
                 ->get();
             if ($available == 1)
@@ -197,19 +197,19 @@ class ProductController extends Controller
                         ->where('product_id', $item->id)
                         ->whereNotNull('material_id')
                         ->pluck('material_id'): null;
-                    if($size) $material_list = Material::whereIn('id', $material)->pluck('name');
+                    if($material) $material_list = Material::whereIn('id', $material)->pluck('name');
 
                     $color = $property_keys->color? ProductProperty::query()
                         ->where('product_id', $item->id)
                         ->whereNotNull('color_id')
                         ->pluck('color_id'): null;
-                    if($size) $color_list = Color::whereIn('id', $color)->pluck('name');
+                    if($color) $color_list = Color::whereIn('id', $color)->pluck('name');
 
                     $design = $property_keys->design? ProductProperty::query()
                         ->where('product_id', $item->id)
                         ->whereNotNull('design_id')
                         ->pluck('design_id'): null;
-                    if($size) $design_list = Design::whereIn('id', $design)->pluck('name');
+                    if($design) $design_list = Design::whereIn('id', $design)->pluck('name');
 
                     // $sleeve = $property_keys->sleeve? ProductProperty::query()
                     //     ->where('product_id', $item->id)
@@ -367,8 +367,8 @@ class ProductController extends Controller
                     'properties' => [
                         'size' => $size_list,
                         'color' => $color_list,
-                        'design' => $design_list,
-                        'material' => $material_list,
+                        // 'design' => $design_list,
+                        // 'material' => $material_list,
                         // 'description' => $description,
                         // 'maintenance' => $maintenance,
                         // 'made_in' => $made_in,
@@ -390,7 +390,8 @@ class ProductController extends Controller
                         // 'sell_price' => $sell_price
                     ],
                     'category' => $category,
-                    'images' => $images
+                    'images' => $images,
+                    'discount' => []
                 ]);
             }
 
