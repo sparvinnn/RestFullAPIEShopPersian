@@ -76,6 +76,7 @@ Route::post("category/toggle-active/{id}", [CategoryController::class, "toggleAc
 Route::get("category/{id}/getProperties", [CategoryController::class, "getProperties"]);
 Route::get("category/{id}/updateProperties", [CategoryController::class, "updateProperties"]);
 Route::get("categories", [GlobalController::class, "getAllCategory"]);
+Route::get("product/search", [ProductController::class, "search"]);
 Route::post("product/search", [ProductController::class, "search"]);
 Route::post("getBrands", [GlobalController::class, "getBrands"]);
 Route::get("getAllBrands", [GlobalController::class, "getAllBrands"]);
