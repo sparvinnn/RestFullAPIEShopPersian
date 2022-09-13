@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\CategoryField;
 use App\Models\CategoryProperty;
 use App\Models\Field;
@@ -182,28 +183,34 @@ class moveFieldsSeeder extends Seeder
           
         ];
 
-        foreach($tables as $item){
-            Field::create([
-                'name' => $item['name'],
-                'name_en' => $item['name_en']
-            ]);
-        }
+        // foreach($tables as $item){
+        //     Field::create([
+        //         'name' => $item['name'],
+        //         'name_en' => $item['name_en']
+        //     ]);
+        // }
 
 
         $CategoryProperty = CategoryProperty::all();
 
-        // foreach($CategoryProperty as $cp){
-        //     foreach($tables as $item){
-        //         if($cp[$item['name_en']]){
-        //             echo $cp['category_id']. '  ';
-        //             if(!Field::where('name_en', $item['name_en'])->first()) continue;
-        //             CategoryField::create([
-        //                 'category_id' => $cp['category_id'],
-        //                 'field_id' => Field::where('name_en', $item['name_en'])->first()['id']
-        //             ]);
-        //         }
-        //     }
-        // }
+        // CategoryField::truncate();
+
+        foreach($CategoryProperty as $cp){
+            foreach($tables as $item){
+                if($cp[$item['name_en']]){
+                    echo $cp['category_id']. '  ';
+                    if(!Category::find($cp['category_id'])) continue;
+                    if(!Field::where('name_en', $item['name_en'])->first()) continue;
+                    $field_id = Field::where('name_en', $item['name_en'])->first()['id'];
+                    if(CategoryField::where('category_id', $cp['category_id'])
+                        ->where('field_id', $field_id)->first()) continue;
+                    CategoryField::create([
+                        'category_id' => $cp['category_id'],
+                        'field_id' => $field_id
+                    ]);
+                }
+            }
+        }
 
         // $data = ProductProperty::all();
 
