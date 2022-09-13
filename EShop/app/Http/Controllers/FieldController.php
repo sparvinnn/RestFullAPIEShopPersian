@@ -51,7 +51,7 @@ class FieldController extends Controller
             ->select(['fields.id as field_id', 
                 'fields.name', 
                 'fields.name_en', 
-                'category_fields.name_fa as category',
+                'categories.name_fa as category',
                 'category_fields.id as id', 
                 'category_fields.category_id as cate_id',
                 'category_fields.searchable'])
