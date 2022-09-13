@@ -182,20 +182,28 @@ class moveFieldsSeeder extends Seeder
           
         ];
 
+        foreach($tables as $item){
+            Field::create([
+                'name' => $item['name'],
+                'name_en' => $item['name_en']
+            ]);
+        }
+
+
         $CategoryProperty = CategoryProperty::all();
 
-        foreach($CategoryProperty as $cp){
-            foreach($tables as $item){
-                if($cp[$item['name_en']]){
-                    echo $cp['category_id']. '  ';
-                    if(!Field::where('name_en', $item['name_en'])->first()) continue;
-                    CategoryField::create([
-                        'category_id' => $cp['category_id'],
-                        'field_id' => Field::where('name_en', $item['name_en'])->first()['id']
-                    ]);
-                }
-            }
-        }
+        // foreach($CategoryProperty as $cp){
+        //     foreach($tables as $item){
+        //         if($cp[$item['name_en']]){
+        //             echo $cp['category_id']. '  ';
+        //             if(!Field::where('name_en', $item['name_en'])->first()) continue;
+        //             CategoryField::create([
+        //                 'category_id' => $cp['category_id'],
+        //                 'field_id' => Field::where('name_en', $item['name_en'])->first()['id']
+        //             ]);
+        //         }
+        //     }
+        // }
 
         // $data = ProductProperty::all();
 
