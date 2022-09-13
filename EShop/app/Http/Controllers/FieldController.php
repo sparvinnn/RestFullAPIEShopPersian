@@ -46,10 +46,12 @@ class FieldController extends Controller
 
     public function catFieldsList(){
 
-        $data = CategoryField::join('fields','field_id', 'fields.id')
+        $data = CategoryField::join('fields','category_fields.field_id', 'fields.id')
+            ->join('categories', 'categories.id', 'category_fields.category_id')
             ->select(['fields.id as field_id', 
                 'fields.name', 
                 'fields.name_en', 
+                'category_fields.name_fa as category',
                 'category_fields.id as id', 
                 'category_fields.category_id as cate_id',
                 'category_fields.searchable'])
