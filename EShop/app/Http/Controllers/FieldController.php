@@ -21,7 +21,7 @@ class FieldController extends Controller
 
         $fields = Field::select(['id', 'name', 'name_en'])->get();
 
-        return response()->json(["status" => true, "data" => $fields, "message" => 'اطلاعات با موفقیت ثبت شد']);
+        return response()->json(["status" => true, "data" => $fields, "message" => 'اطلاعات با موفقیت دریافت شد']);
     }
 
     public function delete($id){
@@ -39,6 +39,21 @@ class FieldController extends Controller
                 'category_fields.category_id as cate_id',
                 'category_fields.searchable'])
             ->where('category_fields.category_id', $id)
+            ->get();
+
+        return response()->json(["status" => true, "data" => $data, "message" => 'اطلاعات با موفقیت ثبت شد']);
+    }
+
+    public function catFieldsList(){
+
+        $data = CategoryField::join('fields','field_id', 'fields.id')
+            ->select(['fields.id as field_id', 
+                'fields.name', 
+                'fields.name_en', 
+                'category_fields.id as id', 
+                'category_fields.category_id as cate_id',
+                'category_fields.searchable'])
+            // ->where('category_fields.category_id', $id)
             ->get();
 
         return response()->json(["status" => true, "data" => $data, "message" => 'اطلاعات با موفقیت ثبت شد']);

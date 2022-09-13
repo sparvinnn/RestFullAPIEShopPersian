@@ -124,10 +124,11 @@ Route::middleware('jwt.verify')->prefix('fields/')->group(function() {
     Route::put("{id}", [FieldController::class, "update"]);
     Route::delete("{id}", [FieldController::class, "delete"]);
 });
-
+Route::get("fields/cate-fields/list", [FieldController::class, "catFieldsList"]);
 //category fields route
 Route::middleware('jwt.verify')->prefix('fields/')->group(function() {
     Route::get("cate-fields/list/{id}", [FieldController::class, "catFields"]);
+    
     Route::post("cate-fields", [FieldController::class, "storeCatFields"]);
     Route::delete("cate-fields/{id}", [FieldController::class, "deleteCatFields"]);
 });
