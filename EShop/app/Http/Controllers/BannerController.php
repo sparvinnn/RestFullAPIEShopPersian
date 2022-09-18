@@ -117,13 +117,13 @@ class BannerController extends Controller
 
         try{
             $banners = Banner::when($location, function($query) use($location){
-                $query->where('location', $location);
+                return $query->where('location', $location);
             })
             ->when($use_for, function($query) use($use_for){
-                $query->where('use_for', $use_for);
+                return $query->where('use_for', $use_for);
             })
             ->when($category_id, function($query) use($category_id){
-                $query->where('category_id', $category_id);
+                return $query->where('category_id', $category_id);
             })
             ->leftJoin('categories', 'categories.id', 'banners.category_id')
             ->select([
