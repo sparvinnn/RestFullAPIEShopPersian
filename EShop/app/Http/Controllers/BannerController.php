@@ -110,7 +110,7 @@ class BannerController extends Controller
         }
     }
 
-    public function filter(Request $request){
+    public function filter(Request $request){ 
         $location    = $request->location;
         $use_for     = $request->use_for;
         $category_id = $request->category_id;
@@ -125,12 +125,15 @@ class BannerController extends Controller
             ->when($category_id, function($query) use($category_id){
                 $query->where('category_id', $category_id);
             })
+            ->leftJoin('categories', 'categories.id', 'banners.category_id')
             ->select([
-                'id',
-                'url as imageSrc',
-                'link',
-                'location',
-                'use_for'
+                'banners.id',
+                'banners.url as imageSrc',
+                'banners.link',
+                'banners.location',
+                'banners.use_for',
+                'banners.category_id',
+                'categories.name_en'
             ])
             ->get()
             ;
