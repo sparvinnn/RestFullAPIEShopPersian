@@ -19,7 +19,8 @@ class BannerController extends Controller
         ->when($use_for, function($query) use($use_for){
             return $query->where('use_for', $use_for);
         })
-        ->paginate($per_page);
+        ->get()
+        // ->paginate($per_page);
         ;
 
         return response()->json([
