@@ -32,6 +32,7 @@ use App\Http\Controllers\PropertiesController;
 Route::get("with-product-id/{id}", [PropertiesController::class, "listWithProductId"]);
 Route::get("get_properties/{id}", [ProductController::class, "get_properties"]);
 Route::get("adminSearch", [ProductController::class, "search"]);
+// Route::get("fields/product-fields/list/{id}", [FieldController::class, "productFields"]);
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    return $request->user();
 //});
@@ -123,8 +124,10 @@ Route::middleware('jwt.verify')->prefix('fields/')->group(function() {
     Route::get("", [FieldController::class, "list"]);
     Route::put("{id}", [FieldController::class, "update"]);
     Route::delete("{id}", [FieldController::class, "delete"]);
+    Route::post("product-fields/list", [FieldController::class, "saveProductFields"]);
 });
 Route::get("fields/cate-fields/list", [FieldController::class, "catFieldsList"]);
+Route::get("fields/product-fields/list/{id}", [FieldController::class, "productFields"]);
 //category fields route
 Route::middleware('jwt.verify')->prefix('fields/')->group(function() {
     Route::get("cate-fields/list/{id}", [FieldController::class, "catFields"]);
