@@ -5,14 +5,35 @@ namespace App\Http\Controllers;
 use App\Models\Brands;
 use App\Models\Category;
 use App\Models\CategoryMeta;
+use App\Models\CategoryProperty;
+use App\Models\Color;
+use App\Models\Design;
+use App\Models\Material;
 use App\Models\Product;
 use App\Models\ProductProperty;
+use App\Models\Size;
 use Illuminate\Http\Request;
 
 class FilterController extends Controller
 {
+
+    private $tables = [
+        [
+            "en" => "size",
+            "fa" => 'اندازه',
+            "table" => 'sizes'
+        ],
+        
+        [
+            "en" => "color",
+            "fa" => "رنگ",
+            "table" => 'colors'
+        ]
+      
+    ];
+
     public function getProperties(Request $request)
-    {
+    { 
         $result = [];
         $temp = [];
         $properties = ProductProperty::
@@ -51,117 +72,124 @@ class FilterController extends Controller
 
     public function filter(Request $request)
     {
+        // return $request;
+        $name = $request->name;
         $min_price = $request->min_price;
         $max_price = $request->max_price;
-        $cat_id = $request->cat_id;
-        $available = $request->available;
-        $ordering = $request->ordering;
-        $cats = Category::query()->where('parent_id', $cat_id)->pluck('id');
-        $cats->push($cat_id);
-        if (!$cat_id) $cats = null;
-        $brand_id = $request->brand_id;
+        $category_id = $request->category_id;
+        $branch_id = $request->branch_id;
         $id = $request->id;
-        if(isset($request->properties[0])){
-            $properties = $request->properties[0];
-            $index = 0;
-            foreach ($properties as $property){
-                $property['value'] = explode(',', $property['value']);
-                $properties[$index] = $property;
-                $index++;
-            }
-        }
+        $properties_filter = $request->properties_filter;
+        $available = $request->available;
+        // try{
+            
+            $list = Product::query()
+                ->when($name, function ($q, $name) {
+                    return $q->where('name', 'LIKE', '%'.$name.'%');
+                })
+                ->when($min_price, function ($q, $min_price) {
+                    return $q->where('sell_price', '>=', $min_price);
+                })
+                ->when($max_price, function ($q, $max_price) {
+                    return $q->where('sell_price', '<=', $max_price);
+                })
+                ->when($category_id, function ($q, $category_id) {
+                    return $q->where('category_id', $category_id);
+                })
+                ->when($branch_id, function ($q, $branch_id) {
+                    return $q->where('branch_id', $branch_id);
+                })
+                ->when($id, function ($q, $id) {
+                    return $q->where('id', $id);
+                })
+                ->orderBy('updated_at', 'desc')
+                ->limit(20)
+                ->get();
+            if ($available == 1)
+                $list->where('inventory_number', '>', 0);
+            else if ($available === 0)
+                $list->where('inventory_number', '=', 0);
 
-        $data = Product::query()
-//            ->whereIn('category_id', $cats)
-//            ->where('category_id', $cat_id)
-            ->when($id, function($query) use ($id){
-                return $query->where('id', $id);
-            })
-            ->when($min_price, function($query) use ($min_price){
-                return $query->where('price', '>=', $min_price);
-            })
-            ->when($max_price, function($query) use ($max_price){
-                return $query->where('price', '<=', $max_price);
-            })
-            ->when($cats, function($query) use ($cats){
-                return $query->whereIn('category_id', $cats);
-            })
-            ->when($brand_id, function($query) use ($brand_id){
-                return $query->whereIn('brand_id', $brand_id);
-            })
-            ->when($available, function($query) use ($available){
-                if($available) return $query->where('inventory_number', '>', 0);
-                else return $query->where('inventory_number', 0);
-            })
-            ->when($ordering, function($query) use ($ordering){
-                if($ordering === 'BestSelling') return $query->orderBy('sales_number');
-                else if($ordering === 'MostPopular') return $query->orderBy('rate');
-            })
-//            ->when($properties, function($query) use ($properties){
-//                foreach ($properties as $property){
-//                    $query->
-//                }
-//            })
+            $data = array();
+            $i = 0;
 
+            foreach ($list as $item){
+                $property_keys = CategoryProperty::
+                    when($category_id, function ($q, $category_id) {
+                        return $q->where('category_id', $category_id);
+                    })
+                // where('category_id', 9)
+                    ->first();
 
-//            ->with(['properties'=>function($query) use ($request){
-//                $query->whereIn('key', $request->)
-//            }])
-            ->with('media', 'properties')
-//            ->get();
-            ->paginate(20);
+                $category = Category::where('id', $item->category_id)->select('id','name_fa')->first();
+                    
+                if($property_keys){
+                    $size = $property_keys->size? ProductProperty::query()
+                    ->where('product_id', $item->id)
+                    ->whereNotNull('size_id')
+                    ->pluck('size_id'): null;
+                    if($size) $size_list = Size::whereIn('id', $size)->pluck('name');
 
-        return $list = $data->map(function ($item) {
-            $product = [
-                "id"                => $item->id,
-                "name"              => $item->name,
-                "price"             => $item->price,
-                "description"       => $item->description,
-                "category_id"       => $item->category_id,
-                "inventory_number"  => $item->inventory_number,
-                "total_number"      => $item->total_number,
-                "sales_number"      => $item->sales_number,
-                "rate"              => $item->rate,
-                "vote"              => $item->vote,
-            ];
-            $properties = [];
-            $x = [
-                'key' => '',
-                'value' => ''
-            ];
+                    $material = $property_keys->material? ProductProperty::query()
+                        ->where('product_id', $item->id)
+                        ->whereNotNull('material_id')
+                        ->pluck('material_id'): null;
+                    if($material) $material_list = Material::whereIn('id', $material)->pluck('name');
 
-            foreach ($item['properties'] as $temp){
-                if(CategoryMeta::query()->where('id', $temp['property_id'])->first()){
-                    $x['id']    = $temp['id'];
-                    $x['property_id']    = $temp['property_id'];
-                    $x['key'] = CategoryMeta::query()->where('id', $temp['property_id'])->firstOrFail()['value'];
-                    $x['value'] = $temp['value'];
-                    array_push($properties, $x);
+                    $color = $property_keys->color? ProductProperty::query()
+                        ->where('product_id', $item->id)
+                        ->whereNotNull('color_id')
+                        ->pluck('color_id'): null;
+                    if($color) $color_list = Color::whereIn('id', $color)->pluck('name');
+
+                    $design = $property_keys->design? ProductProperty::query()
+                        ->where('product_id', $item->id)
+                        ->whereNotNull('design_id')
+                        ->pluck('design_id'): null;
+                    if($design) $design_list = Design::whereIn('id', $design)->pluck('name');
+                }else{
+                    $size = null;
+                    $design = null;         
                 }
+                
+
+
+                // $properties = ProductProperty::query()
+                //     ->where('product_id', $item->id)
+                    // ->when($properties_filter, function ($q, $properties_filter) {
+                    //     return $q->whereIn('product_properties.property_id', $properties_filter);
+                    // })
+                    // ->join('category_metas', 'category_metas.id', 'product_properties.property_id')
+                    // ->select([
+                    //     'category_metas.value as key',
+                    //     'product_properties.value as value',
+                    // ])
+                    // ->get();
+
+                $images = Media::query()->where('product_id', $item->id)
+                    ->select('id','url')->get();
+
+                $data[$i++] = array([
+                    'product' => $item,
+                    'properties' => [
+                        'size' => $size_list,
+                        'color' => $color_list,
+                    ],
+                    'category' => $category,
+                    'images' => $images,
+                    'discount' => []
+                ]);
             }
 
-            $product['properties'] = $properties;
-
-            $medias = [];
-            $x = [
-                'id' => '',
-                'url' => ''
+            $response = [
+                'status' => true,
+                'msg' => 'list successfully get.',
+                'data' => $data
             ];
-            foreach ($item['media'] as $temp){
-                $x['id']    = $temp['id'];
-                $x['url']   = $temp['url'];
-                array_push($medias, $x);
-            }
-            if($item->brand_id)
-                $product['brand'] = [
-                    "id"         => $item->branch_id,
-                    "name"       => Brands::find($item->brand_id)['name']
-                ];
 
-
-            $product['media'] = $medias;
-
-            return $product;
-        });
+            return response()->json($response);
+        // }catch(Exception $e){
+        //     return response($e, 500);
+        // }
     }
 }
