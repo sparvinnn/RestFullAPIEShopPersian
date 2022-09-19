@@ -9,6 +9,7 @@ use App\Models\CategoryProperty;
 use App\Models\Color;
 use App\Models\Design;
 use App\Models\Material;
+use App\Models\Media;
 use App\Models\Product;
 use App\Models\ProductProperty;
 use App\Models\Size;
