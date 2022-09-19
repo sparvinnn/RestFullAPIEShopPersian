@@ -149,8 +149,9 @@ class FilterController extends Controller
                         ->pluck('design_id'): null;
                     if($design) $design_list = Design::whereIn('id', $design)->pluck('name');
                 }else{
-                    $size = null;
-                    $design = null;         
+                    $size_list = null;
+                    $design_list = null;    
+                    $color_list = null;     
                 }
                 
 
