@@ -83,6 +83,8 @@ class FilterController extends Controller
         $properties_filter = $request->properties_filter;
         $available = $request->available;
         // try{
+            $size_list = [];
+            $color_list = [];
             
             $list = Product::query()
                 ->when($name, function ($q, $name) {
