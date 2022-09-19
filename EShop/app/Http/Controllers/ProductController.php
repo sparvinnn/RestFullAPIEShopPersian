@@ -10,6 +10,7 @@ use App\Models\Design;
 use App\Models\Material;
 use App\Models\Media;
 use App\Models\Product;
+use App\Models\ProductCategoryField;
 use App\Models\ProductProperty;
 use App\Models\Size;
 use Illuminate\Http\Request;
@@ -347,6 +348,16 @@ class ProductController extends Controller
                 
 
 
+                $fields = ProductCategoryField::where('product_id', $item->id)
+                ->leftJoin('category_fields', 'category_fields.id', 'product_category_fields.category_field_id')
+                ->leftJoin('fields', 'fields.id', 'category_fields.field_id')
+                ->select([
+                    'product_category_fields.product_id',
+                    'product_category_fields.data',
+                    'fields.id as field_id',
+                    'fields.name'
+                ])
+                ->get();
                 // $properties = ProductProperty::query()
                 //     ->where('product_id', $item->id)
                     // ->when($properties_filter, function ($q, $properties_filter) {
@@ -367,28 +378,8 @@ class ProductController extends Controller
                     'properties' => [
                         'size' => $size_list,
                         'color' => $color_list,
-                        // 'design' => $design_list,
-                        // 'material' => $material_list,
-                        // 'description' => $description,
-                        // 'maintenance' => $maintenance,
-                        // 'made_in' => $made_in,
-                        // 'origin' => $origin,
-                        // 'type' => $type,
-                        // 'for_use' => $for_use,
-                        // 'collar' => $collar,
-                        // 'height' => $height,
-                        // 'physical_feature' => $physical_feature,
-                        // 'production_time' => $production_time,
-                        // 'demension' => $demension,
-                        // 'crotch' => $crotch,
-                        // 'close' => $close,
-                        // 'drop' => $drop,
-                        // 'cumin' => $cumin,
-                        // 'close_shoes' => $close_shoes,
-                        // 'typeـofـclothing' => $typeـofـclothing,
-                        // 'specialized_features' => $specialized_features,
-                        // 'sell_price' => $sell_price
                     ],
+                    'fields' => $fields,
                     'category' => $category,
                     'images' => $images,
                     'discount' => []
