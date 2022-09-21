@@ -84,7 +84,10 @@ class GetProductsList
                 $product['sell_price'] = $item->ItemCurrentSelPrice;
                 $product->save();
             }else{
-                if($old['last_date_giv'] < $item['last_date_giv']){
+                // print $old['last_date_giv'];
+                // print $item->LastDate;
+                // return;
+                if($old['last_date_giv'] < $item->LastDate){
                     print('   +++   ');
                     print($item->ItemCode);
                     print('   +++   ');
