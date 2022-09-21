@@ -171,7 +171,7 @@ class ProductController extends Controller
                     return $q->where('id', $id);
                 })
                 ->orderBy('updated_at', 'desc')
-                ->limit(20)
+                ->limit(200)
                 ->get();
             if ($available == 1)
                 $list->where('inventory_number', '>', 0);
