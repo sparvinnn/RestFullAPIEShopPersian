@@ -349,15 +349,15 @@ class ProductController extends Controller
 
 
                 $fields = ProductCategoryField::where('product_id', $item->id)
-                ->leftJoin('category_fields', 'category_fields.id', 'product_category_fields.category_field_id')
-                ->leftJoin('fields', 'fields.id', 'category_fields.field_id')
-                ->select([
-                    'product_category_fields.product_id',
-                    'product_category_fields.data',
-                    'fields.id as field_id',
-                    'fields.name'
-                ])
-                ->get();
+                    ->leftJoin('category_fields', 'category_fields.id', 'product_category_fields.category_field_id')
+                    ->leftJoin('fields', 'fields.id', 'category_fields.field_id')
+                    ->select([
+                        'product_category_fields.product_id',
+                        'product_category_fields.data',
+                        'fields.id as field_id',
+                        'fields.name'
+                    ])
+                    ->get();
                 // $properties = ProductProperty::query()
                 //     ->where('product_id', $item->id)
                     // ->when($properties_filter, function ($q, $properties_filter) {
