@@ -152,25 +152,26 @@ class ProductController extends Controller
         // try{
             
             $list = Product::query()
-                ->when($name, function ($q, $name) {
-                    return $q->where('name', 'LIKE', '%'.$name.'%');
+                ->join('medias', 'medias.product_id', 'products.id')
+                ->when($name, function ($q, $name){
+                    return $q->where('products.name', 'LIKE', '%'.$name.'%');
                 })
                 ->when($min_price, function ($q, $min_price) {
-                    return $q->where('sell_price', '>=', $min_price);
+                    return $q->where('products.sell_price', '>=', $min_price);
                 })
                 ->when($max_price, function ($q, $max_price) {
-                    return $q->where('sell_price', '<=', $max_price);
+                    return $q->where('products.sell_price', '<=', $max_price);
                 })
                 ->when($category_id, function ($q, $category_id) {
-                    return $q->where('category_id', $category_id);
+                    return $q->where('products.category_id', $category_id);
                 })
                 ->when($branch_id, function ($q, $branch_id) {
-                    return $q->where('branch_id', $branch_id);
+                    return $q->where('products.branch_id', $branch_id);
                 })
                 ->when($id, function ($q, $id) {
-                    return $q->where('id', $id);
+                    return $q->where('products.id', $id);
                 })
-                ->orderBy('updated_at', 'desc')
+                ->orderBy('products.updated_at', 'desc')
                 ->limit(200)
                 ->get();
             if ($available == 1)
