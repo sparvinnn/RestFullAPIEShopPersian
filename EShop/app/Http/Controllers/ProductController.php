@@ -152,7 +152,7 @@ class ProductController extends Controller
         // try{
             
             $list = Product::query()
-                ->join('medias', 'medias.product_id', 'products.id')
+                ->join('media', 'media.product_id', 'products.id')
                 ->when($name, function ($q, $name){
                     return $q->where('products.name', 'LIKE', '%'.$name.'%');
                 })
