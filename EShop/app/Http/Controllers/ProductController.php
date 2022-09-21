@@ -144,7 +144,7 @@ class ProductController extends Controller
         $name = $request->name;
         $min_price = $request->min_price;
         $max_price = $request->max_price;
-        $category_id = $request->category_id;
+        $category_id = $request->category_id == 'new'? null: $request->category_id;
         $branch_id = $request->branch_id;
         $id = $request->id;
         $properties_filter = $request->properties_filter;
@@ -173,16 +173,44 @@ class ProductController extends Controller
                 })
                 ->orderBy('products.updated_at', 'desc')
                 ->limit(200)
-                ->get();
+                ->select('products.*')
+                ->get()
+                // ->select('media.id as media','products.id as product_id', 'media.product_id as media_product_id')
+                ;
+
             if ($available == 1)
                 $list->where('inventory_number', '>', 0);
             else if ($available === 0)
                 $list->where('inventory_number', '=', 0);
 
+            // $list->get();
+
+            $product_list = [];
+
+            
+            foreach ($list as $product){
+                // return 'test';
+                foreach ($product_list as $item){
+                    if($product['id'] == $item['id']){
+                        print $item['id'];
+                        continue 2;
+                    }
+                        
+                }
+                // return $product['id'];
+                array_push($product_list, $product);
+            }
+            // return 'testtyy';
+
+            // return $product_list;
+
+
+            
+
             $data = array();
             $i = 0;
 
-            foreach ($list as $item){
+            foreach ($product_list as $item){
                 $property_keys = CategoryProperty::where('category_id', 9)
                     ->first();
 
