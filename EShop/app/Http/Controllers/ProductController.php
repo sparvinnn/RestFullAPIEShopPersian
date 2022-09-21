@@ -189,24 +189,15 @@ class ProductController extends Controller
 
             
             foreach ($list as $product){
-                // return 'test';
                 foreach ($product_list as $item){
                     if($product['id'] == $item['id']){
-                        print $item['id'];
                         continue 2;
                     }
                         
                 }
-                // return $product['id'];
                 array_push($product_list, $product);
             }
-            // return 'testtyy';
-
-            // return $product_list;
-
-
-            
-
+          
             $data = array();
             $i = 0;
 
