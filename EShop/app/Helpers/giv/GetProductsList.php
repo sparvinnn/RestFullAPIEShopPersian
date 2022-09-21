@@ -131,6 +131,7 @@ class GetProductsList
                     $product['inventory_number'] = $sum_qoh;
                     $product['sell_price'] = $item->ItemCurrentSelPrice;
                     $product['is_active_giv'] = $item->IsActive;
+                    $product['last_date_giv'] = $item->LastDate;
                     $product->save();
 
 
