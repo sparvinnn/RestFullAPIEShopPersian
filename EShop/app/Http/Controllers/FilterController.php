@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Brands;
 use App\Models\Category;
+use App\Models\CategoryField;
 use App\Models\CategoryMeta;
 use App\Models\CategoryProperty;
 use App\Models\Color;
@@ -11,6 +12,7 @@ use App\Models\Design;
 use App\Models\Material;
 use App\Models\Media;
 use App\Models\Product;
+use App\Models\ProductCategoryField;
 use App\Models\ProductProperty;
 use App\Models\Size;
 use Illuminate\Http\Request;
@@ -77,12 +79,13 @@ class FilterController extends Controller
         $name = $request->name;
         $min_price = $request->min_price;
         $max_price = $request->max_price;
-        $category_id = $request->category_id;
+        $category = $request->category_id;
         $branch_id = $request->branch_id;
         $id = $request->id;
         $properties_filter = $request->properties_filter;
         $available = $request->available;
-        // try{
+        $category_id = ($category!='new')? $category: null;
+        try{
             $size_list = [];
             $color_list = [];
             
@@ -106,78 +109,61 @@ class FilterController extends Controller
                     return $q->where('id', $id);
                 })
                 ->orderBy('updated_at', 'desc')
-                ->limit(20)
+                ->limit($request->per_page)
                 ->get();
+            $count = Product::query()->count();
             if ($available == 1)
                 $list->where('inventory_number', '>', 0);
             else if ($available === 0)
                 $list->where('inventory_number', '=', 0);
 
+            // return $list;
             $data = array();
             $i = 0;
 
             foreach ($list as $item){
-                $property_keys = CategoryProperty::
-                    when($category_id, function ($q, $category_id) {
-                        return $q->where('category_id', $category_id);
-                    })
-                // where('category_id', 9)
-                    ->first();
+                $fields = ProductCategoryField::where('product_id', $item['id'])
+                    ->join('category_fields', 'category_fields.id', 'product_category_fields.category_field_id')
+                    ->join('fields', 'fields.id', 'category_fields.field_id')
+                    ->select(['product_category_fields.category_field_id', 'fields.id', 'fields.name'])
+                    ->get();
 
                 $category = Category::where('id', $item->category_id)->select('id','name_fa')->first();
-                    
-                if($property_keys){
-                    $size = $property_keys->size? ProductProperty::query()
-                    ->where('product_id', $item->id)
-                    ->whereNotNull('size_id')
-                    ->pluck('size_id'): null;
-                    if($size) $size_list = Size::whereIn('id', $size)->pluck('name');
-
-                    $material = $property_keys->material? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('material_id')
-                        ->pluck('material_id'): null;
-                    if($material) $material_list = Material::whereIn('id', $material)->pluck('name');
-
-                    $color = $property_keys->color? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('color_id')
-                        ->pluck('color_id'): null;
-                    if($color) $color_list = Color::whereIn('id', $color)->pluck('name');
-
-                    $design = $property_keys->design? ProductProperty::query()
-                        ->where('product_id', $item->id)
-                        ->whereNotNull('design_id')
-                        ->pluck('design_id'): null;
-                    if($design) $design_list = Design::whereIn('id', $design)->pluck('name');
-                }else{
-                    $size_list = null;
-                    $design_list = null;    
-                    $color_list = null;     
-                }
                 
+                $field_data = [];
+                if($fields){
+                    foreach($fields as $field){
+                        $temp = [];
+                        $temp['key'] = $field['name'];
+                        $value = ProductCategoryField::where('category_field_id', $field['category_field_id'])
+                            ->where('product_id', $item['id'])
+                            // ->whereNotNull('data')
+                            ->first();
+                        $temp['value'] = $value? $value['data']: null;
+                        array_push($field_data, $temp);
+                    }
+                }
 
+                $sizes = ProductProperty::where('product_id', $item['id'])
+                    ->join('sizes', 'sizes.id', 'product_properties.size_id')
+                    ->select(['sizes.id', 'sizes.name'])
+                    ->get();
 
-                // $properties = ProductProperty::query()
-                //     ->where('product_id', $item->id)
-                    // ->when($properties_filter, function ($q, $properties_filter) {
-                    //     return $q->whereIn('product_properties.property_id', $properties_filter);
-                    // })
-                    // ->join('category_metas', 'category_metas.id', 'product_properties.property_id')
-                    // ->select([
-                    //     'category_metas.value as key',
-                    //     'product_properties.value as value',
-                    // ])
-                    // ->get();
+                $colors = ProductProperty::where('product_id', $item['id'])
+                    ->join('colors', 'colors.id', 'product_properties.color_id')
+                    ->select(['colors.id', 'colors.name'])
+                    ->distinct()
+                    ->get();
 
                 $images = Media::query()->where('product_id', $item->id)
                     ->select('id','url')->get();
 
                 $data[$i++] = array([
                     'product' => $item,
+                    'fields' => $field_data,
                     'properties' => [
-                        'size' => $size_list,
-                        'color' => $color_list,
+                        'size' => $sizes,
+                        'color' => $colors,
                     ],
                     'category' => $category,
                     'images' => $images,
@@ -187,13 +173,13 @@ class FilterController extends Controller
 
             $response = [
                 'status' => true,
-                'msg' => 'list successfully get.',
-                'data' => $data
+                'msg'    => 'list successfully get.',
+                'data'   => $data,
             ];
 
             return response()->json($response);
-        // }catch(Exception $e){
-        //     return response($e, 500);
-        // }
+        }catch(\Exception $e){
+            return response($e, 500);
+        }
     }
 }
