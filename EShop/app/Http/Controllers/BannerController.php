@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 class BannerController extends Controller
 {
     public function index(Request $request){
+        
         $category_id = $request->category_id;
         $use_for = $request->use_for;
         $per_page = $request->per_page ?? 10;
@@ -115,7 +116,7 @@ class BannerController extends Controller
         $location    = $request->location;
         $use_for     = $request->use_for;
         $category_id = $request->category_id;
-
+        
         try{
             $banners = Banner::when($location, function($query) use($location){
                 return $query->where('location', $location);
