@@ -18,7 +18,7 @@ class CartController extends Controller
                 $cart = Cart::query()->create([
                     'user_id' => Auth()->user()['id'],
                     'product_id' => $request->product_id,
-                    'number'   => $request->number
+                    'number'   => $request->number?? 1
                 ]);
             }
             else{
