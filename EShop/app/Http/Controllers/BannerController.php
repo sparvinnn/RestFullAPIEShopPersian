@@ -20,6 +20,16 @@ class BannerController extends Controller
         ->when($use_for, function($query) use($use_for){
             return $query->where('use_for', $use_for);
         })
+        ->leftJoin('categories', 'categories.id', 'banners.category_id')
+        ->select([
+            'banners.id',
+            'banners.use_for',
+            'banners.location',
+            'banners.link',
+            'banners.url',
+            'categories.name_fa'
+        ])
+        ->orderBy('banners.created_at', 'DESC')
         ->get()
         // ->paginate($per_page);
         ;
@@ -137,6 +147,7 @@ class BannerController extends Controller
                 'banners.category_id',
                 'categories.name_en'
             ])
+            ->orderBy('created_at', 'DESC')
             ->get()
             ;
 

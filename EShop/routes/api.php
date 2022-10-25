@@ -177,6 +177,7 @@ Route::middleware('jwt.verify')->prefix('category/')->group(function() {
 });
 
 Route::post("banners/upload", [BannerController::class, "upload"]);
+// Route::get("banners/", [BannerController::class, "index"]);
 //banners route
 Route::middleware('jwt.verify')->prefix('banners/')->group(function() {
     // Route::prefix('category/')->group(function() {
