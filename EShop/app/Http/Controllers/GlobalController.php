@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\Brands;
 use App\Models\Category;
 use App\Models\CategoryMeta;
@@ -13,7 +14,7 @@ use App\Models\ProductProperty;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
-
+ 
 use Mockery\Exception;
 use PHPUnit\Framework\Constraint\Count;
 
@@ -222,113 +223,119 @@ class GlobalController extends Controller
             ->select(['id', 'name'])->get();
     }
 
-    public function getAllProperties(Request $request){
-        $list = array (
-            array(
-                'en' => 'size',
-                'fa' => 'اندازه'
-            ),
-            array(
-                'en' => 'material',
-                'fa' => 'جنس'
-            ),
-            array(
-                'en' => 'color',
-                'fa' => 'رنگ'
-            ),
-            array(
-                'en' => 'design',
-                'fa' => 'طرح'
-            ),
-            array(
-                'en' => 'sleeve',
-                'fa' => 'آستین'
-            ),
-            array(
-                'en' => 'piece',
-                'fa' => 'تعداد تکه'
-            ),
-            array(
-                'en' => 'set_type',
-                'fa' => 'نوع ست'
-            ),
-            array(
-                'en' => 'description',
-                'fa' => 'توضیحات'
-            ),
-            array(
-                'en' => 'maintenance',
-                'fa' => 'نگهداری'
-            ),
-            array(
-                'en' => 'made_in',
-                'fa' => 'تولید شده در'
-            ),
-            array(
-                'en' => 'origin',
-                'fa' => 'مبدا'
-            ),
-            array(
-                'en' => 'type',
-                'fa' => 'نوع'
-            ),
-            array(
-                'en' => 'for_use',
-                'fa' => 'استفاده برای'
-            ),
-            array(
-                'en' => 'collar',
-                'fa' => 'یقه'
-            ),
-            array(
-                'en' => 'height',
-                'fa' => 'قد'
-            ),
-            array(
-                'en' => 'physical_feature',
-                'fa' => 'ویژگی های ظاهری'
-            ),
-            array(
-                'en' => 'production_time',
-                'fa' => 'تاریخ تولید'
-            ),
-            array(
-                'en' => 'demension',
-                'fa' => 'ابعاد'
-            ),
-            array(
-                'en' => 'crotch',
-                'fa' => 'فاق'
-            ),
-            array(
-                'en' => 'close',
-                'fa' => 'بسته شدن'
-            ),
-            array(
-                'en' => 'drop',
-                'fa' => 'دراپ'
-            ),
-            array(
-                'en' => 'cumin',
-                'fa' => 'زیره'
-            ),
-            array(
-                'en' => 'close_shoes',
-                'fa' => 'نوع بستن کفش'
-            ),
-            array(
-                'en' => 'typeـofـclothing',
-                'fa' => 'نوع لباس'
-            ),
-            array(
-                'en' => 'specialized_features',
-                'fa' => 'ویژگی های تخصصی'
-            ),
-        );
-    
+    public function search_product(Request $request){
+        $title = $request->title;
+        $price = $request->price;
+        $category_id = $request->category_id;
+        $branch_id = $request->branch_id;
+        $id = $request->id;
+        $properties_filter = $request->properties_filter;
+        try{
+            $list = Product::query()
+                ->when($title, function ($q, $title) {
+                    return $q->where('title', 'LIKE' , '%' . $title .'%');
+                })
+                ->when($price, function ($q, $price) {
+                    return $q->where('price', $price);
+                })
+                ->when($category_id, function ($q, $category_id) {
+                    return $q->where('category_id', $category_id);
+                })
+                ->when($branch_id, function ($q, $branch_id) {
+                    return $q->where('branch_id', $branch_id);
+                })
+                ->when($id, function ($q, $id) {
+                    return $q->where('id', $id);
+                })
+                // ->with('county', 'city')
+//                ->with('properties.property')
+//                ->with(['properties'=>function($q){
+//                    $q->with('property.value');
+//                }])
 
-        return response()->json([
-            'data' => $list
-        ]);
+                ->orderBy('created_at')
+                ->get();
+            $data = array();
+            $i = 0;
+//            return $properties_filter;
+            foreach ($list as $item){
+                $properties = ProductProperty::query()
+                    ->where('product_id', $item->id)
+                    ->when($properties_filter, function ($q, $properties_filter) {
+                        return $q->whereIn('product_properties.property_id', $properties_filter);
+                    })
+                    ->join('category_metas', 'category_metas.id', 'product_properties.property_id')
+                    ->select([
+                        'category_metas.value as key',
+                        'product_properties.value as value',
+                    ])
+                    ->get();
+
+                $images = Media::query()->where('product_id', $item->id)
+                    ->pluck('url');
+
+                $data[$i++] = array([
+                    'product' => $item,
+                    'properties' => $properties,
+                    'images' => $images
+                ]);
+            }
+
+            $response = [
+                'status' => true,
+                'msg' => 'list successfully get.',
+                'data' => $data
+            ];
+
+            return response()->json($response);
+        }catch(Exception $e){
+            return response($e, 500);
+        }
     }
+
+    public function home_search_box(Request $request){
+        $search_txt = $request->search_txt;
+        $categories = Category::where('name_fa', 'LIKE', '%'. $search_txt . '%')
+            ->limit(5)
+            ->select(['id', 'name_fa', 'slug'])
+            ->get();
+
+        $products_list = Product::where('name', 'LIKE', '%'. $search_txt . '%')
+            ->limit(5)
+            ->select([
+                'id', 'name'
+            ])
+            ->get();
+
+        $i = 0;
+        $products = array();
+
+        foreach($products_list as $item){
+            $image = Media::query()->where('product_id', $item->id)
+                    ->select('id','url')->first();
+            $temp = [
+                'id'=> $item->id,
+                'name' => $item->name,
+                'img' => $image? $image->url: null
+            ];
+
+            array_push($products, $temp);
+        }
+        
+
+        $brands = Brand::where('name', 'LIKE', '%'. $search_txt . '%')
+            ->limit(5)
+            ->get();
+
+        $response = [
+            'status' => true,
+            'msg' => 'list successfully get.',
+            'categories' => $categories,
+            'products' => $products,
+            'brands' => $brands
+        ];
+
+        return response()->json($response);
+    }
+
 }

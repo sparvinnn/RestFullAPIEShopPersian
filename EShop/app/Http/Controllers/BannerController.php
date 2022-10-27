@@ -147,7 +147,7 @@ class BannerController extends Controller
                 'banners.category_id',
                 'categories.name_en'
             ])
-            ->orderBy('created_at', 'DESC')
+            ->orderBy('banners.created_at', 'DESC')
             ->get()
             ;
 

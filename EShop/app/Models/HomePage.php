@@ -5,11 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Image extends Model
+class HomePage extends Model
 {
     use HasFactory;
-
-    protected $fillable = [
-        'url', 'use_for', 'created_at', 'table_id'
-    ];
 }

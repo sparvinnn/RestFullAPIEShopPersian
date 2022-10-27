@@ -82,6 +82,7 @@ Route::post("product/search", [ProductController::class, "search"]);
 Route::post("getBrands", [GlobalController::class, "getBrands"]);
 Route::get("getAllBrands", [GlobalController::class, "getAllBrands"]);
 Route::get("getAllProperties", [GlobalController::class, "getAllProperties"]);
+Route::get("search_home_page", [GlobalController::class, "home_search_box"]);
 
 
 //filter routes
