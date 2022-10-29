@@ -7,11 +7,13 @@ use App\Models\Brands;
 use App\Models\Category;
 use App\Models\CategoryMeta;
 use App\Models\City;
+use App\Models\Color;
 use App\Models\County;
 use App\Models\Media;
 use App\Models\Product;
 use App\Models\ProductProperty;
 use App\Models\Role;
+use App\Models\Size;
 use App\Models\User;
 use Illuminate\Http\Request;
  
@@ -336,6 +338,21 @@ class GlobalController extends Controller
         ];
 
         return response()->json($response);
+    }
+
+    public function filter_info(){
+        $brands = Brand::select(['id', 'name'])->get()->unique();
+        $categories = Category::select(['id', 'name_fa'])->get()->unique();
+        $sizes = Size::select(['id', 'name'])->get()->unique();
+        $colors = Color::select(['id', 'name', 'code'])->orderBy('name')->get()->unique();
+
+        return response()->json([
+            'brands' => $brands,
+            'categories' => $categories,
+            'sizes' => $sizes,
+            'colors' => $colors,
+            'status' =>true
+        ], 200);
     }
 
 }

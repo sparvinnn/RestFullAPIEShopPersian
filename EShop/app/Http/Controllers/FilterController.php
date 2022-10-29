@@ -85,6 +85,9 @@ class FilterController extends Controller
         $properties_filter = $request->properties_filter;
         $available = $request->available;
         $category_id = ($category!='new')? $category: null;
+        $categories = $request->categories;
+        $sizes = $request->sizes;
+        $colors = $request->colors;
         try{
             $size_list = [];
             $color_list = [];

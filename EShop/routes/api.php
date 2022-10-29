@@ -83,10 +83,12 @@ Route::post("getBrands", [GlobalController::class, "getBrands"]);
 Route::get("getAllBrands", [GlobalController::class, "getAllBrands"]);
 Route::get("getAllProperties", [GlobalController::class, "getAllProperties"]);
 Route::get("search_home_page", [GlobalController::class, "home_search_box"]);
+Route::get("filter_info", [GlobalController::class, "filter_info"]);
 
 
 //filter routes
 Route::get("properties", [FilterController::class, "getProperties"]);
+Route::get("filter", [FilterController::class, "filter"]);
 Route::post("filter", [FilterController::class, "filter"]);
 
 // sanctum auth middleware routes
