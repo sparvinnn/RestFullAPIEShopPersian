@@ -88,6 +88,7 @@ class FilterController extends Controller
         $categories = $request->categories;
         $sizes = $request->sizes;
         $colors = $request->colors;
+
         try{
             $size_list = [];
             $color_list = [];
@@ -111,6 +112,9 @@ class FilterController extends Controller
                 ->when($id, function ($q, $id) {
                     return $q->where('id', $id);
                 })
+                ->when($categories, function ($q, $categories) {
+                    return $q->whereIn('category_id', $categories);
+                })
                 ->orderBy('updated_at', 'desc')
                 ->limit($request->per_page)
                 ->get();
@@ -125,6 +129,29 @@ class FilterController extends Controller
             $i = 0;
 
             foreach ($list as $item){
+                $images = Media::query()->where('product_id', $item->id)
+                    ->select('id','url')->get();
+                if(count($images)<=0) continue;
+
+                $sizes = ProductProperty::where('product_id', $item['id'])
+                    ->join('sizes', 'sizes.id', 'product_properties.size_id')
+                    // ->when($sizes, function ($q, $sizes) {
+                    //     return $q->whereIn('sizes.id', $sizes);
+                    // })
+                    ->select(['sizes.id', 'sizes.name'])
+                    ->get();
+                if(count($sizes)<=0) continue;
+
+                $colors = ProductProperty::where('product_id', $item['id'])
+                    ->join('colors', 'colors.id', 'product_properties.color_id')
+                    ->select(['colors.id', 'colors.name'])
+                    // ->when($colors, function ($q, $colors) {
+                    //     return $q->whereIn('colors.id', $colors);
+                    // })
+                    ->distinct()
+                    ->get();
+                if(count($colors)<=0) continue;
+
                 $fields = ProductCategoryField::where('product_id', $item['id'])
                     ->join('category_fields', 'category_fields.id', 'product_category_fields.category_field_id')
                     ->join('fields', 'fields.id', 'category_fields.field_id')
@@ -146,21 +173,7 @@ class FilterController extends Controller
                         array_push($field_data, $temp);
                     }
                 }
-
-                $sizes = ProductProperty::where('product_id', $item['id'])
-                    ->join('sizes', 'sizes.id', 'product_properties.size_id')
-                    ->select(['sizes.id', 'sizes.name'])
-                    ->get();
-
-                $colors = ProductProperty::where('product_id', $item['id'])
-                    ->join('colors', 'colors.id', 'product_properties.color_id')
-                    ->select(['colors.id', 'colors.name'])
-                    ->distinct()
-                    ->get();
-
-                $images = Media::query()->where('product_id', $item->id)
-                    ->select('id','url')->get();
-
+                
                 $data[$i++] = array([
                     'product' => $item,
                     'fields' => $field_data,

@@ -66,6 +66,23 @@ class initUserSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
+            'username' => 'zarjahan',
+            'f_name' => 'jahani',
+            'l_name' => 'jahani',
+            'mobile' => 'zarjahan',
+            'national_code' => '001*******',
+            'mobile_verified_at' => Carbon::now(),
+            'county' => 24,
+            'city' => 10,
+            'address' => 'خیابان مطهری',
+            'postal_code' => '1254785963',
+            'email' => 'zarjahan@gmail.com',
+            'email_verified_at' => Carbon::now(),
+            'password' => Hash::make('j1a2h3a4n5'),
+            'branch_id' => 1
+        ]);
+
+        DB::table('users')->insert([
             'username' => 'PublicUser',
             'f_name' => 'Mahdi',
             'l_name' => 'Moradi',
