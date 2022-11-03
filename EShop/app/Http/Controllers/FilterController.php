@@ -86,8 +86,8 @@ class FilterController extends Controller
         $available = $request->available;
         $category_id = ($category!='new')? $category: null;
         $categories = $request->categories;
-        $sizes = $request->sizes;
-        $colors = $request->colors;
+        $sizes_request = $request->sizes;
+        $colors_request = $request->colors;
 
         try{
             $size_list = [];
@@ -135,9 +135,9 @@ class FilterController extends Controller
 
                 $sizes = ProductProperty::where('product_id', $item['id'])
                     ->join('sizes', 'sizes.id', 'product_properties.size_id')
-                    // ->when($sizes, function ($q, $sizes) {
-                    //     return $q->whereIn('sizes.id', $sizes);
-                    // })
+                    ->when($sizes_request, function ($q, $sizes_request) {
+                        return $q->whereIn('sizes.id', $sizes_request);
+                    })
                     ->select(['sizes.id', 'sizes.name'])
                     ->get();
                 if(count($sizes)<=0) continue;
@@ -145,9 +145,9 @@ class FilterController extends Controller
                 $colors = ProductProperty::where('product_id', $item['id'])
                     ->join('colors', 'colors.id', 'product_properties.color_id')
                     ->select(['colors.id', 'colors.name'])
-                    // ->when($colors, function ($q, $colors) {
-                    //     return $q->whereIn('colors.id', $colors);
-                    // })
+                    ->when($colors_request, function ($q, $colors_request) {
+                        return $q->whereIn('colors.id', $colors_request);
+                    })
                     ->distinct()
                     ->get();
                 if(count($colors)<=0) continue;
