@@ -151,7 +151,7 @@ class ProductController extends Controller
         $available = $request->available;
         try{
             
-            return $list = Product::query()
+            $list = Product::query()
                 // ->join('media', 'media.product_id', 'products.id')
                 ->when($name, function ($q, $name){
                     return $q->where('products.name', 'LIKE', '%'.$name.'%');
@@ -172,7 +172,7 @@ class ProductController extends Controller
                     return $q->where('products.id', $id);
                 })
                 ->orderBy('products.updated_at', 'desc')
-                // ->limit(200)
+                ->limit(200)
                 ->select('products.*')
                 ->get()
                 // ->select('media.id as media','products.id as product_id', 'media.product_id as media_product_id')
