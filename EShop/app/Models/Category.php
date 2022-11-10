@@ -35,6 +35,11 @@ class Category extends Model
         return $this->hasMany(Category::class, 'parent_id')->where('is_active', 1);
     }
 
+    public function field()
+    {
+        return $this->hasMany(CategoryField::class);
+    }
+
     public function properties()
     {
         return $this->hasMany(CategoryProperty::class)

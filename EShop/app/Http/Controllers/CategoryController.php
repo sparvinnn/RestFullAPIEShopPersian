@@ -141,7 +141,7 @@ class CategoryController extends Controller
                 //     return $q->whereNull('parent_id');
                 // })
                 ->orderBy('priority', 'Desc')
-                ->with(['children', 'parent', 'meta', 'properties'])
+                ->with(['children', 'parent', 'meta', 'properties', 'field'])
                 ->select([
                     'id',
                     'name_fa',

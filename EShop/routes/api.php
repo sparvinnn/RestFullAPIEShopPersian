@@ -195,6 +195,7 @@ Route::middleware('jwt.verify')->prefix('banners/')->group(function() {
 });
 
 //product route
+Route::get("product/adminSearch", [ProductController::class, "search"]);
 Route::post('product/image/upload', [ImageController::class, "upload"])->name('image.upload');
 Route::post('category/image/upload', [CategoryController::class, "upload"])->name('category.image.upload');
 Route::middleware('jwt.verify')->prefix('product/')->group(function() {

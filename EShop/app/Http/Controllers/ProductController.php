@@ -140,7 +140,7 @@ class ProductController extends Controller
     }
 
     public function search(Request $request){
-// return $request;
+    // return $request; 
         $name = $request->name;
         $min_price = $request->min_price;
         $max_price = $request->max_price;
@@ -149,10 +149,10 @@ class ProductController extends Controller
         $id = $request->id;
         $properties_filter = $request->properties_filter;
         $available = $request->available;
-        // try{
+        try{
             
-            $list = Product::query()
-                ->join('media', 'media.product_id', 'products.id')
+            return $list = Product::query()
+                // ->join('media', 'media.product_id', 'products.id')
                 ->when($name, function ($q, $name){
                     return $q->where('products.name', 'LIKE', '%'.$name.'%');
                 })
@@ -172,7 +172,7 @@ class ProductController extends Controller
                     return $q->where('products.id', $id);
                 })
                 ->orderBy('products.updated_at', 'desc')
-                ->limit(200)
+                // ->limit(200)
                 ->select('products.*')
                 ->get()
                 // ->select('media.id as media','products.id as product_id', 'media.product_id as media_product_id')
@@ -413,9 +413,9 @@ class ProductController extends Controller
             ];
 
             return response()->json($response);
-        // }catch(Exception $e){
-        //     return response($e, 500);
-        // }
+        }catch(Exception $e){
+            return response($e, 500);
+        }
     }
 
     public function product_properties(Request $request){

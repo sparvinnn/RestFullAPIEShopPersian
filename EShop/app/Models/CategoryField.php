@@ -14,4 +14,12 @@ class CategoryField extends Model
         'field_id',
         'searchable'
     ];
+
+    public function category(){
+        return $this->belongsTo(Category::class);
+    }   
+     
+    public function field(){
+        return $this->belongsTo(Field::class);
+    }
 }

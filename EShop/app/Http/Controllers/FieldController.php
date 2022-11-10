@@ -13,6 +13,8 @@ class FieldController extends Controller
 {
     public function create(Request $request){
         // return $request;
+        $old = Field::where('name', $request->name)->first();
+        if($old) return response()->json(["status" => false, "data" => $old, "message" => 'فیلد تکراری ثبت نمی شود']);
         $field = Field::create([
             'name' => $request->name,
             'name_en' => $request->name_en
@@ -22,7 +24,7 @@ class FieldController extends Controller
 
     public function list(){
 
-        $fields = Field::select(['id', 'name', 'name_en'])->get();
+        $fields = Field::select(['id', 'name', 'name_en', 'created_at'])->orderBy('created_at', 'Desc')->get();
 
         return response()->json(["status" => true, "data" => $fields, "message" => 'اطلاعات با موفقیت دریافت شد']);
     }
@@ -94,7 +96,7 @@ class FieldController extends Controller
             $values = explode("-",$item['value']);
             foreach($values as $value){
                 $old = ProductCategoryField::where('category_field_id', $item['id'])
-                    ->where('product_id', $request->id)
+                    ->where('product_id', $request->product_id)
                     ->delete();
                 
                 ProductCategoryField::create([
@@ -119,15 +121,17 @@ class FieldController extends Controller
                 'categories.name_fa as category',
                 'category_fields.id as id', 
                 'category_fields.category_id as cate_id',
-                'category_fields.searchable'])
+                'category_fields.searchable',
+                'category_fields.created_at'])
             // ->where('category_fields.category_id', $id)
+            ->orderBy('category_fields.created_at', 'Desc')
             ->get();
 
         return response()->json(["status" => true, "data" => $data, "message" => 'اطلاعات با موفقیت ثبت شد']);
     }
 
     public function storeCatFields(Request $request){
-
+        // return $request;
         $data = CategoryField::create([
             'category_id' => $request->category_id,
             'field_id' => $request->field_id,
