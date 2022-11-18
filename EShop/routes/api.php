@@ -15,6 +15,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\DashboradController;
 use App\Http\Controllers\FieldController;
 use App\Http\Controllers\paymentController;
 use App\Http\Controllers\PropertiesController;
@@ -120,6 +121,12 @@ Route::middleware('jwt.verify')->prefix('brand/')->group(function() {
     Route::post("", [BrandController::class, "store"]);
     Route::put("{id}", [BrandController::class, "update"]);
 });
+
+//dashbord home
+Route::middleware('jwt.verify')->prefix('dashboard/')->group(function() {
+    Route::get("", [DashboradController::class, "init_info"]);
+});
+
 
 //fields route
 Route::middleware('jwt.verify')->prefix('fields/')->group(function() {
