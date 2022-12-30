@@ -14,7 +14,83 @@ class paymentController extends Controller
 {
     private $amount=0;
 
-    public function start(Request $request){
+    public function start(Request $req){
+        
+        $data = array(
+            "MerchantID" => "39fd90bb-2e45-42cc-8b30-d87f577e8f48",
+            "Amount" => 1000,
+            "CallbackURL" => "localhost:3000",
+            "Description" => "خرید تست",
+            "Metadata" => [ "email" => "sparvinnn@gmail.com","mobile"=>"09117158276"],
+            );
+        $jsonData = json_encode($data);
+        $ch = curl_init('https://sandbox.zarinpal.com/pg/rest/WebGate/PaymentRequest.json');
+        curl_setopt($ch, CURLOPT_USERAGENT, 'ZarinPal Rest Api v1');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($jsonData)
+        ));
+
+        $result = curl_exec($ch);
+        $err = curl_error($ch);
+        $result = json_decode($result, true, JSON_PRETTY_PRINT);
+        curl_close($ch);
+
+        // return $result;
+        
+        if ($err) {
+            echo "cURL Error #:" . $err;
+        } else {
+            if (empty($result['errors'])) {
+                if ($result['Status'] == 100) {
+                    header('Location: https://sandbox.zarinpal.com/pg/StartPay/' . $result['Authority']);
+                }
+            } else {
+                echo'Error Code: ' . $result['errors']['code'];
+                echo'message: ' .  $result['errors']['message'];
+
+            }
+        }
+
+        return 'https://sandbox.zarinpal.com/pg/StartPay/' . $result['Authority'];
+        return redirect('https://sandbox.zarinpal.com/pg/StartPay/' . $result['Authority']);
+        
+    }
+
+    public function verify(Request $req){
+        $Authority = $_GET['Authority'];
+        $data = array("merchant_id" => "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", "authority" => $Authority, "amount" => 1000);
+        $jsonData = json_encode($data);
+        $ch = curl_init('https://api.zarinpal.com/pg/v4/payment/verify.json');
+        curl_setopt($ch, CURLOPT_USERAGENT, 'ZarinPal Rest Api v4');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($jsonData)
+        ));
+
+        $result = curl_exec($ch);
+        $err = curl_error($ch);
+        curl_close($ch);
+        $result = json_decode($result, true);
+        
+        if ($err) {
+            echo "cURL Error #:" . $err;
+        } else {
+            if ($result['data']['code'] == 100) {
+                echo 'Transation success. RefID:' . $result['data']['ref_id'];
+            } else {
+                echo'code: ' . $result['errors']['code'];
+                echo'message: ' .  $result['errors']['message'];
+            }
+        }
+    }
+    public function start1(Request $request){
 
         $change_price = [];
 

@@ -19,6 +19,46 @@ class testController extends Controller
 {
     private $amount=0;
 
+    public function test(){
+        $data = array("merchant_id" => "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "amount" => 1000,
+            "callback_url" => "www.localhost:3000",
+            "description" => "خرید تست",
+            "metadata" => [ "email" => "info@email.com","mobile"=>"09121234567"],
+            );
+        $jsonData = json_encode($data);
+        $ch = curl_init('https://sandbox.zarinpal.com/pg/v4/payment/request.json');
+        curl_setopt($ch, CURLOPT_USERAGENT, 'ZarinPal Rest Api v1');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($jsonData)
+        ));
+
+        $result = curl_exec($ch);
+        $err = curl_error($ch);
+        $result = json_decode($result, true, JSON_PRETTY_PRINT);
+        curl_close($ch);
+
+
+
+        if ($err) {
+            echo "cURL Error #:" . $err;
+        } else {
+            if (empty($result['errors'])) {
+                if ($result['data']['code'] == 100) {
+                    header('Location: https://sandbox.zarinpal.com/pg/StartPay/' . $result['data']["authority"]);
+                }
+            } else {
+                echo'Error Code: ' . $result['errors']['code'];
+                echo'message: ' .  $result['errors']['message'];
+
+            }
+        }
+    }
+
     public function mytest(){
         
         $client = new \GuzzleHttp\Client(); 
@@ -91,8 +131,9 @@ class testController extends Controller
         }
     }
 
-    public function test(Request $request){
+    public function test1(Request $request){
 
+        return $request;
         $change_price = [];
         $products = json_decode($request->list);
 //        $products = $request->list;
@@ -115,7 +156,7 @@ class testController extends Controller
         }
 
         if(count($change_price)>0)
-            return $change_price;
+            $change_price = 20000;
         else{
             $payment = Payment::create([
                 'user_id' => Auth::id(),
@@ -139,7 +180,7 @@ class testController extends Controller
         $res = $order->pay($request->price,"sparvinnn@gmail.com","09117158276");
         return redirect('https://sandbox.zarinpal.com/pg/StartPay/' . $res);
     }
-
+ 
     public function order(Request $request){
         $MerchantID = '39fd90bb-2e45-42cc-8b30-d87f577e8f48';
         $Authority =$request->get('Authority') ;
