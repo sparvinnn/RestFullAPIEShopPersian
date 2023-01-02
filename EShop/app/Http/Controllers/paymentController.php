@@ -46,7 +46,7 @@ class paymentController extends Controller
         } else {
             if (empty($result['errors'])) {
                 if ($result['Status'] == 100) {
-                    header('Location: https://sandbox.zarinpal.com/pg/StartPay/' . $result['Authority']);
+//                    header('Location: https://sandbox.zarinpal.com/pg/StartPay/' . $result['Authority']);
                 }
             } else {
                 echo'Error Code: ' . $result['errors']['code'];
@@ -54,6 +54,7 @@ class paymentController extends Controller
 
             }
         }
+
 
         return 'https://sandbox.zarinpal.com/pg/StartPay/' . $result['Authority'];
         // return redirect('https://sandbox.zarinpal.com/pg/StartPay/' . $result['Authority']);
