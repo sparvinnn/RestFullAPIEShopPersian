@@ -56,7 +56,7 @@ class paymentController extends Controller
         }
 
         return 'https://sandbox.zarinpal.com/pg/StartPay/' . $result['Authority'];
-        return redirect('https://sandbox.zarinpal.com/pg/StartPay/' . $result['Authority']);
+        // return redirect('https://sandbox.zarinpal.com/pg/StartPay/' . $result['Authority']);
         
     }
 
