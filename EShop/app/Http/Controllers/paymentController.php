@@ -19,7 +19,7 @@ class paymentController extends Controller
         $data = array(
             "MerchantID" => "39fd90bb-2e45-42cc-8b30-d87f577e8f48",
             "Amount" => 1000,
-            "CallbackURL" => "localhost:3000",
+            "CallbackURL" => env('FRONT_URL'). "/ecommerce/orders",
             "Description" => "خرید تست",
             "Metadata" => [ "email" => "sparvinnn@gmail.com","mobile"=>"09117158276"],
             );
